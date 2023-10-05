@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Margem Consignável INSS</title>
+    <style>
+        body,
+        * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .consignado-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .consignado-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-value {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+        }
+
+        .btn-clear {
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: rgb(0, 0, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="consignado-calculator">
+        <div class="calculator-title">CALCULADORA DE MARGEM CONSIGNÁVEL INSS</div>
+        <div class="input-group">
+            <label for="benefit">Valor do benefício (R$)</label>
+            <input type="number" id="benefit" placeholder="1000" min="0" class="input-value" />
+        </div>
+        
+        <div class="btn-container">
+            <button onclick="clearFields()" class="btn btn-clear">Limpar</button>
+            <button onclick="calculateMargin()" class="btn btn-calculate">Calcular</button>
+        </div>
+
+        <div id="tableContainer" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor (R$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Margem Total</td>
+                        <td id="totalMargin">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td>Margem para Empréstimos</td>
+                        <td id="loanMargin">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td>Margem para Cartão</td>
+                        <td id="cardMargin">R$ 0,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function calculateMargin() {
+            const benefitValue = parseFloat(document.getElementById("benefit").value);
+
+            if (isNaN(benefitValue)) {
+                alert("Por favor, insira um valor válido para continuar!");
+                return;
+            }
+
+            const totalMargin = benefitValue * 0.35;
+            const loanMargin = benefitValue * 0.30;
+            const cardMargin = benefitValue * 0.05;
+
+            document.getElementById("totalMargin").innerText = "R$ " + totalMargin.toFixed(2);
+            document.getElementById("loanMargin").innerText = "R$ " + loanMargin.toFixed(2);
+            document.getElementById("cardMargin").innerText = "R$ " + cardMargin.toFixed(2);
+
+            document.getElementById("tableContainer").style.display = "block";
+        }
+
+        function clearFields() {
+            document.getElementById("benefit").value = "";
+            document.getElementById("totalMargin").innerText = "R$ 0,00";
+            document.getElementById("loanMargin").innerText = "R$ 0,00";
+            document.getElementById("cardMargin").innerText = "R$ 0,00";
+            
+            document.getElementById("tableContainer").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

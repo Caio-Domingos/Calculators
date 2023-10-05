@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Juros Compostos</title>
+    <style>
+        body, * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .compound-interest-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compound-interest-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-symbol {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .input-value, select {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        #months, #principal, #monthlyValue {
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        #rate {
+            flex: 1;
+            background-color: #01E06926;
+            margin-right: 5px;
+        }
+
+        select {
+            width: 48%;
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .currency-symbol {
+            margin-right: 10px;
+            align-self: center;
+            background-color: #01E06926;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: none;
+            color: black;
+            cursor: pointer;
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 15px 0;
+        }
+
+        /* Styles for the results table */
+        #resultsTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #resultsTable, #resultsTable th, #resultsTable td {
+            border: 1px solid;
+        }
+
+        #resultsTable th, #resultsTable td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ccc;
+
+        }
+
+        #resultsTable th {
+            background-color: #f0f0f0;
+        }
+
+        #resultsTable td {
+            background-color: #ffffff26;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="compound-interest-calculator">
+        <div class="calculator-title">CALCULADORA DE JUROS COMPOSTOS</div>
+
+        <div class="input-group">
+            <label for="principal">Valor principal <span class="info-symbol" title="Insira o valor inicial.">ℹ</span></label>
+            <div class="input-row">
+                <span class="currency-symbol">R$</span>
+                <input type="number" id="principal" placeholder="1000" min="0" class="input-value" />
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="monthlyValue">Valor mensal <span class="info-symbol" title="Insira o valor que será depositado mensalmente.">ℹ</span></label>
+            <div class="input-row">
+                <span class="currency-symbol">R$</span>
+                <input type="number" id="monthlyValue" placeholder="100" min="0" class="input-value" />
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Taxa de juros (%) <span class="info-symbol" title="Insira a taxa de juros, seja ela mensal ou anual.">ℹ</span></label>
+            <div class="input-row">
+                <input type="number" id="rate" placeholder="2" min="0" class="input-value" />
+                <select id="ratePeriod" class="input-value">
+                    <option value="monthly">Mensal</option>
+                    <option value="yearly">Anual</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Duração <span class="info-symbol" title="Insira a duração do investimento.">ℹ</span></label>
+            <div class="input-row">
+                <input type="number" id="months" placeholder="12" min="0" class="input-value" />
+                <select id="monthsPeriod" class="input-value">
+                    <option value="monthly">Meses</option>
+                    <option value="yearly">Anos</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button onclick="calculateCompoundInterest()" class="btn-calculate">Calcular</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Results Table -->
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Valor total investido</td>
+                    <td id="totalInvested"></td>
+                </tr>
+                <tr>
+                    <td>Rendimento total</td>
+                    <td id="totalInterest"></td>
+                </tr>
+                <tr>
+                    <td>Valor total ao final</td>
+                    <td id="totalValue"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function clearFields() {
+            document.getElementById('principal').value = '';
+            document.getElementById('monthlyValue').value = '';
+            document.getElementById('rate').value = '';
+            document.getElementById('months').value = '';
+            document.getElementById('resultsTable').style.display = 'none';
+        }
+
+        function calculateCompoundInterest() {
+            const principal = parseFloat(document.getElementById('principal').value || 0);
+            const monthlyValue = parseFloat(document.getElementById('monthlyValue').value || 0);
+            let rate = parseFloat(document.getElementById('rate').value || 0);
+            let months = parseFloat(document.getElementById('months').value || 0);
+
+            // Convert yearly rate to monthly
+            if (document.getElementById('ratePeriod').value === 'yearly') {
+                rate /= 12;
+            }
+
+            // Convert years to months
+            if (document.getElementById('monthsPeriod').value === 'yearly') {
+                months *= 12;
+            }
+
+            let totalValue = principal;
+            let totalInvested = principal;
+            let monthlyInterest;
+
+            for (let i = 0; i < months; i++) {
+                monthlyInterest = totalValue * (rate / 100);
+                totalValue += monthlyInterest + monthlyValue;
+                totalInvested += monthlyValue;
+            }
+
+            const totalInterestValue = totalValue - totalInvested;
+
+            // Display the results
+            document.getElementById('totalInvested').textContent = 'R$ ' + totalInvested.toFixed(2);
+            document.getElementById('totalInterest').textContent = 'R$ ' + totalInterestValue.toFixed(2);
+            document.getElementById('totalValue').textContent = 'R$ ' + totalValue.toFixed(2);
+
+            document.getElementById('resultsTable').style.display = 'table';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Salário Bruto</title>
+    <style>
+        body, * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .salary-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .salary-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-value {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: none;
+            color: black;
+            cursor: pointer;
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 15px 0;
+        }
+
+        .results-table {
+            display: none;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th, .results-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .results-table th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="salary-calculator">
+        <div class="calculator-title">CALCULADORA DE SALÁRIO BRUTO</div>
+
+        <div class="input-group">
+            <label for="netSalary">Salário Líquido</label>
+            <input type="number" id="netSalary" class="input-value" placeholder="Ex: 2500">
+        </div>
+
+        <div class="input-group">
+            <label for="discounts">Descontos</label>
+            <input type="number" id="discounts" class="input-value" placeholder="Ex: 300">
+        </div>
+
+        <div class="input-group">
+            <label for="numDependents">Número de Dependentes</label>
+            <input type="number" id="numDependents" class="input-value" placeholder="Ex: 2">
+        </div>
+
+        <div class="btn-container">
+            <button onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button onclick="calculateGrossSalary()" class="btn-calculate">Consultar</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <table class="results-table">
+            <tr>
+                <th>Descrição</th>
+                <th>Valor (R$)</th>
+            </tr>
+            <tr>
+                <td>Salário Bruto</td>
+                <td id="grossSalaryResult"></td>
+            </tr>
+            <tr>
+                <td>Descontos</td>
+                <td id="discountResult"></td>
+            </tr>
+            <tr>
+                <td>INSS</td>
+                <td id="inssResult"></td>
+            </tr>
+            <tr>
+                <td>IRRF</td>
+                <td id="irrfResult"></td>
+            </tr>
+            <tr>
+                <td>Total de Descontos</td>
+                <td id="totalDiscountResult"></td>
+            </tr>
+            <tr>
+                <td>Total de Salário Líquido</td>
+                <td id="totalSalaryResult"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function calculateGrossSalary() {
+            const netSalary = parseFloat(document.getElementById("netSalary").value) || 0;
+            const discounts = parseFloat(document.getElementById("discounts").value) || 0;
+            const numDependents = parseInt(document.getElementById("numDependents").value) || 0;
+
+            let INSS = 0;
+
+            // Cálculo do INSS
+            if (netSalary <= 1045) {
+                INSS = netSalary * 0.075;
+            } else if (netSalary <= 2089.60) {
+                INSS = netSalary * 0.09;
+            } else if (netSalary <= 3305.22) {
+                INSS = netSalary * 0.12;
+            } else if (netSalary <= 6433.57) {
+                INSS = netSalary * 0.14;
+            } else {
+                INSS = 6433.57 * 0.14;
+            }
+
+            // Cálculo do IRRF
+            const baseIRRF = netSalary - INSS - (numDependents * 189.59);
+            let IRRF = 0;
+
+            if (baseIRRF <= 1903.98) {
+                IRRF = 0;
+            } else if (baseIRRF <= 2826.65) {
+                IRRF = baseIRRF * 0.075 - 142.80;
+            } else if (baseIRRF <= 3751.05) {
+                IRRF = baseIRRF * 0.15 - 354.80;
+            } else if (baseIRRF <= 4664.68) {
+                IRRF = baseIRRF * 0.225 - 636.13;
+            } else {
+                IRRF = baseIRRF * 0.275 - 869.36;
+            }
+
+            const totalDiscounts = INSS + IRRF + discounts;
+            const grossSalary = netSalary + totalDiscounts;
+
+            document.getElementById("grossSalaryResult").innerText = grossSalary.toFixed(2);
+            document.getElementById("discountResult").innerText = discounts.toFixed(2);
+            document.getElementById("inssResult").innerText = INSS.toFixed(2);
+            document.getElementById("irrfResult").innerText = IRRF.toFixed(2);
+            document.getElementById("totalDiscountResult").innerText = totalDiscounts.toFixed(2);
+            document.getElementById("totalSalaryResult").innerText = netSalary.toFixed(2);
+
+            // Exibir a tabela
+            document.querySelector(".results-table").style.display = "table";
+        }
+
+        function clearFields() {
+            document.getElementById("netSalary").value = '';
+            document.getElementById("discounts").value = '';
+            document.getElementById("numDependents").value = '';
+            document.getElementById("grossSalaryResult").innerText = '';
+            document.getElementById("discountResult").innerText = '';
+            document.getElementById("inssResult").innerText = '';
+            document.getElementById("irrfResult").innerText = '';
+            document.getElementById("totalDiscountResult").innerText = '';
+            document.getElementById("totalSalaryResult").innerText = '';
+            document.querySelector(".results-table").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Salário Anual</title>
+    <style>
+        body, * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .salary-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .salary-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-symbol {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .input-value {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: none;
+            color: black;
+            cursor: pointer;
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 15px 0;
+        }
+
+        /* Estilos para a tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            display: none;  /* A tabela começará escondida */
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7f7f7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="salary-calculator">
+        <div class="calculator-title">CALCULADORA DE SALÁRIO ANUAL</div>
+
+        <div class="input-group">
+            <label for="monthlySalary">Salário Mensal <span class="info-symbol" title="Este é o valor total do seu salário mensal, sem descontos.">ℹ️</span></label>
+            <input type="number" id="monthlySalary" class="input-value" placeholder="Ex: 3000">
+        </div>
+
+        <div class="input-group">
+            <label for="healthPlan">Plano de Saúde (Mensal) <span class="info-symbol" title="Valor mensal do seu plano de saúde.">ℹ️</span></label>
+            <input type="number" id="healthPlan" class="input-value" placeholder="Ex: 250">
+        </div>
+
+        <div class="input-group">
+            <label for="dailyTransport">Vale Transporte (Diário) <span class="info-symbol" title="Valor diário do vale transporte.">ℹ️</span></label>
+            <input type="number" id="dailyTransport" class="input-value" placeholder="Ex: 15">
+        </div>
+
+        <div class="input-group">
+            <label for="dailyMeal">Vale Refeição (Diário) <span class="info-symbol" title="Valor diário do vale refeição.">ℹ️</span></label>
+            <input type="number" id="dailyMeal" class="input-value" placeholder="Ex: 20">
+        </div>
+
+        <div class="input-group">
+            <label><input type="checkbox" id="workOnSaturdays"> Trabalha aos sábados?</label>
+        </div>
+
+        <div class="btn-container">
+            <button onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button onclick="calculateAnnualSalary()" class="btn-calculate">Calcular</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Bruto Anual</td>
+                    <td id="annualGrossSalary"></td>
+                </tr>
+                <tr>
+                    <td>Total de Benefícios Anual</td>
+                    <td id="benefitsResult"></td>
+                </tr>
+                <tr>
+                    <td>Total de Descontos Anual</td>
+                    <td id="discountsResult"></td>
+                </tr>
+                <tr>
+                    <td>Total Líquido Anual</td>
+                    <td id="annualNetSalary"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function calculateAnnualSalary() {
+            const monthlySalary = parseFloat(document.getElementById("monthlySalary").value) || 0;
+            const healthPlan = parseFloat(document.getElementById("healthPlan").value) || 0;
+            const dailyTransport = parseFloat(document.getElementById("dailyTransport").value) || 0;
+            const dailyMeal = parseFloat(document.getElementById("dailyMeal").value) || 0;
+            const workOnSaturdays = document.getElementById("workOnSaturdays").checked;
+
+            const daysInMonth = workOnSaturdays ? 26 : 22; // 22 dias úteis ou 26 com sábados.
+
+            const annualGross = monthlySalary * 12;
+            const annualBenefits = (dailyTransport + dailyMeal) * daysInMonth * 12;
+            const annualDiscounts = healthPlan * 12;
+            const annualNet = annualGross + annualBenefits - annualDiscounts;
+
+            document.getElementById("annualGrossSalary").innerText = annualGross.toFixed(2);
+            document.getElementById("benefitsResult").innerText = annualBenefits.toFixed(2);
+            document.getElementById("discountsResult").innerText = annualDiscounts.toFixed(2);
+            document.getElementById("annualNetSalary").innerText = annualNet.toFixed(2);
+
+            document.getElementById("resultsTable").style.display = "table";
+        }
+
+        function clearFields() {
+            document.getElementById("monthlySalary").value = "";
+            document.getElementById("healthPlan").value = "";
+            document.getElementById("dailyTransport").value = "";
+            document.getElementById("dailyMeal").value = "";
+            document.getElementById("workOnSaturdays").checked = false;
+
+            document.getElementById("annualGrossSalary").innerText = "";
+            document.getElementById("benefitsResult").innerText = "";
+            document.getElementById("discountsResult").innerText = "";
+            document.getElementById("annualNetSalary").innerText = "";
+
+            document.getElementById("resultsTable").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

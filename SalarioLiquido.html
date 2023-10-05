@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Salário Líquido</title>
+    <style>
+        body, * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .salary-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .salary-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-symbol {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .input-value {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: none;
+            color: black;
+            cursor: pointer;
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 15px 0;
+        }
+
+        /* Estilos da tabela */
+        #resultsTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            display: none; /* Escondendo a tabela por padrão */
+        }
+
+        #resultsTable th, #resultsTable td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        #resultsTable th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="salary-calculator">
+        <div class="calculator-title">CALCULADORA DE SALÁRIO LÍQUIDO</div>
+        <div class="input-group">
+            <label for="grossSalary">Salário Bruto <span class="info-symbol" title="Este é o valor total do seu salário, sem descontos.">ℹ️</span></label>
+            <input type="number" id="grossSalary" class="input-value" placeholder="Ex: 3000">
+        </div>
+
+        <div class="input-group">
+            <label for="discounts">Descontos <span class="info-symbol" title="Inclua aqui quaisquer descontos adicionais, como plano de saúde ou contribuições sindicais.">ℹ️</span></label>
+            <input type="number" id="discounts" class="input-value" placeholder="Ex: 150">
+        </div>
+
+        <div class="input-group">
+            <label for="benefits">Benefícios <span class="info-symbol" title="Inclua aqui o valor total dos seus benefícios, como vale alimentação ou transporte.">ℹ️</span></label>
+            <input type="number" id="benefits" class="input-value" placeholder="Ex: 200">
+        </div>
+
+        <div class="btn-container">
+            <button onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button onclick="calculateNetSalary()" class="btn-calculate">Calcular</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Bruto Anual</td>
+                    <td id="annualGrossSalary"></td>
+                </tr>
+                <tr>
+                    <td>Total de Benefícios Anual</td>
+                    <td id="benefitsResult"></td>
+                </tr>
+                <tr>
+                    <td>Total de Descontos Anual</td>
+                    <td id="discountsResult"></td>
+                </tr>
+                <tr>
+                    <td>Total Líquido Anual</td>
+                    <td id="annualNetSalary"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function calculateNetSalary() {
+            const grossSalary = parseFloat(document.getElementById("grossSalary").value) || 0;
+            const discounts = parseFloat(document.getElementById("discounts").value) || 0;
+            const benefits = parseFloat(document.getElementById("benefits").value) || 0;
+
+            const annualGross = grossSalary * 12;
+            const annualDiscounts = discounts * 12;
+            const annualBenefits = benefits * 12;
+            const annualNet = (grossSalary + benefits - discounts) * 12;
+
+            document.getElementById("annualGrossSalary").innerText = "R$ " + annualGross.toFixed(2);
+            document.getElementById("benefitsResult").innerText = "R$ " + annualBenefits.toFixed(2);
+            document.getElementById("discountsResult").innerText = "R$ " + annualDiscounts.toFixed(2);
+            document.getElementById("annualNetSalary").innerText = "R$ " + annualNet.toFixed(2);
+
+            // Exibindo a tabela de resultados
+            document.getElementById("resultsTable").style.display = "table";
+        }
+
+        function clearFields() {
+            document.getElementById("grossSalary").value = "";
+            document.getElementById("discounts").value = "";
+            document.getElementById("benefits").value = "";
+
+            // Escondendo a tabela de resultados
+            document.getElementById("resultsTable").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

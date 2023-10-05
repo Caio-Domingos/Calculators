@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Empréstimo Consignado</title>
+    <style>
+        body,
+        * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .consignado-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .consignado-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-symbol {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .input-value,
+        select {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        #months {
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        #principal {
+            flex: 1;
+            background-color: #01E06926;
+            margin-right: 5px;
+        }
+
+        #rate {
+            flex: 1;
+            background-color: #01E06926;
+            margin-right: 5px;
+        }
+
+        select {
+            width: 48%;
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .currency-symbol {
+            margin-right: 10px;
+            align-self: center;
+            background-color: #01E06926;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: none;
+            color: black;
+            cursor: pointer;
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        /* Responsividade para telas pequenas */
+        @media (max-width: 768px) {
+            #rate {
+                width: 100%;
+                background-color: #01E06926;
+                margin-bottom: 10px;
+            }
+
+            select {
+                width: 100%;
+            }
+        }
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="consignado-calculator">
+        <div class="calculator-title">CALCULADORA DE EMPRÉSTIMO CONSIGNADO</div>
+        <div class="input-group">
+            <label for="principal">Valor principal <span class="info-symbol"
+                    title="Insira o montante total que deseja pegar emprestado.">ℹ</span></label>
+            <div class="input-row">
+                <span class="currency-symbol">R$</span>
+                <input type="number" id="principal" placeholder="5000" min="0" class="input-value" />
+            </div>
+        </div>
+        <div class="input-group">
+            <label>Taxa de juros (%) <span class="info-symbol"
+                    title="Insira a taxa de juros, seja ela mensal ou anual.">ℹ</span></label>
+            <div class="input-row">
+                <input type="number" id="rate" placeholder="2" min="0" class="input-value" />
+                <select id="rateType" class="input-value">
+                    <option value="monthly">Mensal</option>
+                    <option value="annual">Anual</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="months">Duração (meses) <span class="info-symbol"
+                    title="Insira a duração total do empréstimo em meses.">ℹ</span></label>
+            <input type="number" id="months" placeholder="12" min="0" class="input-value" />
+        </div>
+        <div class="input-group btn-container">
+            <button onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button onclick="calculateConsignado()" class="btn-calculate">Calcular</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function calculateConsignado() {
+            const principal = parseFloat(document.getElementById("principal").value);
+            let rate = parseFloat(document.getElementById("rate").value);
+            let months = parseFloat(document.getElementById("months").value);
+            const rateType = document.getElementById("rateType").value;
+
+            // Verificar se os campos estão vazios
+            if (isNaN(principal) || isNaN(rate) || isNaN(months)) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            // Verificar se os valores são negativos
+            if (principal < 0 || rate < 0 || months < 0) {
+                alert("Valores negativos não são aceitos.");
+                return;
+            }
+
+            if (rateType === "annual") {
+                rate /= 12;
+            }
+            const monthlyInterest = rate / 100;
+            const x = Math.pow(1 + monthlyInterest, months);
+            const monthlyPayment = (principal * x * monthlyInterest) / (x - 1);
+            document.getElementById("result").innerText = `O pagamento mensal é de R$${monthlyPayment.toFixed(2)}`;
+        }
+
+        function clearFields() {
+            document.getElementById("principal").value = "";
+            document.getElementById("rate").value = "";
+            document.getElementById("months").value = "";
+            document.getElementById("result").innerText = "";
+        }
+    </script>
+</body>
+
+</html>

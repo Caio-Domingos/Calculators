@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Desconto INSS</title>
+    <style>
+        body,
+        * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .inss-calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .inss-calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-value {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+        }
+
+        .btn-clear {
+            background-color: #E0E0E0;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            display: none;
+        }
+
+        th, td {
+            border: 1px solid;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: rgb(0, 0, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="inss-calculator">
+        <div class="calculator-title">CALCULADORA DE DESCONTO INSS</div>
+        <div class="input-group">
+            <label for="salary">Salário Bruto (R$)</label>
+            <input type="number" id="salary" placeholder="1000" min="0" class="input-value" />
+        </div>
+
+        <div class="btn-container">
+            <button onclick="clearFields()" class="btn btn-clear">Limpar</button>
+            <button onclick="calculateINSS()" class="btn btn-calculate">Calcular</button>
+        </div>
+
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Desconto INSS</td>
+                    <td id="inssDiscount">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Salário Líquido</td>
+                    <td id="netSalary">R$ 0,00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function calculateINSS() {
+            const salary = parseFloat(document.getElementById("salary").value);
+
+            if (isNaN(salary)) {
+                alert("Por favor, insira um valor válido para continuar!");
+                return;
+            }
+
+            let discount = 0;
+
+            if (salary <= 1100) {
+                discount = salary * 0.075;
+            } else if (salary <= 2203.48) {
+                discount = (1100 * 0.075) + ((salary - 1100) * 0.09);
+            } else if (salary <= 3305.22) {
+                discount = (1100 * 0.075) + (1103.48 * 0.09) + ((salary - 2203.48) * 0.12);
+            } else if (salary <= 6433.57) {
+                discount = (1100 * 0.075) + (1103.48 * 0.09) + (1101.74 * 0.12) + ((salary - 3305.22) * 0.14);
+            } else {
+                discount = (1100 * 0.075) + (1103.48 * 0.09) + (1101.74 * 0.12) + (3128.35 * 0.14);
+            }
+
+            const netSalary = salary - discount;
+
+            document.getElementById("inssDiscount").innerText = "R$ " + discount.toFixed(2);
+            document.getElementById("netSalary").innerText = "R$ " + netSalary.toFixed(2);
+            
+            document.getElementById("resultTable").style.display = "table";
+        }
+
+        function clearFields() {
+            document.getElementById("salary").value = "";
+            document.getElementById("inssDiscount").innerText = "R$ 0,00";
+            document.getElementById("netSalary").innerText = "R$ 0,00";
+            
+            document.getElementById("resultTable").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

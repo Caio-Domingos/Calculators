@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <title>Calculadora de Horas Extras</title>
+    <style>
+        body, * {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .calculator {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .calculator label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-value {
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #01E06926;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .btn-calculate {
+            background-color: #01E069;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-clear {
+            color: Black;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 15px 0;
+        }
+
+        #resultsTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            display: none;
+            background-color: #ffffff;
+        }
+
+        #resultsTable, #resultsTable th, #resultsTable td {
+            border: 1px solid;
+        }
+
+        #resultsTable th, #resultsTable td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #resultsTable th {
+            background-color: #f0f0f0;
+        }
+
+        /* Estilo para o ícone de informação */
+        .info-icon {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="calculator-title">CALCULADORA DE HORAS EXTRAS</div>
+
+        <div class="input-group">
+            <label for="salary">Salário Bruto <span class="info-icon" title="Insira o valor do salário bruto mensal.">ℹ</span></label>
+            <input type="number" id="salary" placeholder="Ex: 1500" min="0" class="input-value" />
+        </div>
+
+        <div class="input-group">
+            <label for="monthlyHours">Jornada mensal (Horas) <span class="info-icon" title="Insira a quantidade total de horas trabalhadas em um mês.">ℹ</span></label>
+            <input type="number" id="monthlyHours" placeholder="Ex: 220" min="0" class="input-value" />
+        </div>
+
+        <div class="input-group">
+            <label for="normalExtraHours">Horas extras normais <span class="info-icon" title="Insira a quantidade de horas extras trabalhadas em horário normal.">ℹ</span></label>
+            <input type="number" id="normalExtraHours" placeholder="Ex: 10" min="0" class="input-value" />
+        </div>
+
+        <div class="input-group">
+            <label for="nightExtraHours">Horas extras noturnas <span class="info-icon" title="Insira a quantidade de horas extras trabalhadas durante a noite.">ℹ</span></label>
+            <input type="number" id="nightExtraHours" placeholder="Ex: 5" min="0" class="input-value" />
+        </div>
+
+        <div class="input-group">
+            <label for="hundredPercentExtraHours">Horas extras 100% <span class="info-icon" title="Insira a quantidade de horas extras que são remuneradas a 100%.">ℹ</span></label>
+            <input type="number" id="hundredPercentExtraHours" placeholder="Ex: 3" min="0" class="input-value" />
+        </div>
+
+        <div class="btn-container">
+            <button onclick="clearData()" class="btn-clear">Limpar</button>
+            <button onclick="calculateExtraHours()" class="btn-calculate">Calcular</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Salário Bruto</td>
+                    <td id="grossSalary">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Total de horas extras normais</td>
+                    <td id="normalExtraValue">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Total de horas noturnas</td>
+                    <td id="nightExtraValue">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Total de horas extra 100%</td>
+                    <td id="hundredPercentExtraValue">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Valor Bruto horas extras</td>
+                    <td id="totalExtraValue">R$ 0,00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function calculateExtraHours() {
+            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const monthlyHours = (parseFloat(document.getElementById('monthlyHours').value) || 0) || 1; // Evitando divisão por zero
+            const normalExtraHours = parseFloat(document.getElementById('normalExtraHours').value) || 0;
+            const nightExtraHours = parseFloat(document.getElementById('nightExtraHours').value) || 0;
+            const hundredPercentExtraHours = parseFloat(document.getElementById('hundredPercentExtraHours').value) || 0;
+    
+            const hourlyWage = salary / monthlyHours;
+            const normalExtraValue = hourlyWage * 1.5 * normalExtraHours;
+            const nightExtraValue = hourlyWage * 1.7 * nightExtraHours;
+            const hundredPercentExtraValue = hourlyWage * 2 * hundredPercentExtraHours;
+            const totalExtraValue = normalExtraValue + nightExtraValue + hundredPercentExtraValue;
+    
+            document.getElementById('grossSalary').innerText = `R$ ${salary.toFixed(2)}`;
+            document.getElementById('normalExtraValue').innerText = `R$ ${normalExtraValue.toFixed(2)}`;
+            document.getElementById('nightExtraValue').innerText = `R$ ${nightExtraValue.toFixed(2)}`;
+            document.getElementById('hundredPercentExtraValue').innerText = `R$ ${hundredPercentExtraValue.toFixed(2)}`;
+            document.getElementById('totalExtraValue').innerText = `R$ ${totalExtraValue.toFixed(2)}`;
+    
+            document.getElementById('resultsTable').style.display = 'table';
+        }
+    
+        function clearData() {
+            document.getElementById('salary').value = '';
+            document.getElementById('monthlyHours').value = '';
+            document.getElementById('normalExtraHours').value = '';
+            document.getElementById('nightExtraHours').value = '';
+            document.getElementById('hundredPercentExtraHours').value = '';
+            document.getElementById('resultsTable').style.display = 'none';
+        }
+    </script>
+    
+</body>
+
+</html>
