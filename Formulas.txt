@@ -1,0 +1,61 @@
+Formula Desconto INSS
+----------------------------------------
+Salario abaixo ou igual a 1320 =  1320 * 0.075;
+Salario abaixo ou igual a 2571,29 = (1320 * 0.075) + ((2571,29 - 1320) * 0.09);
+Salario abaixo ou igual a 3856,94 = (1320 * 0.075) + (1251.29 * 0.09) + ((3856,94 - 2571.30) * 0.12);
+Salario abaixo ou igual a 7507,49 = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((7507.49 - 3856.95) * 0.14);
+Salario maior que 7507,49 = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + (3650.54 * 0.14);
+----------------------------------------
+
+Formula Emprestimo Consignado
+----------------------------------------
+M = C x (1 + i)ⁿ
+
+Sendo que:
+
+M é o valor total que será pago no final do período.
+
+C é o valor contratado.
+
+i é taxa de juros em numeral.
+
+n é o numero de parcelas
+
+Ex: M = 800 x (1 + 0,018)⁴
+
+M = R$ 836,32/4 
+
+M = 209,08
+----------------------------------------
+
+Formula Hora Extra
+----------------------------------------
+Normal = ValorHora * 1.5 * NumeroDeHorasNormais
+Noturna = ((ValorHora * 1.2) * 1.5) * NumeroDeHorasNoturnas
+Horas100% = ValorHora * 2 * NumeroDeHoras100%
+----------------------------------------
+
+Formula Juros Compostos
+----------------------------------------
+M = C.(1-i)^n
+----------------------------------------
+
+Formula Juros Simples
+----------------------------------------
+Total = P × I × N
+
+P = valor principal;
+I = taxa de juros;
+N = número de períodos entre datas.
+----------------------------------------
+
+Formula Margem Consignavel
+----------------------------------------
+Margem Total = ValorBeneficio * 0.35
+Margem disponivel = ValorBeneficio * 0.35 - ParcelaEmprestimo
+----------------------------------------
+
+Formula Salario Bruto
+----------------------------------------
+?
+----------------------------------------

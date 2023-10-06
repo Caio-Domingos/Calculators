@@ -134,27 +134,32 @@
         <div class="calculator-title">CALCULADORA DE SEGURO DESEMPREGO</div>
 
         <div class="input-group">
-            <label for="lastMonthSalary">Salário último mês<span class="info-icon" title="Informe o salário que você recebeu no mês passado.">ℹ</span></label>
+            <label for="lastMonthSalary">Salário último mês<span class="info-icon"
+                    title="Informe o salário que você recebeu no mês passado.">ℹ</span></label>
             <input type="number" id="lastMonthSalary" placeholder="Ex: 1500" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="secondLastMonthSalary">Salário penúltimo mês<span class="info-icon" title="Informe o salário que você recebeu no penúltimo mês.">ℹ</span></label>
+            <label for="secondLastMonthSalary">Salário penúltimo mês<span class="info-icon"
+                    title="Informe o salário que você recebeu no penúltimo mês.">ℹ</span></label>
             <input type="number" id="secondLastMonthSalary" placeholder="Ex: 1500" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="thirdLastMonthSalary">Salário antepenúltimo mês<span class="info-icon" title="Informe o salário que você recebeu no antepenúltimo mês.">ℹ</span></label>
+            <label for="thirdLastMonthSalary">Salário antepenúltimo mês<span class="info-icon"
+                    title="Informe o salário que você recebeu no antepenúltimo mês.">ℹ</span></label>
             <input type="number" id="thirdLastMonthSalary" placeholder="Ex: 1500" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="monthsWorked">Quantidade de meses trabalhados<span class="info-icon" title="Informe quantos meses você trabalhou consecutivamente antes de solicitar o benefício.">ℹ</span></label>
+            <label for="monthsWorked">Quantidade de meses trabalhados<span class="info-icon"
+                    title="Informe quantos meses você trabalhou consecutivamente antes de solicitar o benefício.">ℹ</span></label>
             <input type="number" id="monthsWorked" placeholder="Ex: 15" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="timesRequested">Quantas vezes solicitou o benefício<span class="info-icon" title="Informe quantas vezes você já solicitou o benefício do seguro desemprego anteriormente.">ℹ</span></label>
+            <label for="timesRequested">Quantas vezes solicitou o benefício<span class="info-icon"
+                    title="Informe quantas vezes você já solicitou o benefício do seguro desemprego anteriormente.">ℹ</span></label>
             <select id="timesRequested" class="input-value">
                 <option value="0">Nunca</option>
                 <option value="1">1 vez</option>
@@ -174,7 +179,7 @@
             <thead>
                 <tr>
                     <th>Descrição</th>
-                    <th>Valor/Quantidade</th>
+                    <th>Valor / Quantidade</th>
                 </tr>
             </thead>
             <tbody>
@@ -206,8 +211,18 @@
             const thirdLastMonthSalary = parseFloat(document.getElementById('thirdLastMonthSalary').value) || 0;
             const monthsWorked = parseFloat(document.getElementById('monthsWorked').value) || 0;
             const timesRequested = document.getElementById('timesRequested').value;
-            
+
             const averageSalary = (lastMonthSalary + secondLastMonthSalary + thirdLastMonthSalary) / 3;
+
+            let benefitAmount;
+
+            if (averageSalary <= 1968.36) {
+                benefitAmount = averageSalary * 0.8;
+            } else if (averageSalary <= 3280.93) {
+                benefitAmount = (averageSalary - 1968.36) * 0.5 + 1574.69;
+            } else {
+                benefitAmount = 2230.97;  // teto
+            }
 
             let parcelCount = 0;
             if (monthsWorked === 0) {
@@ -220,10 +235,12 @@
                 parcelCount = 5;
             }
 
-            document.getElementById('benefitValue').innerText = 'R$ ' + averageSalary.toFixed(2);
+            document.getElementById('benefitValue').innerText = 'R$ ' + benefitAmount.toFixed(2);
             document.getElementById('parcelCount').innerText = parcelCount;
             document.getElementById('resultsTable').style.display = 'table';
         }
+
     </script>
 </body>
+
 </html>

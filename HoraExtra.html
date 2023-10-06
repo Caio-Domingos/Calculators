@@ -194,7 +194,7 @@
     
             const hourlyWage = salary / monthlyHours;
             const normalExtraValue = hourlyWage * 1.5 * normalExtraHours;
-            const nightExtraValue = hourlyWage * 1.7 * nightExtraHours;
+            const nightExtraValue = ((hourlyWage * 1.2) * 1.5) * nightExtraHours;
             const hundredPercentExtraValue = hourlyWage * 2 * hundredPercentExtraHours;
             const totalExtraValue = normalExtraValue + nightExtraValue + hundredPercentExtraValue;
     

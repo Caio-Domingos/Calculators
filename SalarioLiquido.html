@@ -92,12 +92,11 @@
             margin: 15px 0;
         }
 
-        /* Estilos da tabela */
         #resultsTable {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            display: none; /* Escondendo a tabela por padrão */
+            display: none;
         }
 
         #resultsTable th, #resultsTable td {
@@ -126,8 +125,8 @@
         </div>
 
         <div class="input-group">
-            <label for="benefits">Benefícios <span class="info-symbol" title="Inclua aqui o valor total dos seus benefícios, como vale alimentação ou transporte.">ℹ️</span></label>
-            <input type="number" id="benefits" class="input-value" placeholder="Ex: 200">
+            <label for="dependents">Número de Dependentes</label>
+            <input type="number" id="dependents" class="input-value" placeholder="Ex: 2">
         </div>
 
         <div class="btn-container">
@@ -147,51 +146,84 @@
             <tbody>
                 <tr>
                     <td>Total Bruto Anual</td>
-                    <td id="annualGrossSalary"></td>
+                    <td id="annualGrossSalary">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Total de Benefícios Anual</td>
-                    <td id="benefitsResult"></td>
+                    <td>Desconto INSS Anual</td>
+                    <td id="inssDiscount">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Desconto IRRF Anual</td>
+                    <td id="irrfDiscount">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td>Total de Descontos Anual</td>
-                    <td id="discountsResult"></td>
+                    <td id="discountsResult">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td>Total Líquido Anual</td>
-                    <td id="annualNetSalary"></td>
+                    <td id="annualNetSalary">R$ 0,00</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <script>
+        function calculateINSS(base) {
+            if (base <= 1100) {
+                return base * 0.075;
+            } else if (base <= 2203.48) {
+                return base * 0.09 - 16.5;
+            } else if (base <= 3305.22) {
+                return base * 0.12 - 82.6;
+            } else if (base <= 6433.57) {
+                return base * 0.14 - 148.71;
+            } else {
+                return 751.99; 
+            }
+        }
+
+        function calculateIRRF(base, dependents) {
+            base -= calculateINSS(base);
+            base -= dependents * 189.59;
+            if (base <= 1903.98) {
+                return 0;
+            } else if (base <= 2826.65) {
+                return base * 0.075 - 142.8;
+            } else if (base <= 3751.05) {
+                return base * 0.15 - 354.8;
+            } else if (base <= 4664.68) {
+                return base * 0.225 - 636.13;
+            } else {
+                return base * 0.275 - 869.36; 
+            }
+        }
+
         function calculateNetSalary() {
-            const grossSalary = parseFloat(document.getElementById("grossSalary").value) || 0;
-            const discounts = parseFloat(document.getElementById("discounts").value) || 0;
-            const benefits = parseFloat(document.getElementById("benefits").value) || 0;
+            const grossSalary = parseFloat(document.getElementById('grossSalary').value);
+            const discounts = parseFloat(document.getElementById('discounts').value);
+            const dependents = parseInt(document.getElementById('dependents').value);
 
-            const annualGross = grossSalary * 12;
-            const annualDiscounts = discounts * 12;
-            const annualBenefits = benefits * 12;
-            const annualNet = (grossSalary + benefits - discounts) * 12;
+            const inssDiscount = calculateINSS(grossSalary);
+            const irrfDiscount = calculateIRRF(grossSalary, dependents);
 
-            document.getElementById("annualGrossSalary").innerText = "R$ " + annualGross.toFixed(2);
-            document.getElementById("benefitsResult").innerText = "R$ " + annualBenefits.toFixed(2);
-            document.getElementById("discountsResult").innerText = "R$ " + annualDiscounts.toFixed(2);
-            document.getElementById("annualNetSalary").innerText = "R$ " + annualNet.toFixed(2);
+            const totalDiscounts = inssDiscount + irrfDiscount + discounts;
+            const netSalary = grossSalary - totalDiscounts;
 
-            // Exibindo a tabela de resultados
-            document.getElementById("resultsTable").style.display = "table";
+            document.getElementById('annualGrossSalary').innerText = "R$ " + (grossSalary * 12).toFixed(2);
+            document.getElementById('inssDiscount').innerText = "R$ " + (inssDiscount * 12).toFixed(2);
+            document.getElementById('irrfDiscount').innerText = "R$ " + (irrfDiscount * 12).toFixed(2);
+            document.getElementById('discountsResult').innerText = "R$ " + (totalDiscounts * 12).toFixed(2);
+            document.getElementById('annualNetSalary').innerText = "R$ " + (netSalary * 12).toFixed(2);
+
+            document.getElementById('resultsTable').style.display = "table";
         }
 
         function clearFields() {
-            document.getElementById("grossSalary").value = "";
-            document.getElementById("discounts").value = "";
-            document.getElementById("benefits").value = "";
-
-            // Escondendo a tabela de resultados
-            document.getElementById("resultsTable").style.display = "none";
+            document.getElementById('grossSalary').value = '';
+            document.getElementById('discounts').value = '';
+            document.getElementById('dependents').value = '';
+            document.getElementById('resultsTable').style.display = "none";
         }
     </script>
 </body>

@@ -86,7 +86,8 @@
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid;
             padding: 8px;
             text-align: left;
@@ -104,9 +105,14 @@
         <div class="calculator-title">CALCULADORA DE MARGEM CONSIGNÁVEL INSS</div>
         <div class="input-group">
             <label for="benefit">Valor do benefício (R$)</label>
-            <input type="number" id="benefit" placeholder="1000" min="0" class="input-value" />
+            <input type="number" oninput="checkValue()" id="benefit" placeholder="1000" min="0" class="input-value" />
+            <div id="error-message" style="color: red;"></div>
         </div>
-        
+        <div class="input-group">
+            <label for="benefit">Parcela de emprestimo do beneficio (R$)</label>
+            <input type="number" id="benefitEmp" placeholder="1000" min="0" class="input-value" />
+        </div>
+
         <div class="btn-container">
             <button onclick="clearFields()" class="btn btn-clear">Limpar</button>
             <button onclick="calculateMargin()" class="btn btn-calculate">Calcular</button>
@@ -126,12 +132,8 @@
                         <td id="totalMargin">R$ 0,00</td>
                     </tr>
                     <tr>
-                        <td>Margem para Empréstimos</td>
+                        <td>Margem disponivel para Empréstimos</td>
                         <td id="loanMargin">R$ 0,00</td>
-                    </tr>
-                    <tr>
-                        <td>Margem para Cartão</td>
-                        <td id="cardMargin">R$ 0,00</td>
                     </tr>
                 </tbody>
             </table>
@@ -139,8 +141,21 @@
     </div>
 
     <script>
+
+        function checkValue() {
+            let benefitValue = document.getElementById("benefit").value;
+
+            if (benefitValue > 10000) {
+                document.getElementById("benefit").value = 10000;
+                document.getElementById("error-message").innerText = "Valor excedido!";
+            } else {
+                document.getElementById("error-message").innerText = "";
+            }
+        }
+
         function calculateMargin() {
             const benefitValue = parseFloat(document.getElementById("benefit").value);
+            const benefitEmp = parseFloat(document.getElementById("benefitEmp").value);
 
             if (isNaN(benefitValue)) {
                 alert("Por favor, insira um valor válido para continuar!");
@@ -148,12 +163,11 @@
             }
 
             const totalMargin = benefitValue * 0.35;
-            const loanMargin = benefitValue * 0.30;
-            const cardMargin = benefitValue * 0.05;
+            const loanMargin = (benefitValue * 0.35) - (benefitEmp ? benefitEmp : 0);
+            const loan = Math.max(loanMargin, 0.00);
 
             document.getElementById("totalMargin").innerText = "R$ " + totalMargin.toFixed(2);
-            document.getElementById("loanMargin").innerText = "R$ " + loanMargin.toFixed(2);
-            document.getElementById("cardMargin").innerText = "R$ " + cardMargin.toFixed(2);
+            document.getElementById("loanMargin").innerText = "R$ " + loan.toFixed(2);
 
             document.getElementById("tableContainer").style.display = "block";
         }
@@ -162,9 +176,9 @@
             document.getElementById("benefit").value = "";
             document.getElementById("totalMargin").innerText = "R$ 0,00";
             document.getElementById("loanMargin").innerText = "R$ 0,00";
-            document.getElementById("cardMargin").innerText = "R$ 0,00";
-            
+
             document.getElementById("tableContainer").style.display = "none";
+            document.getElementById("error-message").innerText = "";
         }
     </script>
 </body>

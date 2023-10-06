@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Salário Anual</title>
     <style>
-        body, * {
+        body,
+        * {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
@@ -29,7 +29,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 90%;
-            max-width: 500px;
+            max-width: 800px;
         }
 
         .calculator-title {
@@ -92,15 +92,15 @@
             margin: 15px 0;
         }
 
-        /* Estilos para a tabela */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            display: none;  /* A tabela começará escondida */
+            display: none;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
@@ -109,45 +109,47 @@
         th {
             background-color: #f7f7f7;
         }
+
+        .table-title {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <div class="salary-calculator">
         <div class="calculator-title">CALCULADORA DE SALÁRIO ANUAL</div>
-
         <div class="input-group">
-            <label for="monthlySalary">Salário Mensal <span class="info-symbol" title="Este é o valor total do seu salário mensal, sem descontos.">ℹ️</span></label>
+            <label for="monthlySalary">Salário Mensal</label>
             <input type="number" id="monthlySalary" class="input-value" placeholder="Ex: 3000">
         </div>
-
         <div class="input-group">
-            <label for="healthPlan">Plano de Saúde (Mensal) <span class="info-symbol" title="Valor mensal do seu plano de saúde.">ℹ️</span></label>
+            <label for="healthPlan">Plano de Saúde (Mensal)</label>
             <input type="number" id="healthPlan" class="input-value" placeholder="Ex: 250">
         </div>
-
         <div class="input-group">
-            <label for="dailyTransport">Vale Transporte (Diário) <span class="info-symbol" title="Valor diário do vale transporte.">ℹ️</span></label>
+            <label for="dailyTransport">Vale Transporte (Diário)</label>
             <input type="number" id="dailyTransport" class="input-value" placeholder="Ex: 15">
         </div>
-
         <div class="input-group">
-            <label for="dailyMeal">Vale Refeição (Diário) <span class="info-symbol" title="Valor diário do vale refeição.">ℹ️</span></label>
+            <label for="dailyMeal">Vale Refeição (Diário)</label>
             <input type="number" id="dailyMeal" class="input-value" placeholder="Ex: 20">
         </div>
-
         <div class="input-group">
             <label><input type="checkbox" id="workOnSaturdays"> Trabalha aos sábados?</label>
         </div>
-
         <div class="btn-container">
             <button onclick="clearFields()" class="btn-clear">Limpar</button>
             <button onclick="calculateAnnualSalary()" class="btn-calculate">Calcular</button>
         </div>
-
         <div class="divider"></div>
 
-        <table id="resultsTable">
+        <!-- Tabela: Total Bruto -->
+        <div class="table-title">Total Bruto</div>
+        <table>
             <thead>
                 <tr>
                     <th>Descrição</th>
@@ -156,20 +158,98 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Total Bruto Anual</td>
-                    <td id="annualGrossSalary"></td>
+                    <td>Salário Anual</td>
+                    <td id="annualSalary"></td>
                 </tr>
                 <tr>
-                    <td>Total de Benefícios Anual</td>
-                    <td id="benefitsResult"></td>
+                    <td>Décimo Terceiro</td>
+                    <td id="thirteenthSalary"></td>
                 </tr>
                 <tr>
-                    <td>Total de Descontos Anual</td>
-                    <td id="discountsResult"></td>
+                    <td>Adicional de Férias</td>
+                    <td id="vacationBonus"></td>
                 </tr>
                 <tr>
-                    <td>Total Líquido Anual</td>
-                    <td id="annualNetSalary"></td>
+                    <td>Total Anual Bruto</td>
+                    <td id="totalGrossAnnual"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabela: Total de Benefícios -->
+        <div class="table-title">Total de Benefícios</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Plano de Saúde</td>
+                    <td id="annualHealthPlan"></td>
+                </tr>
+                <tr>
+                    <td>Vale Transporte</td>
+                    <td id="annualTransport"></td>
+                </tr>
+                <tr>
+                    <td>Vale Refeição</td>
+                    <td id="annualMeal"></td>
+                </tr>
+                <tr>
+                    <td>Total de Benefícios</td>
+                    <td id="totalBenefits"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="table-title">Total de Descontos</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>INSS</td>
+                    <td id="inssResult"></td>
+                </tr>
+                <tr>
+                    <td>IRPF</td>
+                    <td id="irpfResult"></td>
+                </tr>
+                <tr>
+                    <td>Total Anual Bruto</td>
+                    <td id="totalDiscountsResult"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabela: Total Líquido -->
+        <div class="table-title">Total Líquido</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Bruto</td>
+                    <td id="grossTotal"></td>
+                </tr>
+                <tr>
+                    <td>Total de Benefícios</td>
+                    <td id="benefitsTotal"></td>
+                </tr>
+                <tr>
+                    <td>Total Anual Líquido</td>
+                    <td id="netTotal"></td>
                 </tr>
             </tbody>
         </table>
@@ -182,35 +262,78 @@
             const dailyTransport = parseFloat(document.getElementById("dailyTransport").value) || 0;
             const dailyMeal = parseFloat(document.getElementById("dailyMeal").value) || 0;
             const workOnSaturdays = document.getElementById("workOnSaturdays").checked;
+            const inss = monthlySalary * 0.08;
+            const irpf = (monthlySalary - inss) * 0.075;
+            const totalDiscounts = inss + irpf;
 
-            const daysInMonth = workOnSaturdays ? 26 : 22; // 22 dias úteis ou 26 com sábados.
+            let annualSalary = monthlySalary * 12;
+            let thirteenthSalary = monthlySalary;
+            let vacationBonus = monthlySalary * 0.3;
+            let totalGrossAnnual = annualSalary + thirteenthSalary + vacationBonus;
 
-            const annualGross = monthlySalary * 12;
-            const annualBenefits = (dailyTransport + dailyMeal) * daysInMonth * 12;
-            const annualDiscounts = healthPlan * 12;
-            const annualNet = annualGross + annualBenefits - annualDiscounts;
+            let workingDaysPerMonth = workOnSaturdays ? 26 : 22;
 
-            document.getElementById("annualGrossSalary").innerText = annualGross.toFixed(2);
-            document.getElementById("benefitsResult").innerText = annualBenefits.toFixed(2);
-            document.getElementById("discountsResult").innerText = annualDiscounts.toFixed(2);
-            document.getElementById("annualNetSalary").innerText = annualNet.toFixed(2);
+            let annualHealthPlan = healthPlan * 12;
+            let annualTransport = dailyTransport * workingDaysPerMonth * 12;
+            let annualMeal = dailyMeal * workingDaysPerMonth * 12;
+            let totalBenefits = annualHealthPlan + annualTransport + annualMeal;
 
-            document.getElementById("resultsTable").style.display = "table";
+            let netTotal = totalGrossAnnual + totalBenefits;
+
+            // Display in tables
+            displayTableData('annualSalary', annualSalary.toFixed(2));
+            displayTableData('thirteenthSalary', thirteenthSalary.toFixed(2));
+            displayTableData('vacationBonus', vacationBonus.toFixed(2));
+            displayTableData('totalGrossAnnual', totalGrossAnnual.toFixed(2));
+
+            document.getElementById("inssResult").innerText = (inss * 12).toFixed(2);
+            document.getElementById("irpfResult").innerText = (irpf * 12).toFixed(2);
+            document.getElementById("totalDiscountsResult").innerText = totalDiscounts.toFixed(2);
+
+            displayTableData('annualHealthPlan', annualHealthPlan.toFixed(2));
+            displayTableData('annualTransport', annualTransport.toFixed(2));
+            displayTableData('annualMeal', annualMeal.toFixed(2));
+            displayTableData('totalBenefits', totalBenefits.toFixed(2));
+
+            displayTableData('grossTotal', totalGrossAnnual.toFixed(2));
+            displayTableData('benefitsTotal', totalBenefits.toFixed(2));
+            displayTableData('netTotal', netTotal.toFixed(2));
+
+            showTables();
+        }
+
+        function displayTableData(id, value) {
+            document.getElementById(id).innerText = value;
+        }
+
+        function showTables() {
+            let tables = document.querySelectorAll('table');
+            let titles = document.querySelectorAll('.table-title');
+            tables.forEach(table => {
+                table.style.display = 'table';
+            });
+            titles.forEach(title => {
+                title.style.display = 'block';
+            });
         }
 
         function clearFields() {
-            document.getElementById("monthlySalary").value = "";
-            document.getElementById("healthPlan").value = "";
-            document.getElementById("dailyTransport").value = "";
-            document.getElementById("dailyMeal").value = "";
-            document.getElementById("workOnSaturdays").checked = false;
-
-            document.getElementById("annualGrossSalary").innerText = "";
-            document.getElementById("benefitsResult").innerText = "";
-            document.getElementById("discountsResult").innerText = "";
-            document.getElementById("annualNetSalary").innerText = "";
-
-            document.getElementById("resultsTable").style.display = "none";
+            let inputs = document.querySelectorAll('.input-value');
+            inputs.forEach(input => {
+                input.value = '';
+            });
+            let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            let tables = document.querySelectorAll('table');
+            let titles = document.querySelectorAll('.table-title');
+            tables.forEach(table => {
+                table.style.display = 'none';
+            });
+            titles.forEach(title => {
+                title.style.display = 'none';
+            });
         }
     </script>
 </body>
