@@ -55,6 +55,21 @@ Margem Total = ValorBeneficio * 0.35
 Margem disponivel = ValorBeneficio * 0.35 - ParcelaEmprestimo
 ----------------------------------------
 
+Formula Salario Anual
+----------------------------------------
+Varias juntas
+----------------------------------------
+
+Formula salario bruto
+----------------------------------------
+INSS, IRRF, Dependentes (Ajustar os valores de cada de acordo com o cliente)
+----------------------------------------
+
+Formula salario liquido
+----------------------------------------
+INSS, IRRF, dependentes e discontos
+----------------------------------------
+
 Formula Salario Bruto
 ----------------------------------------
 ?
