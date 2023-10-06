@@ -145,24 +145,24 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Total Bruto Anual</td>
-                    <td id="annualGrossSalary">R$ 0,00</td>
+                    <td>Salário Bruto</td>
+                    <td id="displayGrossSalary">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Desconto INSS Anual</td>
+                    <td>Descontos</td>
+                    <td id="displayDiscounts">R$ 0,00</td>
+                </tr>
+                <tr>
+                    <td>Desconto INSS</td>
                     <td id="inssDiscount">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Desconto IRRF Anual</td>
+                    <td>Desconto IRRF</td>
                     <td id="irrfDiscount">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Total de Descontos Anual</td>
-                    <td id="discountsResult">R$ 0,00</td>
-                </tr>
-                <tr>
-                    <td>Total Líquido Anual</td>
-                    <td id="annualNetSalary">R$ 0,00</td>
+                    <td>Salário Líquido</td>
+                    <td id="netSalary">R$ 0,00</td>
                 </tr>
             </tbody>
         </table>
@@ -170,60 +170,59 @@
 
     <script>
         function calculateINSS(base) {
-            if (base <= 1100) {
+            if (base <= 1320) {
                 return base * 0.075;
-            } else if (base <= 2203.48) {
-                return base * 0.09 - 16.5;
-            } else if (base <= 3305.22) {
-                return base * 0.12 - 82.6;
-            } else if (base <= 6433.57) {
-                return base * 0.14 - 148.71;
+            } else if (base <= 2571.29) {
+                return (1320 * 0.075) + ((base - 1320) * 0.09);
+            } else if (base <= 3856.94) {
+                return (1320 * 0.075) + (1251.29 * 0.09) + ((base - 2571.30) * 0.12);
+            } else if (base <= 7507.49) {
+                return (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((base - 3856.95) * 0.14);
             } else {
-                return 751.99; 
+                return (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + (3650.54 * 0.14);
             }
         }
 
         function calculateIRRF(base, dependents) {
             base -= calculateINSS(base);
             base -= dependents * 189.59;
-            if (base <= 1903.98) {
+            if (base <= 2112) {
                 return 0;
             } else if (base <= 2826.65) {
-                return base * 0.075 - 142.8;
+                return base * 0.075 - 158.40;
             } else if (base <= 3751.05) {
-                return base * 0.15 - 354.8;
+                return base * 0.15 - 370.40;
             } else if (base <= 4664.68) {
-                return base * 0.225 - 636.13;
+                return base * 0.225 - 651.73;
             } else {
-                return base * 0.275 - 869.36; 
+                return base * 0.275 - 884.96; 
             }
         }
 
         function calculateNetSalary() {
-            const grossSalary = parseFloat(document.getElementById('grossSalary').value);
-            const discounts = parseFloat(document.getElementById('discounts').value);
-            const dependents = parseInt(document.getElementById('dependents').value);
+            const grossSalary = parseFloat(document.getElementById('grossSalary').value || 0);
+            const discounts = parseFloat(document.getElementById('discounts').value || 0);
+            const dependents = parseFloat(document.getElementById('dependents').value || 0);
 
-            const inssDiscount = calculateINSS(grossSalary);
-            const irrfDiscount = calculateIRRF(grossSalary, dependents);
+            const inssValue = calculateINSS(grossSalary);
+            const irrfValue = calculateIRRF(grossSalary, dependents);
 
-            const totalDiscounts = inssDiscount + irrfDiscount + discounts;
-            const netSalary = grossSalary - totalDiscounts;
+            const netValue = grossSalary - discounts - inssValue - irrfValue;
 
-            document.getElementById('annualGrossSalary').innerText = "R$ " + (grossSalary * 12).toFixed(2);
-            document.getElementById('inssDiscount').innerText = "R$ " + (inssDiscount * 12).toFixed(2);
-            document.getElementById('irrfDiscount').innerText = "R$ " + (irrfDiscount * 12).toFixed(2);
-            document.getElementById('discountsResult').innerText = "R$ " + (totalDiscounts * 12).toFixed(2);
-            document.getElementById('annualNetSalary').innerText = "R$ " + (netSalary * 12).toFixed(2);
+            document.getElementById('displayGrossSalary').textContent = `R$ ${grossSalary.toFixed(2)}`;
+            document.getElementById('displayDiscounts').textContent = `R$ ${discounts.toFixed(2)}`;
+            document.getElementById('inssDiscount').textContent = `R$ ${inssValue.toFixed(2)}`;
+            document.getElementById('irrfDiscount').textContent = `R$ ${irrfValue.toFixed(2)}`;
+            document.getElementById('netSalary').textContent = `R$ ${netValue.toFixed(2)}`;
 
-            document.getElementById('resultsTable').style.display = "table";
+            document.getElementById('resultsTable').style.display = 'table';
         }
 
         function clearFields() {
             document.getElementById('grossSalary').value = '';
             document.getElementById('discounts').value = '';
             document.getElementById('dependents').value = '';
-            document.getElementById('resultsTable').style.display = "none";
+            document.getElementById('resultsTable').style.display = 'none';
         }
     </script>
 </body>

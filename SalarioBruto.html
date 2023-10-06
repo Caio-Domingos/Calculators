@@ -172,32 +172,33 @@
             let INSS = 0;
 
             // Cálculo do INSS
-            if (netSalary <= 1045) {
+
+            if (netSalary <= 1320) {
                 INSS = netSalary * 0.075;
-            } else if (netSalary <= 2089.60) {
-                INSS = netSalary * 0.09;
-            } else if (netSalary <= 3305.22) {
-                INSS = netSalary * 0.12;
-            } else if (netSalary <= 6433.57) {
-                INSS = netSalary * 0.14;
+            } else if (netSalary <= 2571.29) {
+                INSS = (1320 * 0.075) + ((netSalary - 1320) * 0.09);
+            } else if (netSalary <= 3856.94) {
+                INSS = (1320 * 0.075) + (1251.29 * 0.09) + ((netSalary - 2571.30) * 0.12);
+            } else if (netSalary <= 7507.49) {
+                INSS = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((netSalary - 3856.95) * 0.14);
             } else {
-                INSS = 6433.57 * 0.14;
+                INSS = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + (3650.54 * 0.14);
             }
 
             // Cálculo do IRRF
             const baseIRRF = netSalary - INSS - (numDependents * 189.59);
             let IRRF = 0;
 
-            if (baseIRRF <= 1903.98) {
+            if (baseIRRF <= 2112) {
                 IRRF = 0;
             } else if (baseIRRF <= 2826.65) {
-                IRRF = baseIRRF * 0.075 - 142.80;
+                IRRF = baseIRRF * 0.075 - 158.40;
             } else if (baseIRRF <= 3751.05) {
-                IRRF = baseIRRF * 0.15 - 354.80;
+                IRRF = baseIRRF * 0.15 - 370.40;
             } else if (baseIRRF <= 4664.68) {
-                IRRF = baseIRRF * 0.225 - 636.13;
+                IRRF = baseIRRF * 0.225 - 651.73;
             } else {
-                IRRF = baseIRRF * 0.275 - 869.36;
+                IRRF = baseIRRF * 0.275 - 884.96;
             }
 
             const totalDiscounts = INSS + IRRF + discounts;
