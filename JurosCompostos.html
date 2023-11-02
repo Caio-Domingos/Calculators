@@ -59,22 +59,36 @@
             cursor: pointer;
         }
 
+        .input-value::-webkit-inner-spin-button,
+        .input-value::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input-value:focus {
+            outline: none;
+        }
+
         .input-value, select {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
         }
 
-        #months, #principal, #monthlyValue {
+        #months {
+            width: 51%;
+            background-color: #01E06926;
+        }
+
+        #principal, #monthlyValue {
             width: 100%;
             background-color: #01E06926;
         }
 
         #rate {
-            flex: 1;
+            width: 51%;
             background-color: #01E06926;
-            margin-right: 5px;
         }
 
         select {
@@ -86,7 +100,7 @@
         }
 
         .currency-symbol {
-            margin-right: 10px;
+            margin-left: 5px;
             align-self: center;
             background-color: #01E06926;
             padding: 8px;
@@ -143,7 +157,7 @@
         }
 
         #resultsTable th {
-            background-color: #f0f0f0;
+            background-color: #D9FAE9;
         }
 
         #resultsTable td {
@@ -159,23 +173,23 @@
         <div class="input-group">
             <label for="principal">Valor principal <span class="info-symbol" title="Insira o valor inicial.">ℹ</span></label>
             <div class="input-row">
+                <input type="number" id="principal" placeholder="0,0" min="0" class="input-value" />
                 <span class="currency-symbol">R$</span>
-                <input type="number" id="principal" placeholder="1000" min="0" class="input-value" />
             </div>
         </div>
 
         <div class="input-group">
             <label for="monthlyValue">Valor mensal <span class="info-symbol" title="Insira o valor que será depositado mensalmente.">ℹ</span></label>
             <div class="input-row">
+                <input type="number" id="monthlyValue" placeholder="0,00" min="0" class="input-value" />
                 <span class="currency-symbol">R$</span>
-                <input type="number" id="monthlyValue" placeholder="100" min="0" class="input-value" />
             </div>
         </div>
 
         <div class="input-group">
             <label>Taxa de juros (%) <span class="info-symbol" title="Insira a taxa de juros, seja ela mensal ou anual.">ℹ</span></label>
             <div class="input-row">
-                <input type="number" id="rate" placeholder="2" min="0" class="input-value" />
+                <input type="number" id="rate" placeholder="0" min="0" class="input-value" />
                 <select id="ratePeriod" class="input-value">
                     <option value="monthly">Mensal</option>
                     <option value="yearly">Anual</option>
@@ -186,7 +200,7 @@
         <div class="input-group">
             <label>Duração <span class="info-symbol" title="Insira a duração do investimento.">ℹ</span></label>
             <div class="input-row">
-                <input type="number" id="months" placeholder="12" min="0" class="input-value" />
+                <input type="number" id="months" placeholder="0" min="0" class="input-value" />
                 <select id="monthsPeriod" class="input-value">
                     <option value="monthly">Meses</option>
                     <option value="yearly">Anos</option>
@@ -215,8 +229,8 @@
                     <td id="totalInvested"></td>
                 </tr>
                 <tr>
-                    <td>Rendimento total</td>
-                    <td id="totalInterest"></td>
+                    <td style="background-color: #F2F2F2FD;">Rendimento total</td>
+                    <td style="background-color: #F2F2F2FD;" id="totalInterest"></td>
                 </tr>
                 <tr>
                     <td>Valor total ao final</td>

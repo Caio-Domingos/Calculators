@@ -55,6 +55,7 @@
             font-size: 16px;
             border: 1px solid #ccc;
             background-color: #01E06926;
+            width: 100%;
         }
 
         select {
@@ -115,7 +116,7 @@
         }
 
         #resultsTable th {
-            background-color: #f0f0f0;
+            background-color: #D9FAE9;
         }
 
         #resultsTable td {
@@ -125,6 +126,15 @@
         .info-icon {
             margin-left: 5px;
             cursor: pointer;
+        }
+        .input-value:focus {
+            outline: none;
+        }
+
+        .input-value::-webkit-inner-spin-button,
+        .input-value::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
     </style>
 </head>
@@ -136,25 +146,25 @@
         <div class="input-group">
             <label for="lastMonthSalary">Salário último mês<span class="info-icon"
                     title="Informe o salário que você recebeu no mês passado.">ℹ</span></label>
-            <input type="number" id="lastMonthSalary" placeholder="Ex: 1500" min="0" class="input-value" />
+            <input id="lastMonthSalary" placeholder="0,00" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="secondLastMonthSalary">Salário penúltimo mês<span class="info-icon"
                     title="Informe o salário que você recebeu no penúltimo mês.">ℹ</span></label>
-            <input type="number" id="secondLastMonthSalary" placeholder="Ex: 1500" min="0" class="input-value" />
+            <input type="number" id="secondLastMonthSalary" placeholder="0,00" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="thirdLastMonthSalary">Salário antepenúltimo mês<span class="info-icon"
                     title="Informe o salário que você recebeu no antepenúltimo mês.">ℹ</span></label>
-            <input type="number" id="thirdLastMonthSalary" placeholder="Ex: 1500" min="0" class="input-value" />
+            <input type="number" id="thirdLastMonthSalary" placeholder="0,00" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="monthsWorked">Quantidade de meses trabalhados<span class="info-icon"
                     title="Informe quantos meses você trabalhou consecutivamente antes de solicitar o benefício.">ℹ</span></label>
-            <input type="number" id="monthsWorked" placeholder="Ex: 15" min="0" class="input-value" />
+            <input type="number" id="monthsWorked" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
@@ -188,8 +198,8 @@
                     <td id="benefitValue">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Quantidade de parcelas</td>
-                    <td id="parcelCount">0</td>
+                    <td style="background-color: #F2F2F2FD;">Quantidade de parcelas</td>
+                    <td style="background-color: #F2F2F2FD;" id="parcelCount">0</td>
                 </tr>
             </tbody>
         </table>

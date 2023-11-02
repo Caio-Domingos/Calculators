@@ -67,17 +67,17 @@
             border: none;
             border-radius: 8px;
             padding: 10px 20px;
-            cursor: pointer;
-            margin-top: 10px;
+            flex: 1;
+            margin-right: 5px;
         }
 
         .btn-clear {
-            color: Black;
+            background-color: transparent;
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
+            color: black;
             cursor: pointer;
-            margin-top: 10px;
+            flex: 1;
+            margin-left: 5px;
         }
 
         .divider {
@@ -113,6 +113,15 @@
             margin-left: 5px;
             cursor: pointer;
         }
+        .input-value:focus {
+            outline: none;
+        }
+
+        .input-value::-webkit-inner-spin-button,
+        .input-value::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -122,27 +131,27 @@
 
         <div class="input-group">
             <label for="salary">Salário Bruto <span class="info-icon" title="Insira o valor do salário bruto mensal.">ℹ</span></label>
-            <input type="number" id="salary" placeholder="Ex: 1500" min="0" class="input-value" />
+            <input type="number" id="salary" placeholder="0,00" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="monthlyHours">Jornada mensal (Horas) <span class="info-icon" title="Insira a quantidade total de horas trabalhadas em um mês.">ℹ</span></label>
-            <input type="number" id="monthlyHours" placeholder="Ex: 220" min="0" class="input-value" />
+            <input type="number" id="monthlyHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="normalExtraHours">Horas extras normais <span class="info-icon" title="Insira a quantidade de horas extras trabalhadas em horário normal.">ℹ</span></label>
-            <input type="number" id="normalExtraHours" placeholder="Ex: 10" min="0" class="input-value" />
+            <input type="number" id="normalExtraHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="nightExtraHours">Horas extras noturnas <span class="info-icon" title="Insira a quantidade de horas extras trabalhadas durante a noite.">ℹ</span></label>
-            <input type="number" id="nightExtraHours" placeholder="Ex: 5" min="0" class="input-value" />
+            <input type="number" id="nightExtraHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
             <label for="hundredPercentExtraHours">Horas extras 100% <span class="info-icon" title="Insira a quantidade de horas extras que são remuneradas a 100%.">ℹ</span></label>
-            <input type="number" id="hundredPercentExtraHours" placeholder="Ex: 3" min="0" class="input-value" />
+            <input type="number" id="hundredPercentExtraHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="btn-container">

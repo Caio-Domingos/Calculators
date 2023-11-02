@@ -100,7 +100,19 @@
         }
 
         .results-table th {
-            background-color: #f4f4f4;
+            background-color: #D9FAE9;
+        }
+        .input-value:focus {
+            outline: none;
+        }
+        .input-value::-webkit-inner-spin-button,
+        .input-value::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .info-symbol {
+            margin-left: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -110,18 +122,21 @@
         <div class="calculator-title">CALCULADORA DE SALÁRIO BRUTO</div>
 
         <div class="input-group">
-            <label for="netSalary">Salário Líquido</label>
-            <input type="number" id="netSalary" class="input-value" placeholder="Ex: 2500">
+            <label for="netSalary">Salário Líquido<span class="info-symbol"
+                title="Salário líquido desejado.">ℹ</span></label>
+            <input type="number" id="netSalary" class="input-value" placeholder="0,00">
         </div>
 
         <div class="input-group">
-            <label for="discounts">Descontos</label>
-            <input type="number" id="discounts" class="input-value" placeholder="Ex: 300">
+            <label for="discounts">Descontos<span class="info-symbol"
+                title="Descontos não oficiais e obrigatórios. Descontos alternativos acordados com a sua empresa ou determinação jurídica específca como pensão alimentícia.">ℹ</span></label>
+            <input type="number" id="discounts" class="input-value" placeholder="0,00">
         </div>
 
         <div class="input-group">
-            <label for="numDependents">Número de Dependentes</label>
-            <input type="number" id="numDependents" class="input-value" placeholder="Ex: 2">
+            <label for="numDependents">Número de Dependentes<span class="info-symbol"
+                title="Pessoa da qual o trabalhador seja tutor ou curador. Pessoa que pode ser incluída no Imposto de Renda do trabalhador como dependente.">ℹ</span></label>
+            <input type="number" id="numDependents" class="input-value" placeholder="0">
         </div>
 
         <div class="btn-container">
@@ -141,24 +156,24 @@
                 <td id="grossSalaryResult"></td>
             </tr>
             <tr>
-                <td>Descontos</td>
-                <td id="discountResult"></td>
+                <td style="background-color: #F2F2F2FD;">Descontos</td>
+                <td style="background-color: #F2F2F2FD;" id="discountResult"></td>
             </tr>
             <tr>
                 <td>INSS</td>
                 <td id="inssResult"></td>
             </tr>
             <tr>
-                <td>IRRF</td>
-                <td id="irrfResult"></td>
+                <td style="background-color: #F2F2F2FD;">IRRF</td>
+                <td style="background-color: #F2F2F2FD;" id="irrfResult"></td>
             </tr>
             <tr>
                 <td>Total de Descontos</td>
                 <td id="totalDiscountResult"></td>
             </tr>
             <tr>
-                <td>Total de Salário Líquido</td>
-                <td id="totalSalaryResult"></td>
+                <td style="background-color: #F2F2F2FD;">Total de Salário Líquido</td>
+                <td style="background-color: #F2F2F2FD;" id="totalSalaryResult"></td>
             </tr>
         </table>
     </div>

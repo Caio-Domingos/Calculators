@@ -8,7 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Salário Líquido</title>
     <style>
-        body, * {
+        body,
+        * {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
@@ -51,6 +52,16 @@
         .info-symbol {
             margin-left: 5px;
             cursor: pointer;
+        }
+
+        .input-value::-webkit-inner-spin-button,
+        .input-value::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input-value:focus {
+            outline: none;
         }
 
         .input-value {
@@ -99,14 +110,15 @@
             display: none;
         }
 
-        #resultsTable th, #resultsTable td {
+        #resultsTable th,
+        #resultsTable td {
             padding: 8px;
             border: 1px solid #ccc;
             text-align: left;
         }
 
         #resultsTable th {
-            background-color: #f0f0f0;
+            background-color: #D9FAE9;
         }
     </style>
 </head>
@@ -115,18 +127,20 @@
     <div class="salary-calculator">
         <div class="calculator-title">CALCULADORA DE SALÁRIO LÍQUIDO</div>
         <div class="input-group">
-            <label for="grossSalary">Salário Bruto <span class="info-symbol" title="Este é o valor total do seu salário, sem descontos.">ℹ️</span></label>
-            <input type="number" id="grossSalary" class="input-value" placeholder="Ex: 3000">
+            <label for="grossSalary">Salário Bruto <span class="info-symbol"
+                    title="Este é o valor total do seu salário, sem descontos.">ℹ️</span></label>
+            <input type="number" id="grossSalary" class="input-value" placeholder="0,00">
         </div>
 
         <div class="input-group">
-            <label for="discounts">Descontos <span class="info-symbol" title="Inclua aqui quaisquer descontos adicionais, como plano de saúde ou contribuições sindicais.">ℹ️</span></label>
-            <input type="number" id="discounts" class="input-value" placeholder="Ex: 150">
+            <label for="discounts">Descontos <span class="info-symbol"
+                    title="Inclua aqui quaisquer descontos adicionais, como plano de saúde ou contribuições sindicais.">ℹ️</span></label>
+            <input type="number" id="discounts" class="input-value" placeholder="0,00">
         </div>
 
         <div class="input-group">
             <label for="dependents">Número de Dependentes</label>
-            <input type="number" id="dependents" class="input-value" placeholder="Ex: 2">
+            <input type="number" id="dependents" class="input-value" placeholder="0">
         </div>
 
         <div class="btn-container">
@@ -149,16 +163,16 @@
                     <td id="displayGrossSalary">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Descontos</td>
-                    <td id="displayDiscounts">R$ 0,00</td>
+                    <td style="background-color: #F2F2F2FD;">Descontos</td>
+                    <td style="background-color: #F2F2F2FD;" id="displayDiscounts">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td>Desconto INSS</td>
                     <td id="inssDiscount">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Desconto IRRF</td>
-                    <td id="irrfDiscount">R$ 0,00</td>
+                    <td style="background-color: #F2F2F2FD;">Desconto IRRF</td>
+                    <td style="background-color: #F2F2F2FD;" id="irrfDiscount">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td>Salário Líquido</td>
@@ -195,7 +209,7 @@
             } else if (base <= 4664.68) {
                 return base * 0.225 - 651.73;
             } else {
-                return base * 0.275 - 884.96; 
+                return base * 0.275 - 884.96;
             }
         }
 

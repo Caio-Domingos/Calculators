@@ -107,7 +107,7 @@
         }
 
         th {
-            background-color: #f7f7f7;
+            background-color: #D9FAE9;
         }
 
         .table-title {
@@ -116,6 +116,14 @@
             margin-top: 20px;
             display: none;
         }
+        .input-value:focus {
+            outline: none;
+        }
+        .input-value::-webkit-inner-spin-button,
+        .input-value::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -123,20 +131,24 @@
     <div class="salary-calculator">
         <div class="calculator-title">CALCULADORA DE SALÁRIO ANUAL</div>
         <div class="input-group">
-            <label for="monthlySalary">Salário Mensal</label>
-            <input type="number" id="monthlySalary" class="input-value" placeholder="Ex: 3000">
+            <label for="monthlySalary">Salário Mensal<span class="info-symbol"
+                title="Salário registrado na carteira de trabalho, remuneração que um trabalhador recebe por mês, sem considerar os descontos oficiais obrigatórios.">ℹ</span></label>
+            <input type="number" id="monthlySalary" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
-            <label for="healthPlan">Plano de Saúde (Mensal)</label>
-            <input type="number" id="healthPlan" class="input-value" placeholder="Ex: 250">
+            <label for="healthPlan">Plano de Saúde ( Valor mensal)<span class="info-symbol"
+                title="Valor mensal do plano de saúde.">ℹ</span></label>
+            <input type="number" id="healthPlan" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
-            <label for="dailyTransport">Vale Transporte (Diário)</label>
-            <input type="number" id="dailyTransport" class="input-value" placeholder="Ex: 15">
+            <label for="dailyTransport">Vale Transporte (Valor diário)<span class="info-symbol"
+                title="Valor diário do vale trasnporte.">ℹ</span></label>
+            <input type="number" id="dailyTransport" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
-            <label for="dailyMeal">Vale Refeição (Diário)</label>
-            <input type="number" id="dailyMeal" class="input-value" placeholder="Ex: 20">
+            <label for="dailyMeal">Vale Refeição (Valor diário)<span class="info-symbol"
+                title="Valor diário do vale refeição.">ℹ</span></label>
+            <input type="number" id="dailyMeal" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
             <label><input type="checkbox" id="workOnSaturdays"> Trabalha aos sábados?</label>
@@ -162,16 +174,16 @@
                     <td id="annualSalary"></td>
                 </tr>
                 <tr>
-                    <td>Décimo Terceiro</td>
-                    <td id="thirteenthSalary"></td>
+                    <td style="background-color: #F2F2F2FD;">Décimo Terceiro</td>
+                    <td style="background-color: #F2F2F2FD;" id="thirteenthSalary"></td>
                 </tr>
                 <tr>
                     <td>Adicional de Férias</td>
                     <td id="vacationBonus"></td>
                 </tr>
                 <tr>
-                    <td>Total Anual Bruto</td>
-                    <td id="totalGrossAnnual"></td>
+                    <td style="background-color: #F2F2F2FD;">Total Anual Bruto</td>
+                    <td style="background-color: #F2F2F2FD;" id="totalGrossAnnual"></td>
                 </tr>
             </tbody>
         </table>
@@ -191,16 +203,16 @@
                     <td id="annualHealthPlan"></td>
                 </tr>
                 <tr>
-                    <td>Vale Transporte</td>
-                    <td id="annualTransport"></td>
+                    <td style="background-color: #F2F2F2FD;">Vale Transporte</td>
+                    <td style="background-color: #F2F2F2FD;" id="annualTransport"></td>
                 </tr>
                 <tr>
                     <td>Vale Refeição</td>
                     <td id="annualMeal"></td>
                 </tr>
                 <tr>
-                    <td>Total de Benefícios</td>
-                    <td id="totalBenefits"></td>
+                    <td style="background-color: #F2F2F2FD;">Total de Benefícios</td>
+                    <td style="background-color: #F2F2F2FD;" id="totalBenefits"></td>
                 </tr>
             </tbody>
         </table>
@@ -219,8 +231,8 @@
                     <td id="inssResult"></td>
                 </tr>
                 <tr>
-                    <td>IRPF</td>
-                    <td id="irpfResult"></td>
+                    <td style="background-color: #F2F2F2FD;">IRPF</td>
+                    <td style="background-color: #F2F2F2FD;" id="irpfResult"></td>
                 </tr>
                 <tr>
                     <td>Total Anual Bruto</td>
@@ -244,8 +256,8 @@
                     <td id="grossTotal"></td>
                 </tr>
                 <tr>
-                    <td>Total de Benefícios</td>
-                    <td id="benefitsTotal"></td>
+                    <td style="background-color: #F2F2F2FD;">Total de Benefícios</td>
+                    <td style="background-color: #F2F2F2FD;" id="benefitsTotal"></td>
                 </tr>
                 <tr>
                     <td>Total Anual Líquido</td>
@@ -288,7 +300,7 @@
 
             document.getElementById("inssResult").innerText = (inss * 12).toFixed(2);
             document.getElementById("irpfResult").innerText = (irpf * 12).toFixed(2);
-            document.getElementById("totalDiscountsResult").innerText = totalDiscounts.toFixed(2);
+            document.getElementById("totalDiscountsResult").innerText = (totalDiscounts * 12).toFixed(2);
 
             displayTableData('annualHealthPlan', annualHealthPlan.toFixed(2));
             displayTableData('annualTransport', annualTransport.toFixed(2));
