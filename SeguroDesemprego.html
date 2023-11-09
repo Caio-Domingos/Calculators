@@ -7,22 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Seguro Desemprego</title>
     <style>
-        body,
-        * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-
+        #seguro-desemprego-calc,
         .calculator {
             padding: 20px;
             background-color: #ffffff;
@@ -48,12 +33,16 @@
             margin-bottom: 8px;
         }
 
+        #lastMonthSalary,
+        #secondLastMonthSalary,
+        #thirdLastMonthSalary,
+        #monthsWorked,
         .input-value,
         select {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
             background-color: #01E06926;
             width: 100%;
         }
@@ -70,6 +59,7 @@
             justify-content: space-between;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -80,6 +70,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -127,9 +118,19 @@
             margin-left: 5px;
             cursor: pointer;
         }
+
         .input-value:focus {
             outline: none;
         }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
+        }
+
 
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
@@ -140,7 +141,7 @@
 </head>
 
 <body>
-    <div class="calculator">
+    <div id="seguro-desemprego-calc" class="calculator">
         <div class="calculator-title">CALCULADORA DE SEGURO DESEMPREGO</div>
 
         <div class="input-group">
@@ -171,16 +172,15 @@
             <label for="timesRequested">Quantas vezes solicitou o benefício<span class="info-icon"
                     title="Informe quantas vezes você já solicitou o benefício do seguro desemprego anteriormente.">ℹ</span></label>
             <select id="timesRequested" class="input-value">
-                <option value="0">Nunca</option>
-                <option value="1">1 vez</option>
-                <option value="2">2 vezes</option>
-                <option value="3">3 vezes</option>
+                <option value="0">É a primeira vez</option>
+                <option value="1">É a segunda vez</option>
+                <option value="2">É a terceira veze</option>
             </select>
         </div>
 
         <div class="btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateBenefit()" class="btn-calculate">Calcular</button>
+            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateBenefit()" class="btn-calculate">Calcular</button>
         </div>
 
         <div class="divider"></div>
@@ -221,6 +221,7 @@
             const thirdLastMonthSalary = parseFloat(document.getElementById('thirdLastMonthSalary').value) || 0;
             const monthsWorked = parseFloat(document.getElementById('monthsWorked').value) || 0;
             const timesRequested = document.getElementById('timesRequested').value;
+            const times = timesRequested.value;
 
             const averageSalary = (lastMonthSalary + secondLastMonthSalary + thirdLastMonthSalary) / 3;
 
@@ -235,14 +236,29 @@
             }
 
             let parcelCount = 0;
-            if (monthsWorked === 0) {
-                parcelCount = 0;
-            } else if (monthsWorked <= 12) {
-                parcelCount = 4;
-            } else if (monthsWorked <= 23) {
-                parcelCount = 4;
-            } else {
-                parcelCount = 5;
+            
+            if (times === "0") {
+                if (monthsWorked >= 12 && monthsWorked <= 23) {
+                    parcelCount = 4;
+                } else if (monthsWorked >= 24) {
+                    parcelCount = 5;
+                }
+            } else if (times === "1") {
+                if (monthsWorked >= 9 && monthsWorked <= 11) {
+                    parcelCount = 3;
+                } else if (monthsWorked >= 12 && monthsWorked <= 23) {
+                    parcelCount = 4;
+                } else if (monthsWorked >= 24) {
+                    parcelCount = 5;
+                }
+            } else if (times === "2") {
+                if (monthsWorked >= 6 && monthsWorked <= 11) {
+                    parcelCount = 3;
+                } else if (monthsWorked >= 12 && monthsWorked <= 23) {
+                    parcelCount = 4;
+                } else if (monthsWorked >= 24) {
+                    parcelCount = 5;
+                }
             }
 
             document.getElementById('benefitValue').innerText = 'R$ ' + benefitAmount.toFixed(2);
