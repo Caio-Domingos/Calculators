@@ -8,22 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Margem Consignável INSS</title>
     <style>
-        body,
-        * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-
+        #consigCalc,
         .consignado-calculator {
             padding: 20px;
             background-color: #ffffff;
@@ -49,11 +34,13 @@
             margin-bottom: 8px;
         }
 
+        #benefit,
+        #benefitEmp,
         .input-value {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
             width: 100%;
             background-color: #01E06926;
         }
@@ -71,6 +58,7 @@
             font-size: 16px;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -81,6 +69,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -88,6 +77,14 @@
             cursor: pointer;
             flex: 1;
             margin-left: 5px;
+        }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
         }
 
         table {
@@ -113,10 +110,14 @@
             cursor: pointer;
         }
 
+        #benefit,
+        #benefitEmp,
         .input-value:focus {
             outline: none;
         }
 
+        #benefit,
+        #benefitEmp,
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -126,7 +127,7 @@
 </head>
 
 <body>
-    <div class="consignado-calculator">
+    <div id="consigCalc" class="consignado-calculator">
         <div class="calculator-title">CALCULADORA DE MARGEM CONSIGNÁVEL INSS</div>
         <div class="input-group">
             <label for="benefit">Valor do benefício / salário(R$)<span class="info-symbol"
@@ -136,13 +137,13 @@
         </div>
         <div class="input-group">
             <label for="benefit">Parcela de emprestimo do beneficio (R$)<span class="info-symbol"
-                title="Caso você tenha algum empréstimo consignado em andamento, insira o valor da parcela.">ℹ</span></label>
+                    title="Caso você tenha algum empréstimo consignado em andamento, insira o valor da parcela.">ℹ</span></label>
             <input type="number" id="benefitEmp" placeholder="0,00" min="0" class="input-value" />
         </div>
 
         <div class="btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateMargin()" class="btn-calculate">Calcular</button>
+            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateMargin()" class="btn-calculate">Calcular</button>
         </div>
 
         <div id="tableContainer" style="display: none;">
@@ -201,6 +202,7 @@
 
         function clearFields() {
             document.getElementById("benefit").value = "";
+            document.getElementById("benefitEmp").value = "";
             document.getElementById("totalMargin").innerText = "R$ 0,00";
             document.getElementById("loanMargin").innerText = "R$ 0,00";
 

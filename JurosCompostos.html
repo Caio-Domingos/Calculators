@@ -46,8 +46,6 @@
 
         #principal,
         #monthlyValue,
-        #rate,
-        #months,
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -58,19 +56,50 @@
         #monthlyValue,
         #rate,
         #months,
+        #ratePeriod,
+        #monthsPeriod,
         .input-value:focus {
             outline: none;
         }
 
         #principal,
         #monthlyValue,
-        #rate,
-        #months,
-        .input-value, select {
+        .input-value {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
             border: 0;
+        }
+
+        #rate,
+        .input-value-rate {
+            padding: 8px;
+            font-size: 16px;
+            border: 0;
+            border-bottom-left-radius: 8px;
+            border-top-left-radius: 8px;
+        }
+
+        .input-value-rate::-webkit-inner-spin-button,
+        .input-value-rate::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        
+        #months,
+        .input-value-months {
+            padding: 8px;
+            font-size: 16px;
+            border: 0;
+            border-bottom-left-radius: 8px;
+            border-top-left-radius: 8px;
+        }
+
+        .input-value-months::-webkit-inner-spin-button,
+        .input-value-months::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         #months {
@@ -89,11 +118,14 @@
         }
 
         select {
-            width: 48%;
+            width: 61%;
             background-color: #01E069;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            font-size: 16px;
+            padding: 8px;
         }
 
         .currency-symbol {
@@ -109,6 +141,7 @@
             justify-content: space-between;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -119,6 +152,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -126,6 +160,14 @@
             cursor: pointer;
             flex: 1;
             margin-left: 5px;
+        }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
         }
 
         .divider {
@@ -186,8 +228,8 @@
         <div class="input-group">
             <label>Taxa de juros (%) <span class="info-symbol" title="Insira a taxa de juros, seja ela mensal ou anual.">ℹ</span></label>
             <div class="input-row">
-                <input type="number" id="rate" placeholder="0" min="0" class="input-value" />
-                <select id="ratePeriod" class="input-value">
+                <input type="number" id="rate" placeholder="0" min="0" class="input-value-rate" />
+                <select id="ratePeriod" class="input-value-rate-select">
                     <option value="monthly">Mensal</option>
                     <option value="yearly">Anual</option>
                 </select>
@@ -197,8 +239,8 @@
         <div class="input-group">
             <label>Duração <span class="info-symbol" title="Insira a duração do investimento.">ℹ</span></label>
             <div class="input-row">
-                <input type="number" id="months" placeholder="0" min="0" class="input-value" />
-                <select id="monthsPeriod" class="input-value">
+                <input type="number" id="months" placeholder="0" min="0" class="input-value-months" />
+                <select id="monthsPeriod" class="input-value-months-select">
                     <option value="monthly">Meses</option>
                     <option value="yearly">Anos</option>
                 </select>
@@ -206,8 +248,8 @@
         </div>
 
         <div class="btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateCompoundInterest()" class="btn-calculate">Calcular</button>
+            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateCompoundInterest()" class="btn-calculate">Calcular</button>
         </div>
 
         <div class="divider"></div>

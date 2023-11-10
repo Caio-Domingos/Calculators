@@ -7,22 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Salário Anual</title>
     <style>
-        body,
-        * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-
+        #annualCalc,
         .salary-calculator {
             padding: 20px;
             background-color: #ffffff;
@@ -53,11 +38,15 @@
             cursor: pointer;
         }
 
+        #monthlySalary,
+        #healthPlan,
+        #dailyTransport,
+        #dailyMeal,
         .input-value {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
             width: 100%;
             background-color: #01E06926;
         }
@@ -67,6 +56,7 @@
             justify-content: space-between;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -77,6 +67,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -84,6 +75,14 @@
             cursor: pointer;
             flex: 1;
             margin-left: 5px;
+        }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
         }
 
         .divider {
@@ -116,9 +115,19 @@
             margin-top: 20px;
             display: none;
         }
+
+        #monthlySalary,
+        #healthPlan,
+        #dailyTransport,
+        #dailyMeal,
         .input-value:focus {
             outline: none;
         }
+
+        #monthlySalary,
+        #healthPlan,
+        #dailyTransport,
+        #dailyMeal,
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -128,34 +137,34 @@
 </head>
 
 <body>
-    <div class="salary-calculator">
+    <div id="annualCalc" class="salary-calculator">
         <div class="calculator-title">CALCULADORA DE SALÁRIO ANUAL</div>
         <div class="input-group">
             <label for="monthlySalary">Salário Mensal<span class="info-symbol"
-                title="Salário registrado na carteira de trabalho, remuneração que um trabalhador recebe por mês, sem considerar os descontos oficiais obrigatórios.">ℹ</span></label>
+                    title="Salário registrado na carteira de trabalho, remuneração que um trabalhador recebe por mês, sem considerar os descontos oficiais obrigatórios.">ℹ</span></label>
             <input type="number" id="monthlySalary" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
             <label for="healthPlan">Plano de Saúde ( Valor mensal)<span class="info-symbol"
-                title="Valor mensal do plano de saúde.">ℹ</span></label>
+                    title="Valor mensal do plano de saúde.">ℹ</span></label>
             <input type="number" id="healthPlan" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
             <label for="dailyTransport">Vale Transporte (Valor diário)<span class="info-symbol"
-                title="Valor diário do vale trasnporte.">ℹ</span></label>
+                    title="Valor diário do vale trasnporte.">ℹ</span></label>
             <input type="number" id="dailyTransport" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
             <label for="dailyMeal">Vale Refeição (Valor diário)<span class="info-symbol"
-                title="Valor diário do vale refeição.">ℹ</span></label>
+                    title="Valor diário do vale refeição.">ℹ</span></label>
             <input type="number" id="dailyMeal" class="input-value" placeholder="0,00">
         </div>
         <div class="input-group">
             <label><input type="checkbox" id="workOnSaturdays"> Trabalha aos sábados?</label>
         </div>
         <div class="btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateAnnualSalary()" class="btn-calculate">Calcular</button>
+            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateAnnualSalary()" class="btn-calculate">Calcular</button>
         </div>
         <div class="divider"></div>
 

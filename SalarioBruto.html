@@ -8,21 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Salário Bruto</title>
     <style>
-        body, * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-
+        #grossCalc,
         .salary-calculator {
             padding: 20px;
             background-color: #ffffff;
@@ -48,11 +34,14 @@
             margin-bottom: 8px;
         }
 
+        #netSalary,
+        #discounts,
+        #numDependents,
         .input-value {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
             width: 100%;
             background-color: #01E06926;
         }
@@ -62,6 +51,7 @@
             justify-content: space-between;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -72,6 +62,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -79,6 +70,14 @@
             cursor: pointer;
             flex: 1;
             margin-left: 5px;
+        }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
         }
 
         .divider {
@@ -93,7 +92,8 @@
             border-collapse: collapse;
         }
 
-        .results-table th, .results-table td {
+        .results-table th,
+        .results-table td {
             padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
@@ -102,14 +102,23 @@
         .results-table th {
             background-color: #D9FAE9;
         }
+
+        #netSalary,
+        #discounts,
+        #numDependents,
         .input-value:focus {
             outline: none;
         }
+
+        #netSalary,
+        #discounts,
+        #numDependents,
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         .info-symbol {
             margin-left: 5px;
             cursor: pointer;
@@ -118,38 +127,38 @@
 </head>
 
 <body>
-    <div class="salary-calculator">
+    <div id="grossCalc" class="salary-calculator">
         <div class="calculator-title">CALCULADORA DE SALÁRIO BRUTO</div>
 
         <div class="input-group">
             <label for="netSalary">Salário Líquido<span class="info-symbol"
-                title="Salário líquido desejado.">ℹ</span></label>
+                    title="Salário líquido desejado.">ℹ</span></label>
             <input type="number" id="netSalary" class="input-value" placeholder="0,00">
         </div>
 
         <div class="input-group">
             <label for="discounts">Descontos<span class="info-symbol"
-                title="Descontos não oficiais e obrigatórios. Descontos alternativos acordados com a sua empresa ou determinação jurídica específca como pensão alimentícia.">ℹ</span></label>
+                    title="Descontos não oficiais e obrigatórios. Descontos alternativos acordados com a sua empresa ou determinação jurídica específca como pensão alimentícia.">ℹ</span></label>
             <input type="number" id="discounts" class="input-value" placeholder="0,00">
         </div>
 
         <div class="input-group">
             <label for="numDependents">Número de Dependentes<span class="info-symbol"
-                title="Pessoa da qual o trabalhador seja tutor ou curador. Pessoa que pode ser incluída no Imposto de Renda do trabalhador como dependente.">ℹ</span></label>
+                    title="Pessoa da qual o trabalhador seja tutor ou curador. Pessoa que pode ser incluída no Imposto de Renda do trabalhador como dependente.">ℹ</span></label>
             <input type="number" id="numDependents" class="input-value" placeholder="0">
         </div>
 
         <div class="btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateGrossSalary()" class="btn-calculate">Consultar</button>
+            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateGrossSalary()" class="btn-calculate">Consultar</button>
         </div>
 
         <div class="divider"></div>
 
         <table class="results-table">
             <tr>
-                <th>Descrição</th>
-                <th>Valor (R$)</th>
+                <th style="background-color: #D9FAE9;">Descrição</th>
+                <th style="background-color: #D9FAE9;">Valor (R$)</th>
             </tr>
             <tr>
                 <td>Salário Bruto</td>

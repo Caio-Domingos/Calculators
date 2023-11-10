@@ -7,21 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Horas Extras</title>
     <style>
-        body, * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-
+        #ExtraCalc,
         .calculator {
             padding: 20px;
             background-color: #ffffff;
@@ -47,6 +33,11 @@
             margin-bottom: 8px;
         }
 
+        #salary,
+        #monthlyHours,
+        #normalExtraHours,
+        #nightExtraHours,
+        #hundredPercentExtraHours,
         .input-value {
             padding: 8px;
             border-radius: 8px;
@@ -61,6 +52,7 @@
             justify-content: space-evenly;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -71,6 +63,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -78,6 +71,14 @@
             cursor: pointer;
             flex: 1;
             margin-left: 5px;
+        }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
         }
 
         .divider {
@@ -94,18 +95,21 @@
             background-color: #ffffff;
         }
 
-        #resultsTable, #resultsTable th, #resultsTable td {
+        #resultsTable,
+        #resultsTable th,
+        #resultsTable td {
             border: 1px solid;
         }
 
-        #resultsTable th, #resultsTable td {
+        #resultsTable th,
+        #resultsTable td {
             text-align: left;
             padding: 10px;
             border: 1px solid #ccc;
         }
 
         #resultsTable th {
-            background-color: #f0f0f0;
+            background-color: #D9FAE9;
         }
 
         /* Estilo para o ícone de informação */
@@ -113,10 +117,21 @@
             margin-left: 5px;
             cursor: pointer;
         }
+
+        #salary,
+        #monthlyHours,
+        #normalExtraHours,
+        #nightExtraHours,
+        #hundredPercentExtraHours,
         .input-value:focus {
             outline: none;
         }
 
+        #salary,
+        #monthlyHours,
+        #normalExtraHours,
+        #nightExtraHours,
+        #hundredPercentExtraHours,
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -126,37 +141,42 @@
 </head>
 
 <body>
-    <div class="calculator">
+    <div id="ExtraCalc" class="calculator">
         <div class="calculator-title">CALCULADORA DE HORAS EXTRAS</div>
 
         <div class="input-group">
-            <label for="salary">Salário Bruto <span class="info-icon" title="Insira o valor do salário bruto mensal.">ℹ</span></label>
+            <label for="salary">Salário Bruto <span class="info-icon"
+                    title="Insira o valor do salário bruto mensal.">ℹ</span></label>
             <input type="number" id="salary" placeholder="0,00" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="monthlyHours">Jornada mensal (Horas) <span class="info-icon" title="Insira a quantidade total de horas trabalhadas em um mês.">ℹ</span></label>
+            <label for="monthlyHours">Jornada mensal (Horas) <span class="info-icon"
+                    title="Insira a quantidade total de horas trabalhadas em um mês.">ℹ</span></label>
             <input type="number" id="monthlyHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="normalExtraHours">Horas extras normais <span class="info-icon" title="Insira a quantidade de horas extras trabalhadas em horário normal.">ℹ</span></label>
+            <label for="normalExtraHours">Horas extras normais <span class="info-icon"
+                    title="Insira a quantidade de horas extras trabalhadas em horário normal.">ℹ</span></label>
             <input type="number" id="normalExtraHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="nightExtraHours">Horas extras noturnas <span class="info-icon" title="Insira a quantidade de horas extras trabalhadas durante a noite.">ℹ</span></label>
+            <label for="nightExtraHours">Horas extras noturnas <span class="info-icon"
+                    title="Insira a quantidade de horas extras trabalhadas durante a noite.">ℹ</span></label>
             <input type="number" id="nightExtraHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="input-group">
-            <label for="hundredPercentExtraHours">Horas extras 100% <span class="info-icon" title="Insira a quantidade de horas extras que são remuneradas a 100%.">ℹ</span></label>
+            <label for="hundredPercentExtraHours">Horas extras 100% <span class="info-icon"
+                    title="Insira a quantidade de horas extras que são remuneradas a 100%.">ℹ</span></label>
             <input type="number" id="hundredPercentExtraHours" placeholder="0" min="0" class="input-value" />
         </div>
 
         <div class="btn-container">
-            <button onclick="clearData()" class="btn-clear">Limpar</button>
-            <button onclick="calculateExtraHours()" class="btn-calculate">Calcular</button>
+            <button id="buttonClear" onclick="clearData()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateExtraHours()" class="btn-calculate">Calcular</button>
         </div>
 
         <div class="divider"></div>
@@ -174,16 +194,16 @@
                     <td id="grossSalary">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Total de horas extras normais</td>
-                    <td id="normalExtraValue">R$ 0,00</td>
+                    <td style="background-color: #F2F2F2FD;">Total de horas extras normais</td>
+                    <td id="normalExtraValue" style="background-color: #F2F2F2FD;">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td>Total de horas noturnas</td>
                     <td id="nightExtraValue">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Total de horas extra 100%</td>
-                    <td id="hundredPercentExtraValue">R$ 0,00</td>
+                    <td style="background-color: #F2F2F2FD;">Total de horas extra 100%</td>
+                    <td id="hundredPercentExtraValue" style="background-color: #F2F2F2FD;">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td>Valor Bruto horas extras</td>
@@ -200,22 +220,22 @@
             const normalExtraHours = parseFloat(document.getElementById('normalExtraHours').value) || 0;
             const nightExtraHours = parseFloat(document.getElementById('nightExtraHours').value) || 0;
             const hundredPercentExtraHours = parseFloat(document.getElementById('hundredPercentExtraHours').value) || 0;
-    
+
             const hourlyWage = salary / monthlyHours;
             const normalExtraValue = hourlyWage * 1.5 * normalExtraHours;
             const nightExtraValue = ((hourlyWage * 1.2) * 1.5) * nightExtraHours;
             const hundredPercentExtraValue = hourlyWage * 2 * hundredPercentExtraHours;
             const totalExtraValue = normalExtraValue + nightExtraValue + hundredPercentExtraValue;
-    
+
             document.getElementById('grossSalary').innerText = `R$ ${salary.toFixed(2)}`;
             document.getElementById('normalExtraValue').innerText = `R$ ${normalExtraValue.toFixed(2)}`;
             document.getElementById('nightExtraValue').innerText = `R$ ${nightExtraValue.toFixed(2)}`;
             document.getElementById('hundredPercentExtraValue').innerText = `R$ ${hundredPercentExtraValue.toFixed(2)}`;
             document.getElementById('totalExtraValue').innerText = `R$ ${totalExtraValue.toFixed(2)}`;
-    
+
             document.getElementById('resultsTable').style.display = 'table';
         }
-    
+
         function clearData() {
             document.getElementById('salary').value = '';
             document.getElementById('monthlyHours').value = '';
@@ -225,7 +245,7 @@
             document.getElementById('resultsTable').style.display = 'none';
         }
     </script>
-    
+
 </body>
 
 </html>

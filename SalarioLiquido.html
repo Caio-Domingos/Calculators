@@ -8,22 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <title>Calculadora de Salário Líquido</title>
     <style>
-        body,
-        * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-
+        #salaryCalc,
         .salary-calculator {
             padding: 20px;
             background-color: #ffffff;
@@ -54,21 +39,30 @@
             cursor: pointer;
         }
 
+        #grossSalary,
+        #discounts,
+        #dependents,
         .input-value::-webkit-inner-spin-button,
         .input-value::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
+        #grossSalary,
+        #discounts,
+        #dependents,
         .input-value:focus {
             outline: none;
         }
 
+        #grossSalary,
+        #discounts,
+        #dependents,
         .input-value {
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
             width: 100%;
             background-color: #01E06926;
         }
@@ -78,6 +72,7 @@
             justify-content: space-between;
         }
 
+        #buttonCalc,
         .btn-calculate {
             background-color: #01E069;
             color: white;
@@ -88,6 +83,7 @@
             margin-right: 5px;
         }
 
+        #buttonClear,
         .btn-clear {
             background-color: transparent;
             border: none;
@@ -95,6 +91,14 @@
             cursor: pointer;
             flex: 1;
             margin-left: 5px;
+        }
+
+        .btn-clear:focus {
+            outline: none;
+        }
+
+        .btn-calculate:focus {
+            outline: none;
         }
 
         .divider {
@@ -124,7 +128,7 @@
 </head>
 
 <body>
-    <div class="salary-calculator">
+    <div id="salaryCalc" class="salary-calculator">
         <div class="calculator-title">CALCULADORA DE SALÁRIO LÍQUIDO</div>
         <div class="input-group">
             <label for="grossSalary">Salário Bruto <span class="info-symbol"
@@ -144,8 +148,8 @@
         </div>
 
         <div class="btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateNetSalary()" class="btn-calculate">Calcular</button>
+            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
+            <button id="buttonCalc" onclick="calculateNetSalary()" class="btn-calculate">Calcular</button>
         </div>
 
         <div class="divider"></div>
@@ -159,24 +163,24 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Salário Bruto</td>
-                    <td id="displayGrossSalary">R$ 0,00</td>
+                    <td style="background-color: #fffffffd;">Salário Bruto</td>
+                    <td id="displayGrossSalary" style="background-color: #fffffffd;">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td style="background-color: #F2F2F2FD;">Descontos</td>
                     <td style="background-color: #F2F2F2FD;" id="displayDiscounts">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Desconto INSS</td>
-                    <td id="inssDiscount">R$ 0,00</td>
+                    <td style="background-color: #fffffffd;">Desconto INSS</td>
+                    <td id="inssDiscount" style="background-color: #fffffffd;">R$ 0,00</td>
                 </tr>
                 <tr>
                     <td style="background-color: #F2F2F2FD;">Desconto IRRF</td>
                     <td style="background-color: #F2F2F2FD;" id="irrfDiscount">R$ 0,00</td>
                 </tr>
                 <tr>
-                    <td>Salário Líquido</td>
-                    <td id="netSalary">R$ 0,00</td>
+                    <td style="background-color: #fffffffd;">Salário Líquido</td>
+                    <td id="netSalary" style="background-color: #fffffffd;">R$ 0,00</td>
                 </tr>
             </tbody>
         </table>
