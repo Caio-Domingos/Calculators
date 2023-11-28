@@ -123,6 +123,20 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        .input-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .currency-symbol {
+            margin-left: 5px;
+            align-self: center;
+            background-color: #01E06926;
+            padding: 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -130,15 +144,22 @@
     <div id="consigCalc" class="consignado-calculator">
         <div class="calculator-title">CALCULADORA DE MARGEM CONSIGNÁVEL INSS</div>
         <div class="input-group">
-            <label for="benefit">Valor do benefício / salário(R$)<span class="info-symbol"
+            <label for="benefit">Valor do benefício / salário<span class="info-symbol"
                     title="Insira o valor líquido do seu benefício recebido pelo INSS.">ℹ</span></label>
-            <input type="number" oninput="checkValue()" id="benefit" placeholder="0,00" min="0" class="input-value" />
-            <div id="error-message" style="color: red;"></div>
+            <div class="input-row">
+                <input type="number" oninput="checkValue()" id="benefit" placeholder="0,00" min="0"
+                    class="input-value" />
+                <div id="error-message" style="color: red;"></div>
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
         <div class="input-group">
-            <label for="benefit">Parcela de emprestimo do beneficio (R$)<span class="info-symbol"
+            <label for="benefit">Parcela de emprestimo do beneficio<span class="info-symbol"
                     title="Caso você tenha algum empréstimo consignado em andamento, insira o valor da parcela.">ℹ</span></label>
-            <input type="number" id="benefitEmp" placeholder="0,00" min="0" class="input-value" />
+            <div class="input-row">
+                <input type="number" id="benefitEmp" placeholder="0,00" min="0" class="input-value" />
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
 
         <div class="btn-container">

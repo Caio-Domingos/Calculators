@@ -133,6 +133,20 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        .input-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .currency-symbol {
+            margin-left: 5px;
+            align-self: center;
+            background-color: #01E06926;
+            padding: 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -142,22 +156,37 @@
         <div class="input-group">
             <label for="monthlySalary">Salário Mensal<span class="info-symbol"
                     title="Salário registrado na carteira de trabalho, remuneração que um trabalhador recebe por mês, sem considerar os descontos oficiais obrigatórios.">ℹ</span></label>
-            <input type="number" id="monthlySalary" class="input-value" placeholder="0,00">
+            <div class="input-row">
+                <input type="text" id="monthlySalary" class="input-value" placeholder="0,00"
+                    oninput="formatCurrency(this)">
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
         <div class="input-group">
             <label for="healthPlan">Plano de Saúde ( Valor mensal)<span class="info-symbol"
                     title="Valor mensal do plano de saúde.">ℹ</span></label>
-            <input type="number" id="healthPlan" class="input-value" placeholder="0,00">
+            <div class="input-row">
+                <input type="text" id="healthPlan" class="input-value" placeholder="0,00"
+                    oninput="formatCurrency(this)">
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
         <div class="input-group">
             <label for="dailyTransport">Vale Transporte (Valor diário)<span class="info-symbol"
                     title="Valor diário do vale trasnporte.">ℹ</span></label>
-            <input type="number" id="dailyTransport" class="input-value" placeholder="0,00">
+            <div class="input-row">
+                <input type="text" id="dailyTransport" class="input-value" placeholder="0,00"
+                    oninput="formatCurrency(this)">
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
         <div class="input-group">
             <label for="dailyMeal">Vale Refeição (Valor diário)<span class="info-symbol"
                     title="Valor diário do vale refeição.">ℹ</span></label>
-            <input type="number" id="dailyMeal" class="input-value" placeholder="0,00">
+            <div class="input-row">
+                <input type="text" id="dailyMeal" class="input-value" placeholder="0,00" oninput="formatCurrency(this)">
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
         <div class="input-group">
             <label><input type="checkbox" id="workOnSaturdays"> Trabalha aos sábados?</label>
@@ -277,11 +306,23 @@
     </div>
 
     <script>
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = (Number(value) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            input.value = value;
+        }
+        function getNumericValue(elementId) {
+            const inputValue = document.getElementById(elementId).value;
+            const cleanedValue = inputValue.replace(/[^\d,]/g, '');
+            const normalizedValue = cleanedValue.replace(',', '.');
+            const numericValue = parseFloat(normalizedValue.replace(/[^\d.]/g, '')) || 0;
+            return numericValue;
+        }
         function calculateAnnualSalary() {
-            const monthlySalary = parseFloat(document.getElementById("monthlySalary").value) || 0;
-            const healthPlan = parseFloat(document.getElementById("healthPlan").value) || 0;
-            const dailyTransport = parseFloat(document.getElementById("dailyTransport").value) || 0;
-            const dailyMeal = parseFloat(document.getElementById("dailyMeal").value) || 0;
+            const monthlySalary = getNumericValue("monthlySalary");
+            const healthPlan = getNumericValue("healthPlan");
+            const dailyTransport = getNumericValue("dailyTransport");
+            const dailyMeal = getNumericValue("dailyMeal");
             const workOnSaturdays = document.getElementById("workOnSaturdays").checked;
             const inss = monthlySalary * 0.08;
             const irpf = (monthlySalary - inss) * 0.075;

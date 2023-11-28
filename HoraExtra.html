@@ -28,6 +28,12 @@
             margin-bottom: 15px;
         }
 
+        .input-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
         .calculator label {
             display: block;
             margin-bottom: 8px;
@@ -42,7 +48,7 @@
             padding: 8px;
             border-radius: 8px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 0;
             width: 100%;
             background-color: #01E06926;
         }
@@ -137,6 +143,13 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        .currency-symbol {
+            margin-left: 5px;
+            align-self: center;
+            background-color: #01E06926;
+            padding: 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -147,7 +160,10 @@
         <div class="input-group">
             <label for="salary">Salário Bruto <span class="info-icon"
                     title="Insira o valor do salário bruto mensal.">ℹ</span></label>
-            <input type="number" id="salary" placeholder="0,00" min="0" class="input-value" />
+            <div class="input-row">
+                <input type="number" id="salary" placeholder="0,00" min="0" class="input-value" />
+                <span class="currency-symbol">R$</span>
+            </div>
         </div>
 
         <div class="input-group">
