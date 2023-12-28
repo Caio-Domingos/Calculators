@@ -193,6 +193,7 @@
             const discounts = parseFloat(document.getElementById("discounts").value) || 0;
             const numDependents = parseInt(document.getElementById("numDependents").value) || 0;
 
+            let teste = netSalary + discounts;
             let INSS = 0;
 
             // Cálculo do INSS
@@ -204,13 +205,13 @@
             } else if (netSalary <= 3856.94) {
                 INSS = (1320 * 0.075) + (1251.29 * 0.09) + ((netSalary - 2571.30) * 0.12);
             } else if (netSalary <= 7507.49) {
-                INSS = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((netSalary - 3856.95) * 0.14);
+                INSS = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((teste - 3856.95) * 0.14);
             } else {
                 INSS = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + (3650.54 * 0.14);
             }
 
             // Cálculo do IRRF
-            const baseIRRF = netSalary - INSS - (numDependents * 189.59);
+            const baseIRRF = teste - INSS - (numDependents * 189.59);
             let IRRF = 0;
 
             if (baseIRRF <= 2112) {

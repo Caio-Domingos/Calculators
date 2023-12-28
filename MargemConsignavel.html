@@ -157,7 +157,8 @@
             <label for="benefit">Parcela de emprestimo do beneficio<span class="info-symbol"
                     title="Caso você tenha algum empréstimo consignado em andamento, insira o valor da parcela.">ℹ</span></label>
             <div class="input-row">
-                <input type="number" id="benefitEmp" placeholder="0,00" min="0" class="input-value" />
+                <input type="number" oninput="checkPortion()" id="benefitEmp" placeholder="0,00" min="0" class="input-value" />
+                <div id="error-message1" style="color: red;"></div>
                 <span class="currency-symbol">R$</span>
             </div>
         </div>
@@ -221,6 +222,20 @@
             document.getElementById("tableContainer").style.display = "block";
         }
 
+        function checkPortion() {
+            let benefitValue1 = document.getElementById("benefitEmp").value;
+            const benefitEmp = parseFloat(document.getElementById("benefitEmp").value);
+            const benefitValue = parseFloat(document.getElementById("benefit").value);
+            const totalMargin = benefitValue * 0.35;
+
+            if (benefitValue1 > totalMargin) {
+                document.getElementById("benefitEmp").value = totalMargin;
+                document.getElementById("error-message1").innerText = "Valor excedido!";
+            } else {
+                document.getElementById("error-message1").innerText = "";
+            }
+        }
+
         function clearFields() {
             document.getElementById("benefit").value = "";
             document.getElementById("benefitEmp").value = "";
@@ -229,6 +244,7 @@
 
             document.getElementById("tableContainer").style.display = "none";
             document.getElementById("error-message").innerText = "";
+            document.getElementById("error-message1").innerText = "";
         }
     </script>
 </body>

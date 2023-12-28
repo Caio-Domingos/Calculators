@@ -174,7 +174,7 @@
             <select id="timesRequested" class="input-value">
                 <option value="0">É a primeira vez</option>
                 <option value="1">É a segunda vez</option>
-                <option value="2">É a terceira veze</option>
+                <option value="2">É a terceira vez</option>
             </select>
         </div>
 
@@ -237,21 +237,21 @@
 
             let parcelCount = 0;
             
-            if (times === "0") {
+            if (timesRequested === "0") {
                 if (monthsWorked >= 12 && monthsWorked <= 23) {
                     parcelCount = 4;
                 } else if (monthsWorked >= 24) {
                     parcelCount = 5;
                 }
-            } else if (times === "1") {
-                if (monthsWorked >= 9 && monthsWorked <= 11) {
+            } else if (timesRequested === "1") {
+                if (monthsWorked >= 6 && monthsWorked <= 11) {
                     parcelCount = 3;
                 } else if (monthsWorked >= 12 && monthsWorked <= 23) {
                     parcelCount = 4;
                 } else if (monthsWorked >= 24) {
                     parcelCount = 5;
                 }
-            } else if (times === "2") {
+            } else if (timesRequested === "2") {
                 if (monthsWorked >= 6 && monthsWorked <= 11) {
                     parcelCount = 3;
                 } else if (monthsWorked >= 12 && monthsWorked <= 23) {

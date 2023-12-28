@@ -400,15 +400,19 @@
             if (rateType === "annual") {
                 rate /= 12;
             }
+
+            let newValue;
+            if (!isNaN(existingLoans) && existingLoans !== null) {
+                newValue = principal + existingLoans;
+            } else {
+                newValue = principal;
+            }
             const monthlyInterest = rate / 100;
             const x = Math.pow(1 + monthlyInterest, months);
-            const monthlyPayment = (principal * x * monthlyInterest) / (x - 1);
+            const monthlyPayment = (newValue * x * monthlyInterest) / (x - 1);
             let final;
-            if (!isNaN(existingLoans) && existingLoans !== null) {
-                final = monthlyPayment - existingLoans;
-            } else {
-                final = monthlyPayment;
-            }
+            final = monthlyPayment;
+             
 
             document.getElementById('mensal').textContent = `R$${final.toFixed(2)}`;
 
@@ -417,9 +421,9 @@
 
         function clearFields() {
             document.getElementById("principal").value = "";
+            document.getElementById("existingLoanAmount").value = "";
             document.getElementById("rate").value = "";
             document.getElementById("months").value = "";
-            document.getElementById("result").innerText = "";
             existingLoansToggle.checked = false;
             existingLoansInput.style.display = "none";
             public.checked = false;

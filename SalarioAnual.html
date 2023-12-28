@@ -324,13 +324,13 @@
             const dailyTransport = getNumericValue("dailyTransport");
             const dailyMeal = getNumericValue("dailyMeal");
             const workOnSaturdays = document.getElementById("workOnSaturdays").checked;
-            const inss = monthlySalary * 0.08;
-            const irpf = (monthlySalary - inss) * 0.075;
+            const inss = calculateINSS(monthlySalary);
+            const irpf = calculateIRRF(monthlySalary,0);
             const totalDiscounts = inss + irpf;
 
             let annualSalary = monthlySalary * 12;
             let thirteenthSalary = monthlySalary;
-            let vacationBonus = monthlySalary * 0.3;
+            let vacationBonus = monthlySalary / 3;
             let totalGrossAnnual = annualSalary + thirteenthSalary + vacationBonus;
 
             let workingDaysPerMonth = workOnSaturdays ? 26 : 22;
@@ -396,6 +396,36 @@
             titles.forEach(title => {
                 title.style.display = 'none';
             });
+        }
+
+        function calculateINSS(base) {
+            if (base <= 1320) {
+                return base * 0.075;
+            } else if (base <= 2571.29) {
+                return (1320 * 0.075) + ((base - 1320) * 0.09);
+            } else if (base <= 3856.94) {
+                return (1320 * 0.075) + (1251.29 * 0.09) + ((base - 2571.30) * 0.12);
+            } else if (base <= 7507.49) {
+                return (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((base - 3856.95) * 0.14);
+            } else {
+                return (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + (3650.54 * 0.14);
+            }
+        }
+
+        function calculateIRRF(base, dependents) {
+            base -= calculateINSS(base);
+            base -= dependents * 189.59;
+            if (base <= 2112) {
+                return 0;
+            } else if (base <= 2826.65) {
+                return base * 0.075 - 158.40;
+            } else if (base <= 3751.05) {
+                return base * 0.15 - 370.40;
+            } else if (base <= 4664.68) {
+                return base * 0.225 - 651.73;
+            } else {
+                return base * 0.275 - 884.96;
+            }
         }
     </script>
 </body>
