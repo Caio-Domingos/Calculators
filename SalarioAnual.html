@@ -1,433 +1,545 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <title>Calculadora de Salário Anual</title>
-    <style>
-        #annualCalc,
-        .salary-calculator {
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 800px;
-        }
+		<title>Calculadora de Salário Anual</title>
+		<style>
+			#annualCalc,
+			.salary-calculator {
+				padding: 20px;
+				background-color: #ffffff;
+				border-radius: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				width: 90%;
+				max-width: 800px;
+			}
 
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            font-weight: 500;
-        }
+			.calculator-title {
+				text-align: center;
+				margin-bottom: 15px;
+				font-size: 1.5em;
+				font-weight: 500;
+			}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+			.input-group {
+				margin-bottom: 15px;
+			}
 
-        .salary-calculator label {
-            display: block;
-            margin-bottom: 8px;
-        }
+			.salary-calculator label {
+				display: block;
+				margin-bottom: 8px;
+			}
 
-        .info-symbol {
-            margin-left: 5px;
-            cursor: pointer;
-        }
+			.info-symbol {
+				margin-left: 5px;
+				cursor: pointer;
+			}
 
-        #monthlySalary,
-        #healthPlan,
-        #dailyTransport,
-        #dailyMeal,
-        .input-value {
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px;
-            border: 0;
-            width: 100%;
-            background-color: #01E06926;
-        }
+			#monthlySalary,
+			#healthPlan,
+			#dailyTransport,
+			#dailyMeal,
+			.input-value {
+				padding: 8px;
+				border-radius: 8px;
+				font-size: 16px;
+				border: 0;
+				width: 100%;
+				background-color: #01e06926;
+			}
 
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
+			.btn-container {
+				display: flex;
+				justify-content: space-between;
+			}
 
-        #buttonCalc,
-        .btn-calculate {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            flex: 1;
-            margin-right: 5px;
-        }
+			#buttonCalc,
+			.btn-calculate {
+				background-color: #01e069;
+				color: white;
+				border: none;
+				border-radius: 8px;
+				padding: 10px 20px;
+				flex: 1;
+				margin-right: 5px;
+			}
 
-        #buttonClear,
-        .btn-clear {
-            background-color: transparent;
-            border: none;
-            color: black;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 5px;
-        }
+			#buttonClear,
+			.btn-clear {
+				background-color: transparent;
+				border: none;
+				color: black;
+				cursor: pointer;
+				flex: 1;
+				margin-left: 5px;
+			}
 
-        .btn-clear:focus {
-            outline: none;
-        }
+			.btn-clear:focus {
+				outline: none;
+			}
 
-        .btn-calculate:focus {
-            outline: none;
-        }
+			.btn-calculate:focus {
+				outline: none;
+			}
 
-        .divider {
-            height: 1px;
-            background-color: #ccc;
-            margin: 15px 0;
-        }
+			.divider {
+				height: 1px;
+				background-color: #ccc;
+				margin: 15px 0;
+			}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            display: none;
-        }
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 15px;
+				display: none;
+			}
 
-        th,
-        td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
+			th,
+			td {
+				padding: 10px;
+				border: 1px solid #ccc;
+				text-align: left;
+			}
 
-        th {
-            background-color: #D9FAE9;
-        }
+			th {
+				background-color: #d9fae9;
+			}
 
-        .table-title {
-            text-align: center;
-            font-weight: bold;
-            margin-top: 20px;
-            display: none;
-        }
+			.table-title {
+				text-align: center;
+				font-weight: bold;
+				margin-top: 20px;
+				display: none;
+			}
 
-        #monthlySalary,
-        #healthPlan,
-        #dailyTransport,
-        #dailyMeal,
-        .input-value:focus {
-            outline: none;
-        }
+			#monthlySalary,
+			#healthPlan,
+			#dailyTransport,
+			#dailyMeal,
+			.input-value:focus {
+				outline: none;
+			}
 
-        #monthlySalary,
-        #healthPlan,
-        #dailyTransport,
-        #dailyMeal,
-        .input-value::-webkit-inner-spin-button,
-        .input-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+			#monthlySalary,
+			#healthPlan,
+			#dailyTransport,
+			#dailyMeal,
+			.input-value::-webkit-inner-spin-button,
+			.input-value::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
 
-        .input-row {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
+			.input-row {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+			}
 
-        .currency-symbol {
-            margin-left: 5px;
-            align-self: center;
-            background-color: #01E06926;
-            padding: 8px;
-            border-radius: 8px;
-        }
-    </style>
-</head>
+			.currency-symbol {
+				margin-left: 5px;
+				align-self: center;
+				background-color: #01e06926;
+				padding: 8px;
+				border-radius: 8px;
+			}
+		</style>
+	</head>
 
-<body>
-    <div id="annualCalc" class="salary-calculator">
-        <div class="calculator-title">CALCULADORA DE SALÁRIO ANUAL</div>
-        <div class="input-group">
-            <label for="monthlySalary">Salário Mensal<span class="info-symbol"
-                    title="Salário registrado na carteira de trabalho, remuneração que um trabalhador recebe por mês, sem considerar os descontos oficiais obrigatórios.">ℹ</span></label>
-            <div class="input-row">
-                <input type="text" id="monthlySalary" class="input-value" placeholder="0,00"
-                    oninput="formatCurrency(this)">
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
-        <div class="input-group">
-            <label for="healthPlan">Plano de Saúde ( Valor mensal)<span class="info-symbol"
-                    title="Valor mensal do plano de saúde.">ℹ</span></label>
-            <div class="input-row">
-                <input type="text" id="healthPlan" class="input-value" placeholder="0,00"
-                    oninput="formatCurrency(this)">
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
-        <div class="input-group">
-            <label for="dailyTransport">Vale Transporte (Valor diário)<span class="info-symbol"
-                    title="Valor diário do vale trasnporte.">ℹ</span></label>
-            <div class="input-row">
-                <input type="text" id="dailyTransport" class="input-value" placeholder="0,00"
-                    oninput="formatCurrency(this)">
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
-        <div class="input-group">
-            <label for="dailyMeal">Vale Refeição (Valor diário)<span class="info-symbol"
-                    title="Valor diário do vale refeição.">ℹ</span></label>
-            <div class="input-row">
-                <input type="text" id="dailyMeal" class="input-value" placeholder="0,00" oninput="formatCurrency(this)">
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
-        <div class="input-group">
-            <label><input type="checkbox" id="workOnSaturdays"> Trabalha aos sábados?</label>
-        </div>
-        <div class="btn-container">
-            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button id="buttonCalc" onclick="calculateAnnualSalary()" class="btn-calculate">Calcular</button>
-        </div>
-        <div class="divider"></div>
+	<body>
+		<div id="annualCalc" class="salary-calculator">
+			<div class="calculator-title">CALCULADORA DE SALÁRIO ANUAL</div>
+			<div class="input-group">
+				<label for="monthlySalary"
+					>Salário Mensal<span
+						class="info-symbol"
+						title="Salário registrado na carteira de trabalho, remuneração que um trabalhador recebe por mês, sem considerar os descontos oficiais obrigatórios."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						type="text"
+						id="monthlySalary"
+						class="input-value mask-value-input"
+						placeholder="0,00"
+						oninput="formatCurrency(this)"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
+			<div class="input-group">
+				<label for="healthPlan"
+					>Plano de Saúde ( Valor mensal)<span
+						class="info-symbol"
+						title="Valor mensal do plano de saúde."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						type="text"
+						id="healthPlan"
+						class="input-value mask-value-input"
+						placeholder="0,00"
+						oninput="formatCurrency(this)"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
+			<div class="input-group">
+				<label for="dailyTransport"
+					>Vale Transporte (Valor diário)<span
+						class="info-symbol"
+						title="Valor diário do vale trasnporte."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						type="text"
+						id="dailyTransport"
+						class="input-value mask-value-input"
+						placeholder="0,00"
+						oninput="formatCurrency(this)"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
+			<div class="input-group">
+				<label for="dailyMeal"
+					>Vale Refeição (Valor diário)<span
+						class="info-symbol"
+						title="Valor diário do vale refeição."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						type="text"
+						id="dailyMeal"
+						class="input-value mask-value-input"
+						placeholder="0,00"
+						oninput="formatCurrency(this)"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
+			<div class="input-group">
+				<label
+					><input type="checkbox" id="workOnSaturdays" /> Trabalha aos
+					sábados?</label
+				>
+			</div>
+			<div class="btn-container">
+				<button id="buttonClear" onclick="clearFields()" class="btn-clear">
+					Limpar
+				</button>
+				<button
+					id="buttonCalc"
+					onclick="calculateAnnualSalary()"
+					class="btn-calculate"
+				>
+					Calcular
+				</button>
+			</div>
+			<div class="divider"></div>
 
-        <!-- Tabela: Total Bruto -->
-        <div class="table-title">Total Bruto</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Salário Anual</td>
-                    <td id="annualSalary"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Décimo Terceiro</td>
-                    <td style="background-color: #F2F2F2FD;" id="thirteenthSalary"></td>
-                </tr>
-                <tr>
-                    <td>Adicional de Férias</td>
-                    <td id="vacationBonus"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Total Anual Bruto</td>
-                    <td style="background-color: #F2F2F2FD;" id="totalGrossAnnual"></td>
-                </tr>
-            </tbody>
-        </table>
+			<!-- Tabela: Total Bruto -->
+			<div class="table-title">Total Bruto</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor (R$)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Salário Anual</td>
+						<td id="annualSalary"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Décimo Terceiro</td>
+						<td style="background-color: #f2f2f2fd" id="thirteenthSalary"></td>
+					</tr>
+					<tr>
+						<td>Adicional de Férias</td>
+						<td id="vacationBonus"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Total Anual Bruto</td>
+						<td style="background-color: #f2f2f2fd" id="totalGrossAnnual"></td>
+					</tr>
+				</tbody>
+			</table>
 
-        <!-- Tabela: Total de Benefícios -->
-        <div class="table-title">Total de Benefícios</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Plano de Saúde</td>
-                    <td id="annualHealthPlan"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Vale Transporte</td>
-                    <td style="background-color: #F2F2F2FD;" id="annualTransport"></td>
-                </tr>
-                <tr>
-                    <td>Vale Refeição</td>
-                    <td id="annualMeal"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Total de Benefícios</td>
-                    <td style="background-color: #F2F2F2FD;" id="totalBenefits"></td>
-                </tr>
-            </tbody>
-        </table>
+			<!-- Tabela: Total de Benefícios -->
+			<div class="table-title">Total de Benefícios</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor (R$)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Plano de Saúde</td>
+						<td id="annualHealthPlan"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Vale Transporte</td>
+						<td style="background-color: #f2f2f2fd" id="annualTransport"></td>
+					</tr>
+					<tr>
+						<td>Vale Refeição</td>
+						<td id="annualMeal"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Total de Benefícios</td>
+						<td style="background-color: #f2f2f2fd" id="totalBenefits"></td>
+					</tr>
+				</tbody>
+			</table>
 
-        <div class="table-title">Total de Descontos</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>INSS</td>
-                    <td id="inssResult"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">IRPF</td>
-                    <td style="background-color: #F2F2F2FD;" id="irpfResult"></td>
-                </tr>
-                <tr>
-                    <td>Total Anual Bruto</td>
-                    <td id="totalDiscountsResult"></td>
-                </tr>
-            </tbody>
-        </table>
+			<div class="table-title">Total de Descontos</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor (R$)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>INSS</td>
+						<td id="inssResult"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">IRPF</td>
+						<td style="background-color: #f2f2f2fd" id="irpfResult"></td>
+					</tr>
+					<tr>
+						<td>Total Anual Bruto</td>
+						<td id="totalDiscountsResult"></td>
+					</tr>
+				</tbody>
+			</table>
 
-        <!-- Tabela: Total Líquido -->
-        <div class="table-title">Total Líquido</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Total Bruto</td>
-                    <td id="grossTotal"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Total de Benefícios</td>
-                    <td style="background-color: #F2F2F2FD;" id="benefitsTotal"></td>
-                </tr>
-                <tr>
-                    <td>Total Anual Líquido</td>
-                    <td id="netTotal"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+			<!-- Tabela: Total Líquido -->
+			<div class="table-title">Total Líquido</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor (R$)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>FGTS</td>
+						<td id="t4-fgts"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Total</td>
+						<td style="background-color: #f2f2f2fd" id="t4-total"></td>
+					</tr>
+					<tr>
+						<td>Total + Benefícios</td>
+						<td id="t4-tot-ben"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">
+							Total + Benefícios + FGTS
+						</td>
+						<td style="background-color: #f2f2f2fd" id="t4-tot-ben-fgts"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-    <script>
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, '');
-            value = (Number(value) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            input.value = value;
-        }
-        function getNumericValue(elementId) {
-            const inputValue = document.getElementById(elementId).value;
-            const cleanedValue = inputValue.replace(/[^\d,]/g, '');
-            const normalizedValue = cleanedValue.replace(',', '.');
-            const numericValue = parseFloat(normalizedValue.replace(/[^\d.]/g, '')) || 0;
-            return numericValue;
-        }
-        function calculateAnnualSalary() {
-            const monthlySalary = getNumericValue("monthlySalary");
-            const healthPlan = getNumericValue("healthPlan");
-            const dailyTransport = getNumericValue("dailyTransport");
-            const dailyMeal = getNumericValue("dailyMeal");
-            const workOnSaturdays = document.getElementById("workOnSaturdays").checked;
-            const inss = calculateINSS(monthlySalary);
-            const irpf = calculateIRRF(monthlySalary,0);
-            const totalDiscounts = inss + irpf;
+		<script>
+			const maskInput = document.querySelectorAll('.mask-value-input');
+			maskInput.forEach((input) => {
+				VMasker(input).maskMoney({
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					zeroCents: false,
+				});
+			});
+		</script>
+		<script>
+			function formatCurrency(input) {
+				return;
+			}
+			function getNumericValue(elementId) {
+				return (
+					parseFloat(
+						parseVMMaskerValue(document.getElementById(elementId).value)
+					) || 0
+				);
+			}
+			function getMoneyFormat(value) {
+				return 'R$ ' + VMasker.toMoney(value.toFixed(2));
+			}
+			function calculateAnnualSalary() {
+				const monthlySalary = getNumericValue('monthlySalary');
+				const healthPlan = getNumericValue('healthPlan');
+				const dailyTransport = getNumericValue('dailyTransport');
+				const dailyMeal = getNumericValue('dailyMeal');
+				const workOnSaturdays =
+					document.getElementById('workOnSaturdays').checked;
+				const inss = calculateINSS(monthlySalary);
+				const irpf = calculateIRRF(monthlySalary, 0);
+				const totalDiscounts = inss + irpf;
 
-            let annualSalary = monthlySalary * 12;
-            let thirteenthSalary = monthlySalary;
-            let vacationBonus = monthlySalary / 3;
-            let totalGrossAnnual = annualSalary + thirteenthSalary + vacationBonus;
+				console.log('monthlySalary => ', monthlySalary);
+				console.log('healthPlan => ', healthPlan);
+				console.log('dailyTransport => ', dailyTransport);
+				console.log('dailyMeal => ', dailyMeal);
 
-            let workingDaysPerMonth = workOnSaturdays ? 26 : 22;
+				let annualSalary = monthlySalary * 12;
+				let thirteenthSalary = monthlySalary;
+				let vacationBonus = monthlySalary / 3;
+				let totalGrossAnnual = annualSalary + thirteenthSalary + vacationBonus;
 
-            let annualHealthPlan = healthPlan * 12;
-            let annualTransport = dailyTransport * workingDaysPerMonth * 12;
-            let annualMeal = dailyMeal * workingDaysPerMonth * 12;
-            let totalBenefits = annualHealthPlan + annualTransport + annualMeal;
+				let workingDaysPerMonth = workOnSaturdays ? 26 : 22;
 
-            let netTotal = totalGrossAnnual + totalBenefits;
+				let annualHealthPlan = healthPlan * 12;
+				let annualTransport = dailyTransport * workingDaysPerMonth * 12;
+				let annualMeal = dailyMeal * workingDaysPerMonth * 12;
+				let totalBenefits = annualHealthPlan + annualTransport + annualMeal;
 
-            // Display in tables
-            displayTableData('annualSalary', annualSalary.toFixed(2));
-            displayTableData('thirteenthSalary', thirteenthSalary.toFixed(2));
-            displayTableData('vacationBonus', vacationBonus.toFixed(2));
-            displayTableData('totalGrossAnnual', totalGrossAnnual.toFixed(2));
+				let netTotal = totalGrossAnnual + totalBenefits;
 
-            document.getElementById("inssResult").innerText = (inss * 12).toFixed(2);
-            document.getElementById("irpfResult").innerText = (irpf * 12).toFixed(2);
-            document.getElementById("totalDiscountsResult").innerText = (totalDiscounts * 12).toFixed(2);
+				// Display in tables
 
-            displayTableData('annualHealthPlan', annualHealthPlan.toFixed(2));
-            displayTableData('annualTransport', annualTransport.toFixed(2));
-            displayTableData('annualMeal', annualMeal.toFixed(2));
-            displayTableData('totalBenefits', totalBenefits.toFixed(2));
+				// Table 1
+				displayTableData('annualSalary', getMoneyFormat(annualSalary));
+				displayTableData('thirteenthSalary', getMoneyFormat(thirteenthSalary));
+				displayTableData('vacationBonus', getMoneyFormat(vacationBonus));
+				displayTableData('totalGrossAnnual', getMoneyFormat(totalGrossAnnual));
 
-            displayTableData('grossTotal', totalGrossAnnual.toFixed(2));
-            displayTableData('benefitsTotal', totalBenefits.toFixed(2));
-            displayTableData('netTotal', netTotal.toFixed(2));
+				// Table 2
+				displayTableData('annualHealthPlan', getMoneyFormat(annualHealthPlan));
+				displayTableData('annualTransport', getMoneyFormat(annualTransport));
+				displayTableData('annualMeal', getMoneyFormat(annualMeal));
+				displayTableData('totalBenefits', getMoneyFormat(totalBenefits));
 
-            showTables();
-        }
+				// Table 3
+				document.getElementById('inssResult').innerText = getMoneyFormat(
+					inss * 12
+				);
+				document.getElementById('irpfResult').innerText = getMoneyFormat(
+					irpf * 12
+				);
+				document.getElementById('totalDiscountsResult').innerText =
+					getMoneyFormat(totalDiscounts * 12);
 
-        function displayTableData(id, value) {
-            document.getElementById(id).innerText = value;
-        }
+				// Table 4
 
-        function showTables() {
-            let tables = document.querySelectorAll('table');
-            let titles = document.querySelectorAll('.table-title');
-            tables.forEach(table => {
-                table.style.display = 'table';
-            });
-            titles.forEach(title => {
-                title.style.display = 'block';
-            });
-        }
+				const liquidTotal = totalGrossAnnual - totalDiscounts * 12;
 
-        function clearFields() {
-            let inputs = document.querySelectorAll('.input-value');
-            inputs.forEach(input => {
-                input.value = '';
-            });
-            let checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            let tables = document.querySelectorAll('table');
-            let titles = document.querySelectorAll('.table-title');
-            tables.forEach(table => {
-                table.style.display = 'none';
-            });
-            titles.forEach(title => {
-                title.style.display = 'none';
-            });
-        }
+				displayTableData('t4-fgts', getMoneyFormat(monthlySalary * 0.08 * 12));
+				displayTableData('t4-total', getMoneyFormat(liquidTotal));
+				displayTableData(
+					't4-tot-ben',
+					getMoneyFormat(liquidTotal + totalBenefits)
+				);
+				displayTableData(
+					't4-tot-ben-fgts',
+					getMoneyFormat(
+						liquidTotal + totalBenefits + (monthlySalary * 0.08 * 12)
+					)
+				);
 
-        function calculateINSS(base) {
-            if (base <= 1320) {
-                return base * 0.075;
-            } else if (base <= 2571.29) {
-                return (1320 * 0.075) + ((base - 1320) * 0.09);
-            } else if (base <= 3856.94) {
-                return (1320 * 0.075) + (1251.29 * 0.09) + ((base - 2571.30) * 0.12);
-            } else if (base <= 7507.49) {
-                return (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((base - 3856.95) * 0.14);
-            } else {
-                return (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + (3650.54 * 0.14);
-            }
-        }
+				showTables();
+			}
 
-        function calculateIRRF(base, dependents) {
-            base -= calculateINSS(base);
-            base -= dependents * 189.59;
-            if (base <= 2112) {
-                return 0;
-            } else if (base <= 2826.65) {
-                return base * 0.075 - 158.40;
-            } else if (base <= 3751.05) {
-                return base * 0.15 - 370.40;
-            } else if (base <= 4664.68) {
-                return base * 0.225 - 651.73;
-            } else {
-                return base * 0.275 - 884.96;
-            }
-        }
-    </script>
-</body>
+			function displayTableData(id, value) {
+				document.getElementById(id).innerText = value;
+			}
 
+			function showTables() {
+				let tables = document.querySelectorAll('table');
+				let titles = document.querySelectorAll('.table-title');
+				tables.forEach((table) => {
+					table.style.display = 'table';
+				});
+				titles.forEach((title) => {
+					title.style.display = 'block';
+				});
+			}
+
+			function clearFields() {
+				let inputs = document.querySelectorAll('.input-value');
+				inputs.forEach((input) => {
+					input.value = '';
+				});
+				let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+				checkboxes.forEach((checkbox) => {
+					checkbox.checked = false;
+				});
+				let tables = document.querySelectorAll('table');
+				let titles = document.querySelectorAll('.table-title');
+				tables.forEach((table) => {
+					table.style.display = 'none';
+				});
+				titles.forEach((title) => {
+					title.style.display = 'none';
+				});
+			}
+
+			function calculateINSS(base) {
+				if (base <= 1320) {
+					return base * 0.075;
+				} else if (base <= 2571.29) {
+					return 1320 * 0.075 + (base - 1320) * 0.09;
+				} else if (base <= 3856.94) {
+					return 1320 * 0.075 + 1251.29 * 0.09 + (base - 2571.3) * 0.12;
+				} else if (base <= 7507.49) {
+					return (
+						1320 * 0.075 +
+						1251.29 * 0.09 +
+						1285.64 * 0.12 +
+						(base - 3856.95) * 0.14
+					);
+				} else {
+					return (
+						1320 * 0.075 + 1251.29 * 0.09 + 1285.64 * 0.12 + 3650.54 * 0.14
+					);
+				}
+			}
+
+			function calculateIRRF(base, dependents) {
+				base -= calculateINSS(base);
+				base -= dependents * 189.59;
+				if (base <= 2112) {
+					return 0;
+				} else if (base <= 2826.65) {
+					return base * 0.075 - 158.4;
+				} else if (base <= 3751.05) {
+					return base * 0.15 - 370.4;
+				} else if (base <= 4664.68) {
+					return base * 0.225 - 651.73;
+				} else {
+					return base * 0.275 - 884.96;
+				}
+			}
+
+			function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
+		</script>
+	</body>
 </html>

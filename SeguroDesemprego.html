@@ -1,272 +1,354 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <title>Calculadora de Seguro Desemprego</title>
-    <style>
-        #seguro-desemprego-calc,
-        .calculator {
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+		<title>Calculadora de Seguro Desemprego</title>
+		<style>
+			#seguro-desemprego-calc,
+			.calculator {
+				padding: 20px;
+				background-color: #ffffff;
+				border-radius: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				width: 90%;
+				max-width: 500px;
+			}
 
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            font-weight: 500;
-        }
+			.calculator-title {
+				text-align: center;
+				margin-bottom: 15px;
+				font-size: 1.5em;
+				font-weight: 500;
+			}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+			.input-group {
+				margin-bottom: 15px;
+			}
 
-        .calculator label {
-            display: block;
-            margin-bottom: 8px;
-        }
+			.calculator label {
+				display: block;
+				margin-bottom: 8px;
+			}
 
-        #lastMonthSalary,
-        #secondLastMonthSalary,
-        #thirdLastMonthSalary,
-        #monthsWorked,
-        .input-value,
-        select {
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px;
-            border: 0;
-            background-color: #01E06926;
-            width: 100%;
-        }
+			#lastMonthSalary,
+			#secondLastMonthSalary,
+			#thirdLastMonthSalary,
+			#monthsWorked,
+			.input-value,
+			select {
+				padding: 8px;
+				border-radius: 8px;
+				font-size: 16px;
+				border: 0;
+				background-color: #01e06926;
+				width: 100%;
+			}
 
-        select {
-            width: 100%;
-            background-color: #01E069;
-            color: black;
-            border: none;
-        }
+			select {
+				width: 100%;
+				background-color: #01e069;
+				color: black;
+				border: none;
+			}
 
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
+			.btn-container {
+				display: flex;
+				justify-content: space-between;
+			}
 
-        #buttonCalc,
-        .btn-calculate {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            flex: 1;
-            margin-right: 5px;
-        }
+			#buttonCalc,
+			.btn-calculate {
+				background-color: #01e069;
+				color: white;
+				border: none;
+				border-radius: 8px;
+				padding: 10px 20px;
+				flex: 1;
+				margin-right: 5px;
+			}
 
-        #buttonClear,
-        .btn-clear {
-            background-color: transparent;
-            border: none;
-            color: black;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 5px;
-        }
+			#buttonClear,
+			.btn-clear {
+				background-color: transparent;
+				border: none;
+				color: black;
+				cursor: pointer;
+				flex: 1;
+				margin-left: 5px;
+			}
 
-        .divider {
-            height: 1px;
-            background-color: #ccc;
-            margin: 15px 0;
-        }
+			.divider {
+				height: 1px;
+				background-color: #ccc;
+				margin: 15px 0;
+			}
 
-        #resultsTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            display: none;
-        }
+			#resultsTable {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+				display: none;
+			}
 
-        #resultsTable,
-        #resultsTable th,
-        #resultsTable td {
-            border: 1px solid;
-        }
+			#resultsTable,
+			#resultsTable th,
+			#resultsTable td {
+				border: 1px solid;
+			}
 
-        #resultsTable th,
-        #resultsTable td {
-            text-align: left;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
+			#resultsTable th,
+			#resultsTable td {
+				text-align: left;
+				padding: 10px;
+				border: 1px solid #ccc;
+			}
 
-        #resultsTable th {
-            background-color: #D9FAE9;
-        }
+			#resultsTable th {
+				background-color: #d9fae9;
+			}
 
-        #resultsTable td {
-            background-color: #ffffff;
-        }
+			#resultsTable td {
+				background-color: #ffffff;
+			}
 
-        .info-icon {
-            margin-left: 5px;
-            cursor: pointer;
-        }
+			.info-icon {
+				margin-left: 5px;
+				cursor: pointer;
+			}
 
-        .input-value:focus {
-            outline: none;
-        }
+			.input-value:focus {
+				outline: none;
+			}
 
-        .btn-clear:focus {
-            outline: none;
-        }
+			.btn-clear:focus {
+				outline: none;
+			}
 
-        .btn-calculate:focus {
-            outline: none;
-        }
+			.btn-calculate:focus {
+				outline: none;
+			}
 
+			.input-value::-webkit-inner-spin-button,
+			.input-value::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+		</style>
+	</head>
 
-        .input-value::-webkit-inner-spin-button,
-        .input-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-    </style>
-</head>
+	<body>
+		<div id="seguro-desemprego-calc" class="calculator">
+			<div class="calculator-title">CALCULADORA DE SEGURO DESEMPREGO</div>
 
-<body>
-    <div id="seguro-desemprego-calc" class="calculator">
-        <div class="calculator-title">CALCULADORA DE SEGURO DESEMPREGO</div>
+			<div class="input-group">
+				<label for="lastMonthSalary"
+					>Salário último mês<span
+						class="info-icon"
+						title="Informe o salário que você recebeu no mês passado."
+						>ℹ</span
+					></label
+				>
+				<input
+					id="lastMonthSalary"
+					placeholder="0,00"
+					class="input-value mask-value-input"
+				/>
+			</div>
 
-        <div class="input-group">
-            <label for="lastMonthSalary">Salário último mês<span class="info-icon"
-                    title="Informe o salário que você recebeu no mês passado.">ℹ</span></label>
-            <input id="lastMonthSalary" placeholder="0,00" min="0" class="input-value" />
-        </div>
+			<div class="input-group">
+				<label for="secondLastMonthSalary"
+					>Salário penúltimo mês<span
+						class="info-icon"
+						title="Informe o salário que você recebeu no penúltimo mês."
+						>ℹ</span
+					></label
+				>
+				<input
+					id="secondLastMonthSalary"
+					placeholder="0,00"
+					class="input-value mask-input-value"
+				/>
+			</div>
 
-        <div class="input-group">
-            <label for="secondLastMonthSalary">Salário penúltimo mês<span class="info-icon"
-                    title="Informe o salário que você recebeu no penúltimo mês.">ℹ</span></label>
-            <input type="number" id="secondLastMonthSalary" placeholder="0,00" min="0" class="input-value" />
-        </div>
+			<div class="input-group">
+				<label for="thirdLastMonthSalary"
+					>Salário antepenúltimo mês<span
+						class="info-icon"
+						title="Informe o salário que você recebeu no antepenúltimo mês."
+						>ℹ</span
+					></label
+				>
+				<input
+					id="thirdLastMonthSalary"
+					placeholder="0,00"
+					class="input-value mask-input-value"
+				/>
+			</div>
 
-        <div class="input-group">
-            <label for="thirdLastMonthSalary">Salário antepenúltimo mês<span class="info-icon"
-                    title="Informe o salário que você recebeu no antepenúltimo mês.">ℹ</span></label>
-            <input type="number" id="thirdLastMonthSalary" placeholder="0,00" min="0" class="input-value" />
-        </div>
+			<div class="input-group">
+				<label for="monthsWorked"
+					>Quantidade de meses trabalhados<span
+						class="info-icon"
+						title="Informe quantos meses você trabalhou consecutivamente antes de solicitar o benefício."
+						>ℹ</span
+					></label
+				>
+				<input
+					type="number"
+					id="monthsWorked"
+					placeholder="0"
+					min="0"
+					class="input-value"
+				/>
+			</div>
 
-        <div class="input-group">
-            <label for="monthsWorked">Quantidade de meses trabalhados<span class="info-icon"
-                    title="Informe quantos meses você trabalhou consecutivamente antes de solicitar o benefício.">ℹ</span></label>
-            <input type="number" id="monthsWorked" placeholder="0" min="0" class="input-value" />
-        </div>
+			<div class="input-group">
+				<label for="timesRequested"
+					>Quantas vezes solicitou o benefício<span
+						class="info-icon"
+						title="Informe quantas vezes você já solicitou o benefício do seguro desemprego anteriormente."
+						>ℹ</span
+					></label
+				>
+				<select id="timesRequested" class="input-value">
+					<option value="0">É a primeira vez</option>
+					<option value="1">É a segunda vez</option>
+					<option value="2">É a terceira vez</option>
+				</select>
+			</div>
 
-        <div class="input-group">
-            <label for="timesRequested">Quantas vezes solicitou o benefício<span class="info-icon"
-                    title="Informe quantas vezes você já solicitou o benefício do seguro desemprego anteriormente.">ℹ</span></label>
-            <select id="timesRequested" class="input-value">
-                <option value="0">É a primeira vez</option>
-                <option value="1">É a segunda vez</option>
-                <option value="2">É a terceira vez</option>
-            </select>
-        </div>
+			<div class="btn-container">
+				<button id="buttonClear" onclick="clearFields()" class="btn-clear">
+					Limpar
+				</button>
+				<button
+					id="buttonCalc"
+					onclick="calculateBenefit()"
+					class="btn-calculate"
+				>
+					Calcular
+				</button>
+			</div>
 
-        <div class="btn-container">
-            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button id="buttonCalc" onclick="calculateBenefit()" class="btn-calculate">Calcular</button>
-        </div>
+			<div class="divider"></div>
 
-        <div class="divider"></div>
+			<table id="resultsTable">
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor / Quantidade</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Valor</td>
+						<td id="benefitValue">R$ 0,00</td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Quantidade de parcelas</td>
+						<td style="background-color: #f2f2f2fd" id="parcelCount">0</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-        <table id="resultsTable">
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor / Quantidade</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Valor</td>
-                    <td id="benefitValue">R$ 0,00</td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Quantidade de parcelas</td>
-                    <td style="background-color: #F2F2F2FD;" id="parcelCount">0</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+		<script>
+			const maskInput = document.querySelectorAll('.mask-value-input');
+			maskInput.forEach((input) => {
+				VMasker(input).maskMoney({
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					zeroCents: false,
+				});
+			});
+		</script>
+		<script>
+			function clearFields() {
+				document.getElementById('lastMonthSalary').value = '';
+				document.getElementById('secondLastMonthSalary').value = '';
+				document.getElementById('thirdLastMonthSalary').value = '';
+				document.getElementById('monthsWorked').value = '';
+				document.getElementById('timesRequested').selectedIndex = 0;
+				document.getElementById('resultsTable').style.display = 'none';
+			}
 
-    <script>
-        function clearFields() {
-            document.getElementById('lastMonthSalary').value = '';
-            document.getElementById('secondLastMonthSalary').value = '';
-            document.getElementById('thirdLastMonthSalary').value = '';
-            document.getElementById('monthsWorked').value = '';
-            document.getElementById('timesRequested').selectedIndex = 0;
-            document.getElementById('resultsTable').style.display = 'none';
-        }
+			function calculateBenefit() {
+				const lastMonthSalary =
+					parseFloat(
+						parseVMMaskerValue(document.getElementById('lastMonthSalary').value)
+					) || 0;
+				const secondLastMonthSalary =
+					parseFloat(
+						parseVMMaskerValue(
+							document.getElementById('secondLastMonthSalary').value
+						)
+					) || 0;
+				const thirdLastMonthSalary =
+					parseFloat(
+						parseVMMaskerValue(
+							document.getElementById('thirdLastMonthSalary').value
+						)
+					) || 0;
+				const monthsWorked =
+					parseFloat(document.getElementById('monthsWorked').value) || 0;
+				const timesRequested = document.getElementById('timesRequested').value;
+				const times = timesRequested.value;
 
-        function calculateBenefit() {
-            const lastMonthSalary = parseFloat(document.getElementById('lastMonthSalary').value) || 0;
-            const secondLastMonthSalary = parseFloat(document.getElementById('secondLastMonthSalary').value) || 0;
-            const thirdLastMonthSalary = parseFloat(document.getElementById('thirdLastMonthSalary').value) || 0;
-            const monthsWorked = parseFloat(document.getElementById('monthsWorked').value) || 0;
-            const timesRequested = document.getElementById('timesRequested').value;
-            const times = timesRequested.value;
+				const averageSalary =
+					(lastMonthSalary + secondLastMonthSalary + thirdLastMonthSalary) / 3;
 
-            const averageSalary = (lastMonthSalary + secondLastMonthSalary + thirdLastMonthSalary) / 3;
+				let benefitAmount;
 
-            let benefitAmount;
+				if (averageSalary <= 1968.36) {
+					benefitAmount = averageSalary * 0.8;
+				} else if (averageSalary <= 3280.93) {
+					benefitAmount = (averageSalary - 1968.36) * 0.5 + 1574.69;
+				} else {
+					benefitAmount = 2230.97; // teto
+				}
 
-            if (averageSalary <= 1968.36) {
-                benefitAmount = averageSalary * 0.8;
-            } else if (averageSalary <= 3280.93) {
-                benefitAmount = (averageSalary - 1968.36) * 0.5 + 1574.69;
-            } else {
-                benefitAmount = 2230.97;  // teto
-            }
+				let parcelCount = 0;
 
-            let parcelCount = 0;
-            
-            if (timesRequested === "0") {
-                if (monthsWorked >= 12 && monthsWorked <= 23) {
-                    parcelCount = 4;
-                } else if (monthsWorked >= 24) {
-                    parcelCount = 5;
-                }
-            } else if (timesRequested === "1") {
-                if (monthsWorked >= 6 && monthsWorked <= 11) {
-                    parcelCount = 3;
-                } else if (monthsWorked >= 12 && monthsWorked <= 23) {
-                    parcelCount = 4;
-                } else if (monthsWorked >= 24) {
-                    parcelCount = 5;
-                }
-            } else if (timesRequested === "2") {
-                if (monthsWorked >= 6 && monthsWorked <= 11) {
-                    parcelCount = 3;
-                } else if (monthsWorked >= 12 && monthsWorked <= 23) {
-                    parcelCount = 4;
-                } else if (monthsWorked >= 24) {
-                    parcelCount = 5;
-                }
-            }
+				if (timesRequested === '0') {
+					if (monthsWorked >= 12 && monthsWorked <= 23) {
+						parcelCount = 4;
+					} else if (monthsWorked >= 24) {
+						parcelCount = 5;
+					}
+				} else if (timesRequested === '1') {
+					if (monthsWorked >= 6 && monthsWorked <= 11) {
+						parcelCount = 3;
+					} else if (monthsWorked >= 12 && monthsWorked <= 23) {
+						parcelCount = 4;
+					} else if (monthsWorked >= 24) {
+						parcelCount = 5;
+					}
+				} else if (timesRequested === '2') {
+					if (monthsWorked >= 6 && monthsWorked <= 11) {
+						parcelCount = 3;
+					} else if (monthsWorked >= 12 && monthsWorked <= 23) {
+						parcelCount = 4;
+					} else if (monthsWorked >= 24) {
+						parcelCount = 5;
+					}
+				}
 
-            document.getElementById('benefitValue').innerText = 'R$ ' + benefitAmount.toFixed(2);
-            document.getElementById('parcelCount').innerText = parcelCount;
-            document.getElementById('resultsTable').style.display = 'table';
-        }
-
-    </script>
-</body>
-
+				document.getElementById('benefitValue').innerText =
+					'R$ ' + VMasker.toMoney(benefitAmount.toFixed(2));
+				document.getElementById('parcelCount').innerText = parcelCount;
+				document.getElementById('resultsTable').style.display = 'table';
+			}
+			function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
+		</script>
+	</body>
 </html>

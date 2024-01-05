@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+
     <title>Calculadora de Horas Extras</title>
     <style>
         #ExtraCalc,
@@ -161,7 +163,7 @@
             <label for="salary">Salário Bruto <span class="info-icon"
                     title="Insira o valor do salário bruto mensal.">ℹ</span></label>
             <div class="input-row">
-                <input type="number" id="salary" placeholder="0,00" min="0" class="input-value" />
+                <input id="salary" placeholder="0,00" class="input-value mask-value-input" />
                 <span class="currency-symbol">R$</span>
             </div>
         </div>
@@ -230,8 +232,19 @@
     </div>
 
     <script>
+        const maskInput = document.querySelectorAll('.mask-value-input');
+        maskInput.forEach((input) => {
+            VMasker(input).maskMoney({
+                precision: 2,
+                separator: ',',
+                delimiter: '.',
+                zeroCents: false,
+            });
+        });
+    </script>
+    <script>
         function calculateExtraHours() {
-            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const salary = parseFloat(parseVMMaskerValue(document.getElementById('salary').value)) || 0;
             const monthlyHours = (parseFloat(document.getElementById('monthlyHours').value) || 0) || 1; // Evitando divisão por zero
             const normalExtraHours = parseFloat(document.getElementById('normalExtraHours').value) || 0;
             const nightExtraHours = parseFloat(document.getElementById('nightExtraHours').value) || 0;
@@ -260,6 +273,10 @@
             document.getElementById('hundredPercentExtraHours').value = '';
             document.getElementById('resultsTable').style.display = 'none';
         }
+
+        function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
     </script>
 
 </body>

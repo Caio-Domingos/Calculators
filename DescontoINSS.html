@@ -1,211 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+		<title>Calculadora de Desconto INSS</title>
+		<style>
+			#InssCalc,
+			.inss-calculator {
+				padding: 20px;
+				background-color: #ffffff;
+				border-radius: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				width: 90%;
+				max-width: 500px;
+			}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <title>Calculadora de Desconto INSS</title>
-    <style>
-        #InssCalc,
-        .inss-calculator {
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+			.calculator-title {
+				text-align: center;
+				margin-bottom: 15px;
+				font-size: 1.5em;
+				font-weight: 500;
+			}
 
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            font-weight: 500;
-        }
+			.input-group {
+				margin-bottom: 15px;
+			}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+			.inss-calculator label {
+				display: block;
+				margin-bottom: 8px;
+			}
 
-        .inss-calculator label {
-            display: block;
-            margin-bottom: 8px;
-        }
+			#salary,
+			.input-value {
+				padding: 8px;
+				border-radius: 8px;
+				font-size: 16px;
+				border: 0;
+				width: 100%;
+				background-color: #01e06926;
+			}
 
-        #salary,
-        .input-value {
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px;
-            border: 0;
-            width: 100%;
-            background-color: #01E06926;
-        }
+			.btn-container {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 15px;
+			}
 
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
+			.btn {
+				padding: 10px 20px;
+				border-radius: 8px;
+				border: none;
+				font-size: 16px;
+			}
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
-        }
+			#buttonCalc,
+			.btn-calculate {
+				background-color: #01e069;
+				color: white;
+				border: none;
+				border-radius: 8px;
+				padding: 10px 20px;
+				flex: 1;
+				margin-right: 5px;
+			}
 
-        #buttonCalc,
-        .btn-calculate {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            flex: 1;
-            margin-right: 5px;
-        }
+			#buttonClear,
+			.btn-clear {
+				background-color: transparent;
+				border: none;
+				color: black;
+				cursor: pointer;
+				flex: 1;
+				margin-left: 5px;
+			}
 
-        #buttonClear,
-        .btn-clear {
-            background-color: transparent;
-            border: none;
-            color: black;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 5px;
-        }
+			.btn-clear:focus {
+				outline: none;
+			}
 
-        .btn-clear:focus {
-            outline: none;
-        }
+			.btn-calculate:focus {
+				outline: none;
+			}
 
-        .btn-calculate:focus {
-            outline: none;
-        }
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+				display: none;
+			}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            display: none;
-        }
+			th,
+			td {
+				border: 1px solid;
+				padding: 8px;
+				text-align: left;
+			}
 
-        th,
-        td {
-            border: 1px solid;
-            padding: 8px;
-            text-align: left;
-        }
+			th {
+				background-color: #d9fae9;
+				color: rgb(0, 0, 0);
+			}
 
-        th {
-            background-color: #D9FAE9;
-            color: rgb(0, 0, 0);
-        }
+			#salary,
+			.input-value:focus {
+				outline: none;
+			}
 
-        #salary,
-        .input-value:focus {
-            outline: none;
-        }
+			#salary,
+			.input-value::-webkit-inner-spin-button,
+			.input-value::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+			.currency-symbol {
+				margin-left: 5px;
+				align-self: center;
+				background-color: #01e06926;
+				padding: 8px;
+				border-radius: 8px;
+			}
+			.input-row {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+			}
+		</style>
+	</head>
 
-        #salary,
-        .input-value::-webkit-inner-spin-button,
-        .input-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .currency-symbol {
-            margin-left: 5px;
-            align-self: center;
-            background-color: #01E06926;
-            padding: 8px;
-            border-radius: 8px;
-        }
-        .input-row {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-    </style>
-</head>
+	<body>
+		<div id="InssCalc" class="inss-calculator">
+			<div class="calculator-title">CALCULADORA DE DESCONTO INSS</div>
+			<div class="input-group">
+				<label for="salary">Salário Bruto</label>
+				<div class="input-row">
+					<input
+						id="salary"
+						placeholder="0,00"
+						class="input-value mask-value-input"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
 
-<body>
-    <div id="InssCalc" class="inss-calculator">
-        <div class="calculator-title">CALCULADORA DE DESCONTO INSS</div>
-        <div class="input-group">
-            <label for="salary">Salário Bruto</label>
-            <div class="input-row">
-                <input type="number" id="salary" placeholder="0,00" min="0" class="input-value" />
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
+			<div class="btn-container">
+				<button id="buttonClear" onclick="clearFields()" class="btn-clear">
+					Limpar
+				</button>
+				<button id="buttonCalc" onclick="calculateINSS()" class="btn-calculate">
+					Calcular
+				</button>
+			</div>
 
-        <div class="btn-container">
-            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button id="buttonCalc" onclick="calculateINSS()" class="btn-calculate">Calcular</button>
-        </div>
+			<table id="resultTable">
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor (R$)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Desconto INSS</td>
+						<td id="inssDiscount">R$ 0,00</td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Salário Líquido</td>
+						<td id="netSalary" style="background-color: #f2f2f2fd">R$ 0,00</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-        <table id="resultTable">
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Desconto INSS</td>
-                    <td id="inssDiscount">R$ 0,00</td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Salário Líquido</td>
-                    <td id="netSalary" style="background-color: #F2F2F2FD;">R$ 0,00</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+		<script>
+			const maskInput = document.querySelectorAll('.mask-value-input');
+			maskInput.forEach((input) => {
+				VMasker(input).maskMoney({
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					zeroCents: false,
+				});
+			});
+		</script>
+		<script>
+			function calculateINSS() {
+				const salary = parseFloat(
+					parseVMMaskerValue(document.getElementById('salary').value)
+				);
 
-    <script>
-        function calculateINSS() {
-            const salary = parseFloat(document.getElementById("salary").value);
+				if (isNaN(salary)) {
+					alert('Por favor, insira um valor válido para continuar!');
+					return;
+				}
 
-            if (isNaN(salary)) {
-                alert("Por favor, insira um valor válido para continuar!");
-                return;
-            }
+				let discount = 0;
 
-            let discount = 0;
+				if (salary <= 1320) {
+					discount = salary * 0.075;
+				} else if (salary <= 2571.29) {
+					discount = 1320 * 0.075 + (salary - 1320) * 0.09;
+				} else if (salary <= 3856.94) {
+					discount = 1320 * 0.075 + 1251.29 * 0.09 + (salary - 2571.3) * 0.12;
+				} else if (salary <= 7507.49) {
+					discount =
+						1320 * 0.075 +
+						1251.29 * 0.09 +
+						1285.64 * 0.12 +
+						(salary - 3856.95) * 0.14;
+				} else {
+					discount = 877.63;
+				}
 
-            if (salary <= 1320) {
-                discount = salary * 0.075;
-            } else if (salary <= 2571.29) {
-                discount = (1320 * 0.075) + ((salary - 1320) * 0.09);
-            } else if (salary <= 3856.94) {
-                discount = (1320 * 0.075) + (1251.29 * 0.09) + ((salary - 2571.30) * 0.12);
-            } else if (salary <= 7507.49) {
-                discount = (1320 * 0.075) + (1251.29 * 0.09) + (1285.64 * 0.12) + ((salary - 3856.95) * 0.14);
-            } else {
-                discount = 877.63;
-            }
+				const netSalary = salary - discount;
 
-            const netSalary = salary - discount;
+				document.getElementById('inssDiscount').innerText =
+					'R$ ' + discount.toFixed(2);
+				document.getElementById('netSalary').innerText =
+					'R$ ' + netSalary.toFixed(2);
 
-            document.getElementById("inssDiscount").innerText = "R$ " + discount.toFixed(2);
-            document.getElementById("netSalary").innerText = "R$ " + netSalary.toFixed(2);
+				document.getElementById('resultTable').style.display = 'table';
+			}
 
-            document.getElementById("resultTable").style.display = "table";
-        }
+			function clearFields() {
+				document.getElementById('salary').value = '';
+				document.getElementById('inssDiscount').innerText = 'R$ 0,00';
+				document.getElementById('netSalary').innerText = 'R$ 0,00';
 
-        function clearFields() {
-            document.getElementById("salary").value = "";
-            document.getElementById("inssDiscount").innerText = "R$ 0,00";
-            document.getElementById("netSalary").innerText = "R$ 0,00";
+				document.getElementById('resultTable').style.display = 'none';
+			}
 
-            document.getElementById("resultTable").style.display = "none";
-        }
-    </script>
-</body>
-
+			function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
+		</script>
+	</body>
 </html>

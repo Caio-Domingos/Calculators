@@ -1,435 +1,612 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+		rel="stylesheet"
+	/>
+	<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <title>Calculadora de Empréstimo Consignado</title>
-    <style>
-        body,
-        * {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+	<style>
+		body,
+		* {
+			font-family: 'Montserrat', sans-serif;
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-        body {
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
+		body {
+			display: flex;
+			height: 100vh;
+			justify-content: center;
+			align-items: center;
+			background-color: #f4f4f4;
+		}
 
-        .consignado-calculator {
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+		.consignado-calculator {
+			padding: 20px;
+			background-color: #ffffff;
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			width: 90%;
+			max-width: 700px;
+		}
 
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            font-weight: 500;
-        }
+		.calculator-title {
+			text-align: center;
+			margin-bottom: 15px;
+			font-size: 1.5em;
+			font-weight: 500;
+		}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+		.input-group {
+			margin-bottom: 15px;
+		}
 
-        .input-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+		.input-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			height: 40px;
+		}
 
-        .input-row-toggle {
-            display: flex;
-            justify-content: start;
-            margin-top: 30px;
-        }
+		.input-row-toggle {
+			display: flex;
+			justify-content: start;
+			margin-top: 30px;
+		}
 
-        .consignado-calculator label {
-            display: block;
-            margin-bottom: 8px;
-        }
+		.consignado-calculator label {
+			display: block;
+			margin-bottom: 8px;
+		}
 
-        .info-symbol {
-            margin-left: 5px;
-            cursor: pointer;
-        }
+		.info-symbol {
+			margin-left: 5px;
+			cursor: pointer;
+		}
 
-        .input-value:focus {
-            outline: none;
-        }
+		.input-value:focus {
+			outline: none;
+		}
+		.button:hover {
+			background-color: #01e069;
+		}
 
-        .input-value,
-        select {
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
+		.input-value,
+		select {
+			padding: 8px !important;
+			border-radius: 8px !important;
 
-        .input-value::-webkit-inner-spin-button,
-        .input-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+			border: 1px solid #ccc !important;
+		}
 
-        #months {
-            width: 100%;
-            background-color: #01E06926;
-            align-self: center;
-        }
+		.input-value::-webkit-inner-spin-button,
+		.input-value::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
 
-        #principal {
-            flex: 1;
-            background-color: #01E06926;
-            margin-right: 5px;
-        }
+		#months {
+			width: 100%;
+			background-color: #01e06926;
+			align-self: center;
+			border-radius: 0 !important;
+		}
 
-        #existingLoanAmount {
-            flex: 1;
-            background-color: #01E06926;
-            margin-right: 5px;
-        }
+		#principal {
+			flex: 1;
+			background-color: #01e06926;
+			margin-right: 5px;
+			border-radius: 0 8px 8px 0 !important;
+		}
 
-        #rate {
-            width: 52%;
-            background-color: #01E06926;
-            margin-right: 5px;
-        }
+		#existingLoanAmount {
+			flex: 1;
+			background-color: #01e06926;
+			margin-right: 5px;
+		}
 
-        select {
-            width: 48%;
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-        }
+		#rate {
+			width: 52%;
+			background-color: #01e06926;
+		}
 
-        .currency-symbol {
-            margin-right: 10px;
-            align-self: center;
-            background-color: #01E06926;
-            padding: 8px;
-            border-radius: 8px;
-        }
+		select {
+			width: 48%;
+			background-color: #01e069;
+			color: white;
+			border: none;
+			border-radius: 8px;
+		}
 
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
+		.currency-symbol {
+			margin-right: 10px;
+			align-self: center;
+			background-color: #01e06926;
+			padding: 8px;
+		}
 
-        .btn-calculate {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            flex: 1;
-            margin-right: 5px;
-        }
+		.currency-symbol.cs-left {
+			border-radius: 0 8px 8px 0;
+			margin-right: 0;
+			margin-left: 10px;
+		}
+		.currency-symbol.cs-right {
+			border-radius: 8px 0 0 8px;
+			margin-right: 10px;
+			margin-left: 0;
+		}
 
-        .btn-clear {
-            background-color: transparent;
-            border: none;
-            color: black;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 5px;
-        }
+		.btn-container {
+			display: flex;
+			justify-content: space-between;
+		}
 
-        /* Responsividade para telas pequenas */
-        @media (max-width: 768px) {
-            #rate {
-                width: 100%;
-                background-color: #01E06926;
-            }
+		.btn-calculate {
+			background-color: #01e069;
+			color: white;
+			border: none;
+			border-radius: 8px;
+			padding: 10px 20px;
+			margin-right: 5px;
+		}
 
-            select {
-                width: 100%;
-            }
-        }
+		.btn-clear {
+			background-color: transparent;
+			border: none;
+			color: black;
+			cursor: pointer;
+			margin-left: 5px;
+		}
 
-        .divider {
-            height: 1px;
-            background-color: #ccc;
-            margin: 15px 0;
-        }
+		/* Responsividade para telas pequenas */
+		@media (max-width: 768px) {
+			#rate {
+				width: 100%;
+				background-color: #01e06926;
+			}
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 22px;
-        }
+			select {
+				width: 100%;
+			}
+		}
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+		.divider {
+			height: 1px;
+			background-color: #ccc;
+			margin: 15px 0;
+		}
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-            border-radius: 34px;
-        }
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 60px;
+			height: 22px;
+		}
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 1px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-            border-radius: 50%;
-        }
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
 
-        input:checked+.slider {
-            background-color: #01E069;
-        }
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+			border-radius: 34px;
+		}
 
-        input:checked+.slider:before {
-            -webkit-transform: translateX(31px);
-            -ms-transform: translateX(31px);
-            transform: translateX(31px);
-        }
+		.slider:before {
+			position: absolute;
+			content: '';
+			height: 20px;
+			width: 20px;
+			left: 4px;
+			bottom: 1px;
+			background-color: white;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+			border-radius: 50%;
+		}
 
-        .btn-action-left {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 37px;
-            font-size: 16px;
-            cursor: pointer;
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-        }
-        .btn-action-right {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 37px;
-            font-size: 16px;
-            cursor: pointer;
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
+		input:checked + .slider {
+			background-color: #01e069;
+		}
 
-        #resultsTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            display: none;
-            background-color: #ffffff;
-        }
+		input:checked + .slider:before {
+			-webkit-transform: translateX(22px);
+			-ms-transform: translateX(22px);
+			transform: translateX(22px);
+		}
 
-        #resultsTable,
-        #resultsTable th,
-        #resultsTable td {
-            border: 1px solid;
-        }
+		.btn-action-left {
+			background-color: #01e069;
+			color: white;
+			border: none;
+			width: 30px;
+			height: 100%;
+			font-size: 16px;
+			cursor: pointer;
+			border-top-left-radius: 8px;
+			border-bottom-left-radius: 8px;
+			margin-right: 3px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.btn-action-right {
+			background-color: #01e069;
+			color: white;
+			border: none;
+			width: 30px;
+			height: 100%;
+			font-size: 16px;
+			cursor: pointer;
+			border-top-right-radius: 8px;
+			border-bottom-right-radius: 8px;
+			margin-left: 3px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
-        #resultsTable th,
-        #resultsTable td {
-            text-align: left;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
+		#resultsTable {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+			display: none;
+			background-color: #ffffff;
+		}
 
-        #resultsTable th {
-            background-color: #D9FAE9;
-        }
-    </style>
-</head>
+		#resultsTable,
+		#resultsTable th,
+		#resultsTable td {
+			border: 1px solid;
+		}
 
-<body>
-    <div class="consignado-calculator">
-        <div class="calculator-title">CALCULADORA DE EMPRÉSTIMO CONSIGNADO</div>
-        <div class="input-group">
-            <label for="principal">Qual o valor do seu benefício? <span class="info-symbol"
-                    title="Insira o montante total que deseja pegar emprestado.">ℹ</span></label>
-            <div class="input-row">
-                <span class="currency-symbol">R$</span>
-                <input type="number" id="principal" placeholder="0,00" min="0" class="input-value" />
-            </div>
-        </div>
-        <div class="input-group">
-            <div class="input-row-toggle">
-                <label class="switch">
-                    <input type="checkbox" id="existingLoansToggle">
-                    <span class="slider"></span>
-                </label>
-                <label for="existingLoans">&nbsp; Tenho outros empréstimos</label>
-                <span id="existingLoansLabel" class="info-symbol">ℹ</span>
-            </div>
-        </div>
-        <div class="input-group" id="existingLoansInput" style="display: none;">
-            <label for="existingLoanAmount">Valor dos empréstimos existentes </label>
-            <div class="input-row">
-                <span class="currency-symbol">R$</span>
-                <input type="number" id="existingLoanAmount" placeholder="5000" min="0" class="input-value" />
-            </div>
-        </div>
-        <div class="input-group">
-            <label>Use a taxa maxima ou digite: <span class="info-symbol"
-                    title="Insira a taxa de juros, seja ela mensal ou anual.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" id="rate" placeholder="2,50" min="0" class="input-value" />
-                <select id="rateType" class="input-value">
-                    <option value="monthly"> % Mensal</option>
-                    <option value="annual">% Anual</option>
-                </select>
-            </div>
-        </div>
-        <div class="input-group">
-            <label for="months">Desejo pagar o novo emprestimo em: <span class="info-symbol"
-                    title="Insira a duração total do empréstimo em meses.">ℹ</span></label>
-            <div class="input-row">
-                <button class="btn-action-left" onclick="decrementMonths()">-</button>
-                <input type="number" id="months" placeholder="12" min="0" class="input-value" />
-                <button class="btn-action-right" onclick="incrementMonths()">+</button>
-            </div>
-        </div>
-        <div class="input-group">
-            <div class="input-row-toggle">
-                <label class="switch">
-                    <input type="checkbox" id="publicServer">
-                    <span class="slider"></span>
-                </label>
-                <label for="public">&nbsp; Sou servidor público</label>
-            </div>
-        </div>
-        <div class="input-group btn-container">
-            <button onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button onclick="calculateConsignado()" class="btn-calculate">Calcular</button>
-        </div>
+		#resultsTable th,
+		#resultsTable td {
+			text-align: left;
+			padding: 10px;
+			border: 1px solid #ccc;
+		}
 
-        <div class="divider"></div>
-        <table id="resultsTable">
-            <thead>
-                <tr>
-                    <th colspan="2">Resultado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Parcela mensal estimada</td>
-                    <td id="mensal">R$ 0,00</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+		#resultsTable th {
+			background-color: #d9fae9;
+		}
+	</style>
+	<style>
+		.container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const rateInput = document.getElementById("rate");
+			gap: 10px;
+			align-items: center;
+		}
 
-            if (rateInput.value === "") {
-                rateInput.value = 2.5;
-            }
-        });
-        function incrementMonths() {
-            const monthsInput = document.getElementById("months");
-            if (monthsInput.value === "") {
-                monthsInput.value = 12;
-            } else {
-                monthsInput.value = parseInt(monthsInput.value) + 1;
-            }
-        }
+		.content-item {
+			/* background-color: #01e06926; */
+			/* height: 100px; */
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			flex-direction: column;
+		}
+		.content-item:nth-child(1n + 2) {
+			align-items: flex-start;
 
-        function decrementMonths() {
-            const monthsInput = document.getElementById("months");
-            if (monthsInput.value === "" || parseInt(monthsInput.value) > 1) {
-                monthsInput.value = monthsInput.value === "" ? 12 : parseInt(monthsInput.value) - 1;
-            }
-        }
-        const public = document.getElementById("publicServer");
-        const existingLoansToggle = document.getElementById("existingLoansToggle");
-        const existingLoansInput = document.getElementById("existingLoansInput");
+		}
+		.content-item:nth-child(2n + 2) {
+			align-items: flex-end;
 
-        existingLoansToggle.addEventListener("change", function () {
-            if (existingLoansToggle.checked) {
-                existingLoansInput.style.display = "block";
-            } else {
-                existingLoansInput.style.display = "none";
-                document.getElementById("existingLoanAmount").value = "";
-            }
-        });
-        function calculateConsignado() {
-            const existingLoans = parseFloat(document.getElementById("existingLoanAmount").value);
-            const principal = parseFloat(document.getElementById("principal").value);
-            let rate = parseFloat(document.getElementById("rate").value);
-            let months = parseFloat(document.getElementById("months").value);
-            const rateType = document.getElementById("rateType").value;
+		}
 
-            // Verificar se os campos estão vazios
-            if (isNaN(principal) || isNaN(rate) || isNaN(months)) {
-                alert("Por favor, preencha todos os campos.");
-                return;
-            }
+		.principal-input-content > .i-row {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 5px;
+		}
+		.principal-input-content > .i-row label {
+			width: auto;
+		}
 
-            // Verificar se os valores são negativos
-            if (principal < 0 || rate < 0 || months < 0) {
-                alert("Valores negativos não são aceitos.");
-                return;
-            }
+		.principal-input-content > .i-row > #principal {
+			background-color: #01e06926;
 
-            if (rateType === "annual") {
-                rate /= 12;
-            }
+			box-sizing: border-box;
+			margin: 0;
+			flex: 1;
+			border: none;
 
-            let newValue;
-            if (!isNaN(existingLoans) && existingLoans !== null) {
-                newValue = principal + existingLoans;
-            } else {
-                newValue = principal;
-            }
-            const monthlyInterest = rate / 100;
-            const x = Math.pow(1 + monthlyInterest, months);
-            const monthlyPayment = (newValue * x * monthlyInterest) / (x - 1);
-            let final;
-            final = monthlyPayment;
-             
+			padding: 10px 5px;
+			padding: 8px !important;
+			border-radius: 8px !important;
+			/* font-size: 16px; */
+			border: 1px solid #ccc !important;
+		}
+		.principal-input-content > .i-row > .currency {
+			box-sizing: border-box;
+			margin: 0;
+			border: none;
+			padding: 10px;
+		}
 
-            document.getElementById('mensal').textContent = `R$${final.toFixed(2)}`;
+		.content-item > button {
+			width: 100%;
+			height: 40px;
+		}
 
-            document.getElementById('resultsTable').style.display = 'table';
-        }
+		.max-tax {
+			border-radius: 8px 0 0 8px !important;
+		}
+		.max-tax-select {
+			border-radius: 0 8px 8px 0 !important;
+		}
+	</style>
 
-        function clearFields() {
-            document.getElementById("principal").value = "";
-            document.getElementById("existingLoanAmount").value = "";
-            document.getElementById("rate").value = "";
-            document.getElementById("months").value = "";
-            existingLoansToggle.checked = false;
-            existingLoansInput.style.display = "none";
-            public.checked = false;
-            document.getElementById('resultsTable').style.display = 'none';
-        }
-    </script>
-</body>
+	<body>
+		<div class="consignado-calculator">
+			<div class="calculator-title">CALCULADORA DE EMPRÉSTIMO CONSIGNADO</div>
 
+			<div class="container">
+				<div class="content-item">
+					<div class="i-group principal-input-content">
+						<label for="principal"
+							>Qual o valor do seu benefício?
+							<span
+								class="info-symbol"
+								title="Insira o montante total que deseja pegar emprestado."
+								>ℹ</span
+							></label
+						>
+						<div class="i-row">
+							<input
+								type="text"
+								id="principal"
+								class="input-value mask-value-input"
+							/>
+							<span class="currency-symbol cs-left">R$</span>
+						</div>
+					</div>
+				</div>
+				<div class="content-item">
+					<label for="months"
+						>Desejo pagar o novo emprestimo em:
+						<span
+							class="info-symbol"
+							title="Insira a duração total do empréstimo em meses."
+							>ℹ</span
+						></label
+					>
+					<div class="input-row">
+						<button class="btn-action-left" onclick="decrementMonths()">
+							-
+						</button>
+						<input
+							type="number"
+							id="months"
+							placeholder="12"
+							min="0"
+							class="input-value"
+						/>
+						<button class="btn-action-right" onclick="incrementMonths()">
+							+
+						</button>
+					</div>
+				</div>
+				<div class="content-item">
+					<div class="input-row-toggle">
+						<label class="switch">
+							<input type="checkbox" id="existingLoansToggle" />
+							<span class="slider"></span>
+						</label>
+						<label for="existingLoans">&nbsp; Tenho outros empréstimos</label>
+						<span id="existingLoansLabel" class="info-symbol">ℹ</span>
+					</div>
+				</div>
+				<div class="content-item">
+					<label
+						>Use a taxa maxima ou digite:
+						<span
+							class="info-symbol"
+							title="Insira a taxa de juros, seja ela mensal ou anual."
+							>ℹ</span
+						></label
+					>
+					<div class="input-row">
+						<input
+							type="number"
+							id="rate"
+							placeholder="2,50"
+							min="0"
+							class="input-value max-tax"
+						/>
+						<select id="rateType" class="input-value max-tax-select">
+							<option value="monthly">% Mensal</option>
+							<option value="annual">% Anual</option>
+						</select>
+					</div>
+				</div>
+				<div class="content-item">
+					<div class="input-group">
+						<div class="input-row-toggle">
+							<label class="switch">
+								<input type="checkbox" id="publicServer" />
+								<span class="slider"></span>
+							</label>
+							<label for="public">&nbsp; Sou servidor público</label>
+						</div>
+					</div>
+				</div>
+				<div class="content-item" id="existingLoansInput" style="display: none">
+					<label for="existingLoanAmount"
+						>Valor dos empréstimos existentes
+					</label>
+					<div class="input-row">
+						<span class="currency-symbol cs-right">R$</span>
+						<input
+							id="existingLoanAmount"
+							placeholder="5000"
+							class="input-value mask-value-input"
+						/>
+					</div>
+				</div>
+				<div
+					class="content-item"
+					id="existingLoansInput-balancer"
+					style="display: block"
+				></div>
+				<div class="content-item btn-container">
+					<button onclick="clearFields()" class="btn btn-clear">Limpar</button>
+				</div>
+				<div class="content-item btn-container">
+					<button onclick="calculateConsignado()" class="btn-calculate">
+						Calcular
+					</button>
+				</div>
+			</div>
+
+			<div class="divider"></div>
+			<table id="resultsTable">
+				<thead>
+					<tr>
+						<th colspan="2">Resultado</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Parcela mensal estimada</td>
+						<td id="mensal">R$ 0,00</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			const maskInput = document.querySelectorAll('.mask-value-input');
+			maskInput.forEach((input) => {
+				VMasker(input).maskMoney({
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					zeroCents: false,
+				});
+			});
+		</script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const rateInput = document.getElementById('rate');
+
+				if (rateInput.value === '') {
+					rateInput.value = 2.5;
+				}
+			});
+			function incrementMonths() {
+				const monthsInput = document.getElementById('months');
+				if (monthsInput.value === '') {
+					monthsInput.value = 12;
+				} else {
+					monthsInput.value = parseInt(monthsInput.value) + 1;
+				}
+			}
+
+			function decrementMonths() {
+				const monthsInput = document.getElementById('months');
+				if (monthsInput.value === '' || parseInt(monthsInput.value) > 1) {
+					monthsInput.value =
+						monthsInput.value === '' ? 12 : parseInt(monthsInput.value) - 1;
+				}
+			}
+			const public = document.getElementById('publicServer');
+			const existingLoansToggle = document.getElementById(
+				'existingLoansToggle'
+			);
+			const existingLoansInput = document.getElementById('existingLoansInput');
+			const existingLoansInputBalancer = document.getElementById(
+				'existingLoansInput-balancer'
+			);
+
+			existingLoansToggle.addEventListener('change', function () {
+				if (existingLoansToggle.checked) {
+					existingLoansInput.style.display = 'block';
+					existingLoansInputBalancer.style.display = 'none';
+				} else {
+					existingLoansInput.style.display = 'none';
+					existingLoansInputBalancer.style.display = 'block';
+					document.getElementById('existingLoanAmount').value = '';
+				}
+			});
+			function calculateConsignado() {
+				const existingLoans = parseFloat(
+					parseVMMaskerValue(
+						document.getElementById('existingLoanAmount').value
+					)
+				);
+				const principal = parseFloat(
+					parseVMMaskerValue(document.getElementById('principal').value)
+				);
+				console.log(principal);
+				let rate = parseFloat(document.getElementById('rate').value);
+				let months = parseFloat(document.getElementById('months').value);
+				const rateType = document.getElementById('rateType').value;
+
+				// Verificar se os campos estão vazios
+				if (isNaN(principal) || isNaN(rate) || isNaN(months)) {
+					alert('Por favor, preencha todos os campos.');
+					return;
+				}
+
+				// Verificar se os valores são negativos
+				if (principal < 0 || rate < 0 || months < 0) {
+					alert('Valores negativos não são aceitos.');
+					return;
+				}
+
+				if (rateType === 'annual') {
+					rate /= 12;
+				}
+
+				let newValue;
+				if (!isNaN(existingLoans) && existingLoans !== null) {
+					newValue = principal + existingLoans;
+				} else {
+					newValue = principal;
+				}
+				const monthlyInterest = rate / 100;
+				const x = Math.pow(1 + monthlyInterest, months);
+				const monthlyPayment = (newValue * x * monthlyInterest) / (x - 1);
+				let final;
+				final = monthlyPayment;
+
+				document.getElementById('mensal').textContent = `R$${final.toFixed(2)}`;
+
+				document.getElementById('resultsTable').style.display = 'table';
+			}
+
+			function clearFields() {
+				document.getElementById('principal').value = '';
+				document.getElementById('existingLoanAmount').value = '';
+				document.getElementById('rate').value = '';
+				document.getElementById('months').value = '';
+				existingLoansToggle.checked = false;
+				existingLoansInput.style.display = 'none';
+				public.checked = false;
+				document.getElementById('resultsTable').style.display = 'none';
+			}
+
+			function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
+		</script>
+	</body>
 </html>

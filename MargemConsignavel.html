@@ -1,252 +1,324 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <title>Calculadora de Margem Consignável INSS</title>
-    <style>
-        #consigCalc,
-        .consignado-calculator {
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+		<title>Calculadora de Margem Consignável INSS</title>
+		<style>
+			#consigCalc,
+			.consignado-calculator {
+				padding: 20px;
+				background-color: #ffffff;
+				border-radius: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				width: 90%;
+				max-width: 500px;
+			}
 
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            font-weight: 500;
-        }
+			.calculator-title {
+				text-align: center;
+				margin-bottom: 15px;
+				font-size: 1.5em;
+				font-weight: 500;
+			}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+			.input-group {
+				margin-bottom: 15px;
+			}
 
-        .consignado-calculator label {
-            display: block;
-            margin-bottom: 8px;
-        }
+			.consignado-calculator label {
+				display: block;
+				margin-bottom: 8px;
+			}
 
-        #benefit,
-        #benefitEmp,
-        .input-value {
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px;
-            border: 0;
-            width: 100%;
-            background-color: #01E06926;
-        }
+			#benefit,
+			#benefitEmp,
+			.input-value {
+				padding: 8px;
+				border-radius: 8px;
+				font-size: 16px;
+				border: 0;
+				width: 100%;
+				background-color: #01e06926;
+			}
 
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
+			.btn-container {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 15px;
+			}
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
-        }
+			.btn {
+				padding: 10px 20px;
+				border-radius: 8px;
+				border: none;
+				font-size: 16px;
+			}
 
-        #buttonCalc,
-        .btn-calculate {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            flex: 1;
-            margin-right: 5px;
-        }
+			#buttonCalc,
+			.btn-calculate {
+				background-color: #01e069;
+				color: white;
+				border: none;
+				border-radius: 8px;
+				padding: 10px 20px;
+				flex: 1;
+				margin-right: 5px;
+			}
 
-        #buttonClear,
-        .btn-clear {
-            background-color: transparent;
-            border: none;
-            color: black;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 5px;
-        }
+			#buttonClear,
+			.btn-clear {
+				background-color: transparent;
+				border: none;
+				color: black;
+				cursor: pointer;
+				flex: 1;
+				margin-left: 5px;
+			}
 
-        .btn-clear:focus {
-            outline: none;
-        }
+			.btn-clear:focus {
+				outline: none;
+			}
 
-        .btn-calculate:focus {
-            outline: none;
-        }
+			.btn-calculate:focus {
+				outline: none;
+			}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
 
-        th,
-        td {
-            border: 1px solid;
-            padding: 8px;
-            text-align: left;
-        }
+			th,
+			td {
+				border: 1px solid;
+				padding: 8px;
+				text-align: left;
+			}
 
-        th {
-            background-color: #D9FAE9;
-            color: rgb(0, 0, 0);
-        }
+			th {
+				background-color: #d9fae9;
+				color: rgb(0, 0, 0);
+			}
 
-        .info-symbol {
-            margin-left: 5px;
-            cursor: pointer;
-        }
+			.info-symbol {
+				margin-left: 5px;
+				cursor: pointer;
+			}
 
-        #benefit,
-        #benefitEmp,
-        .input-value:focus {
-            outline: none;
-        }
+			#benefit,
+			#benefitEmp,
+			.input-value:focus {
+				outline: none;
+			}
 
-        #benefit,
-        #benefitEmp,
-        .input-value::-webkit-inner-spin-button,
-        .input-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+			#benefit,
+			#benefitEmp,
+			.input-value::-webkit-inner-spin-button,
+			.input-value::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
 
-        .input-row {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
+			.input-row {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+			}
 
-        .currency-symbol {
-            margin-left: 5px;
-            align-self: center;
-            background-color: #01E06926;
-            padding: 8px;
-            border-radius: 8px;
-        }
-    </style>
-</head>
+			.currency-symbol {
+				margin-left: 5px;
+				align-self: center;
+				background-color: #01e06926;
+				padding: 8px;
+				border-radius: 8px;
+			}
+		</style>
+	</head>
 
-<body>
-    <div id="consigCalc" class="consignado-calculator">
-        <div class="calculator-title">CALCULADORA DE MARGEM CONSIGNÁVEL INSS</div>
-        <div class="input-group">
-            <label for="benefit">Valor do benefício / salário<span class="info-symbol"
-                    title="Insira o valor líquido do seu benefício recebido pelo INSS.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" oninput="checkValue()" id="benefit" placeholder="0,00" min="0"
-                    class="input-value" />
-                <div id="error-message" style="color: red;"></div>
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
-        <div class="input-group">
-            <label for="benefit">Parcela de emprestimo do beneficio<span class="info-symbol"
-                    title="Caso você tenha algum empréstimo consignado em andamento, insira o valor da parcela.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" oninput="checkPortion()" id="benefitEmp" placeholder="0,00" min="0" class="input-value" />
-                <div id="error-message1" style="color: red;"></div>
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
+	<body>
+		<div id="consigCalc" class="consignado-calculator">
+			<div class="calculator-title">CALCULADORA DE MARGEM CONSIGNÁVEL INSS</div>
+			<div class="input-group">
+				<label for="benefit"
+					>Valor do benefício / salário<span
+						class="info-symbol"
+						title="Insira o valor líquido do seu benefício recebido pelo INSS."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						oninput="checkValue()"
+						id="benefit"
+						placeholder="0,00"
+						class="input-value mask-value-input"
+					/>
+					<div id="error-message" style="color: red"></div>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
+			<div class="input-group">
+				<label for="benefit"
+					>Parcela de emprestimo do beneficio<span
+						class="info-symbol"
+						title="Caso você tenha algum empréstimo consignado em andamento, insira o valor da parcela."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						oninput="checkPortion()"
+						id="benefitEmp"
+						placeholder="0,00"
+						class="input-value mask-value-input"
+					/>
+					<div id="error-message1" style="color: red"></div>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
 
-        <div class="btn-container">
-            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button id="buttonCalc" onclick="calculateMargin()" class="btn-calculate">Calcular</button>
-        </div>
+			<div class="btn-container">
+				<button id="buttonClear" onclick="clearFields()" class="btn-clear">
+					Limpar
+				</button>
+				<button
+					id="buttonCalc"
+					onclick="calculateMargin()"
+					class="btn-calculate"
+				>
+					Calcular
+				</button>
+			</div>
 
-        <div id="tableContainer" style="display: none;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Valor (R$)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Margem Total</td>
-                        <td id="totalMargin">R$ 0,00</td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: #F2F2F2FD;">Margem disponivel para Empréstimos</td>
-                        <td style="background-color: #F2F2F2FD;" id="loanMargin">R$ 0,00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+			<div id="tableContainer" style="display: none">
+				<table>
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Margem Total</td>
+							<td id="totalMargin">R$ 0,00</td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">
+								Margem disponivel para Empréstimos
+							</td>
+							<td style="background-color: #f2f2f2fd" id="loanMargin">
+								R$ 0,00
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-    <script>
+		<script>
+			const maskInput = document.querySelectorAll('.mask-value-input');
+			maskInput.forEach((input) => {
+				VMasker(input).maskMoney({
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					zeroCents: false,
+				});
+			});
+		</script>
+		<script>
+			function checkValue() {
+				let benefitValue = parseVMMaskerValue(
+					document.getElementById('benefit').value
+				);
 
-        function checkValue() {
-            let benefitValue = document.getElementById("benefit").value;
+				if (benefitValue > 10000) {
+					document.getElementById('benefit').value = VMasker.toMoney(
+						(10000).toFixed(2)
+					);
+					document.getElementById('error-message').innerText =
+						'Valor excedido!';
+				} else {
+					document.getElementById('error-message').innerText = '';
+				}
+			}
 
-            if (benefitValue > 10000) {
-                document.getElementById("benefit").value = 10000;
-                document.getElementById("error-message").innerText = "Valor excedido!";
-            } else {
-                document.getElementById("error-message").innerText = "";
-            }
-        }
+			function calculateMargin() {
+				const benefitValue = parseFloat(
+					parseVMMaskerValue(document.getElementById('benefit').value)
+				);
+				const benefitEmp = parseFloat(
+					parseVMMaskerValue(document.getElementById('benefitEmp').value)
+				);
 
-        function calculateMargin() {
-            const benefitValue = parseFloat(document.getElementById("benefit").value);
-            const benefitEmp = parseFloat(document.getElementById("benefitEmp").value);
+				if (isNaN(benefitValue)) {
+					alert('Por favor, insira um valor válido para continuar!');
+					return;
+				}
 
-            if (isNaN(benefitValue)) {
-                alert("Por favor, insira um valor válido para continuar!");
-                return;
-            }
+				const totalMargin = benefitValue * 0.35;
+				const loanMargin = benefitValue * 0.35 - (benefitEmp ? benefitEmp : 0);
+				const loan = Math.max(loanMargin, 0.0);
 
-            const totalMargin = benefitValue * 0.35;
-            const loanMargin = (benefitValue * 0.35) - (benefitEmp ? benefitEmp : 0);
-            const loan = Math.max(loanMargin, 0.00);
+				document.getElementById('totalMargin').innerText =
+					'R$ ' + totalMargin.toFixed(2);
+				document.getElementById('loanMargin').innerText =
+					'R$ ' + loan.toFixed(2);
 
-            document.getElementById("totalMargin").innerText = "R$ " + totalMargin.toFixed(2);
-            document.getElementById("loanMargin").innerText = "R$ " + loan.toFixed(2);
+				document.getElementById('tableContainer').style.display = 'block';
+			}
 
-            document.getElementById("tableContainer").style.display = "block";
-        }
+			function checkPortion() {
+				setTimeout(() => {
+					const benefitEmp = parseFloat(
+						parseVMMaskerValue(document.getElementById('benefitEmp').value) || 0
+					);
+					const benefitValue = parseFloat(
+						parseVMMaskerValue(document.getElementById('benefit').value) || 0
+					);
+					const totalMargin = benefitValue * 0.35;
 
-        function checkPortion() {
-            let benefitValue1 = document.getElementById("benefitEmp").value;
-            const benefitEmp = parseFloat(document.getElementById("benefitEmp").value);
-            const benefitValue = parseFloat(document.getElementById("benefit").value);
-            const totalMargin = benefitValue * 0.35;
+					console.log('beneficio', benefitValue);
+					console.log('margem', totalMargin);
 
-            if (benefitValue1 > totalMargin) {
-                document.getElementById("benefitEmp").value = totalMargin;
-                document.getElementById("error-message1").innerText = "Valor excedido!";
-            } else {
-                document.getElementById("error-message1").innerText = "";
-            }
-        }
+					console.log('parcela', benefitEmp);
 
-        function clearFields() {
-            document.getElementById("benefit").value = "";
-            document.getElementById("benefitEmp").value = "";
-            document.getElementById("totalMargin").innerText = "R$ 0,00";
-            document.getElementById("loanMargin").innerText = "R$ 0,00";
+					if (benefitEmp > totalMargin) {
+						document.getElementById('benefitEmp').value = VMasker.toMoney(
+							totalMargin.toFixed(2)
+						);
+						document.getElementById('error-message1').innerText =
+							'Valor excedido!';
+					} else {
+						document.getElementById('error-message1').innerText = '';
+					}
+				}, 300);
+			}
 
-            document.getElementById("tableContainer").style.display = "none";
-            document.getElementById("error-message").innerText = "";
-            document.getElementById("error-message1").innerText = "";
-        }
-    </script>
-</body>
+			function clearFields() {
+				document.getElementById('benefit').value = '';
+				document.getElementById('benefitEmp').value = '';
+				document.getElementById('totalMargin').innerText = 'R$ 0,00';
+				document.getElementById('loanMargin').innerText = 'R$ 0,00';
 
+				document.getElementById('tableContainer').style.display = 'none';
+				document.getElementById('error-message').innerText = '';
+				document.getElementById('error-message1').innerText = '';
+			}
+
+			function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
+		</script>
+	</body>
 </html>

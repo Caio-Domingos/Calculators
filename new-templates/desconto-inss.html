@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+
+	</head>
+	<body>
+		<style>
+			/* Styles */
+		</style>
+
+		<section id="desconto-inss" class="tl-calcs">
+			<h2>Calculadora de INSS</h2>
+
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="value">Salário bruto</label>
+							<input
+								type="text"
+								name="value"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Enviar</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Desconto INSS</td>
+							<td id="inssDiscount">R$ 0,00</td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Salário Líquido</td>
+							<td id="netSalary" style="background-color: #f2f2f2fd">
+								R$ 0,00
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const value = form.elements['value'].value;
+
+				calculateINSS(value);
+			}
+			// Calc
+			function calculateINSS(value) {
+				if (isNaN(value)) {
+					alert('Por favor, insira um valor válido para continuar!');
+					return;
+				}
+
+				let discount = 0;
+
+				if (value <= 1320) {
+					discount = value * 0.075;
+				} else if (value <= 2571.29) {
+					discount = 1320 * 0.075 + (value - 1320) * 0.09;
+				} else if (value <= 3856.94) {
+					discount = 1320 * 0.075 + 1251.29 * 0.09 + (value - 2571.3) * 0.12;
+				} else if (value <= 7507.49) {
+					discount =
+						1320 * 0.075 +
+						1251.29 * 0.09 +
+						1285.64 * 0.12 +
+						(value - 3856.95) * 0.14;
+				} else {
+					discount = 877.63;
+				}
+
+				const netSalary = value - discount;
+
+				document.getElementById('inssDiscount').innerText =
+					'R$ ' + discount.toFixed(2);
+				document.getElementById('netSalary').innerText =
+					'R$ ' + netSalary.toFixed(2);
+
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,181 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	paddding: 0;
+}
+
+html,
+body {
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.tl-calcs {
+	/* Formulário */
+	--input-background: #01e06926;
+	--input-border-radius: 8px;
+	--input-padding: 8px;
+	--input-border: none;
+	--input-spacing: 5px;
+
+	--item-with-suffix-border-radius: var(--input-border-radius) 0 0
+		var(--input-border-radius);
+	--suffix-border-radius: 0 var(--input-border-radius)
+		var(--input-border-radius) 0;
+
+	--button-background: #01e069;
+	--button-padding: 10px 20px;
+	--button-border-radius: 8px;
+	--button-margin-right: 8px;
+
+	/* Tabela de Resultado */
+	--table-background: #fff;
+	--table-color: #000;
+	--table-th-background: #d9fae9;
+	--table-th-color: #000;
+	--table-border-radius: 8px;
+	--table-padding: 8px;
+	--table-border: 1px solid #c0c0c0;
+	--table-border-collapse: collapse;
+
+	font-family: 'Inter', sans-serif;
+	width: clamp(300px, 100%, 600px);
+	padding: 1em;
+
+	border-radius: 8px;
+	background: #fff;
+	box-shadow: 5px 5px 10px #c1c1c1, -5px -5px 10px #ffffff;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.tl-calcs .c-form {
+	width: 100%;
+}
+.tl-calcs .c-inputs-grid {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+.tl-calcs .c-inputs-grid :nth-last-child(1):nth-child(odd) {
+	grid-column: 1 / -1;
+}
+
+.tl-calcs .c-input-group {
+	display: flex;
+	align-items: flex-end;
+	margin: var(--input-spacing) 0;
+}
+.tl-calcs .c-input-group .c-label-input-content {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	flex: 1;
+}
+.tl-calcs .c-input-group .c-label-input-content label {
+	margin-bottom: 5px;
+}
+
+.tl-calcs .input-data {
+	background-color: var(--input-background);
+	border-radius: var(--input-border-radius);
+	padding: var(--input-padding);
+	border: var(--input-border);
+	width: 100%;
+}
+
+.tl-calcs .input-data:focus {
+	border: var(--input-border);
+	outline: none;
+}
+
+.tl-calcs .input-data.suffix-input {
+	border-radius: var(--item-with-suffix-border-radius);
+}
+
+.tl-calcs .c-suffix {
+	background-color: var(--input-background);
+	padding: calc(var(--input-padding) - 1.5px);
+	border: var(--input-border);
+
+	border-radius: var(--suffix-border-radius);
+	margin-left: 5px;
+}
+
+.tl-calcs .c-action-buttons {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	gap: 10px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.tl-calcs .c-action-buttons button {
+	padding: var(--button-padding);
+	border-radius: var(--button-border-radius);
+	border: 0.5px solid var(--button-background);
+
+	font-weight: 600;
+	cursor: pointer;
+
+	transition: background 0.2s ease-in-out;
+	transition: color 0.2s ease-in-out;
+}
+.tl-calcs .c-action-buttons button:hover {
+	background-color: var(--button-background);
+	color: #fff;
+}
+
+.tl-calcs .c-action-buttons button[type='submit'] {
+	background-color: var(--button-background);
+	color: #fff;
+	border: none;
+}
+.tl-calcs .c-action-buttons button[type='submit']:hover {
+	background-color: white;
+	color: #000;
+	border: 0.5px solid var(--button-background);
+}
+
+/* Table results */
+
+.c-result-table {
+	width: 100%;
+	margin-top: 20px;
+}
+
+.c-result-table table {
+	width: 100%;
+	border-collapse: var(--table-border-collapse);
+	margin-top: 20px;
+	border: var(--table-border);
+	border-radius: var(--table-border-radius);
+	background-color: var(--table-background);
+	color: var(--table-color);
+	/* display: none; */
+}
+.c-result-table table.hide {
+	display: none;
+}
+
+.c-result-table th,
+.c-result-table td {
+	border: var(--table-border);
+	padding: var(--table-padding);
+	text-align: left;
+}
+
+.c-result-table th {
+	background-color: var(--table-th-background);
+	color: var(--table-th-color);
+}

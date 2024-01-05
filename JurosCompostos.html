@@ -1,338 +1,410 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <title>Calculadora de Juros Compostos</title>
-    <style>
-        #compoundCalc,
-        .compound-interest-calculator {
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+		<title>Calculadora de Juros Compostos</title>
+		<style>
+			#compoundCalc,
+			.compound-interest-calculator {
+				padding: 20px;
+				background-color: #ffffff;
+				border-radius: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				width: 90%;
+				max-width: 500px;
+			}
 
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            font-weight: 500;
-        }
+			.calculator-title {
+				text-align: center;
+				margin-bottom: 15px;
+				font-size: 1.5em;
+				font-weight: 500;
+			}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+			.input-group {
+				margin-bottom: 15px;
+			}
 
-        .input-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+			.input-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
 
-        .compound-interest-calculator label {
-            display: block;
-            margin-bottom: 8px;
-        }
+			.compound-interest-calculator label {
+				display: block;
+				margin-bottom: 8px;
+			}
 
-        .info-symbol {
-            margin-left: 5px;
-            cursor: pointer;
-        }
+			.info-symbol {
+				margin-left: 5px;
+				cursor: pointer;
+			}
 
-        #principal,
-        #monthlyValue,
-        .input-value::-webkit-inner-spin-button,
-        .input-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+			#principal,
+			#monthlyValue,
+			.input-value::-webkit-inner-spin-button,
+			.input-value::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
 
-        #principal,
-        #monthlyValue,
-        #rate,
-        #months,
-        #ratePeriod,
-        #monthsPeriod,
-        .input-value:focus {
-            outline: none;
-        }
+			#principal,
+			#monthlyValue,
+			#rate,
+			#months,
+			#ratePeriod,
+			#monthsPeriod,
+			.input-value:focus {
+				outline: none;
+			}
 
-        #principal,
-        #monthlyValue,
-        .input-value {
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 16px;
-            border: 0;
-        }
+			#principal,
+			#monthlyValue,
+			.input-value {
+				padding: 8px;
+				border-radius: 8px;
+				font-size: 16px;
+				border: 0;
+			}
 
-        #rate,
-        .input-value-rate {
-            padding: 8px;
-            font-size: 16px;
-            border: 0;
-            border-bottom-left-radius: 8px;
-            border-top-left-radius: 8px;
-        }
+			#rate,
+			.input-value-rate {
+				padding: 8px;
+				font-size: 16px;
+				border: 0;
+				border-bottom-left-radius: 8px;
+				border-top-left-radius: 8px;
+			}
 
-        .input-value-rate::-webkit-inner-spin-button,
-        .input-value-rate::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+			.input-value-rate::-webkit-inner-spin-button,
+			.input-value-rate::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
 
+			#months,
+			.input-value-months {
+				padding: 8px;
+				font-size: 16px;
+				border: 0;
+				border-bottom-left-radius: 8px;
+				border-top-left-radius: 8px;
+			}
 
-        #months,
-        .input-value-months {
-            padding: 8px;
-            font-size: 16px;
-            border: 0;
-            border-bottom-left-radius: 8px;
-            border-top-left-radius: 8px;
-        }
+			.input-value-months::-webkit-inner-spin-button,
+			.input-value-months::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
 
-        .input-value-months::-webkit-inner-spin-button,
-        .input-value-months::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+			#months {
+				width: 51%;
+				background-color: #01e06926;
+			}
 
-        #months {
-            width: 51%;
-            background-color: #01E06926;
-        }
+			#principal,
+			#monthlyValue {
+				width: 100%;
+				background-color: #01e06926;
+			}
 
-        #principal,
-        #monthlyValue {
-            width: 100%;
-            background-color: #01E06926;
-        }
+			#rate {
+				width: 51%;
+				background-color: #01e06926;
+			}
 
-        #rate {
-            width: 51%;
-            background-color: #01E06926;
-        }
+			select {
+				width: 61%;
+				background-color: #01e069;
+				color: white;
+				border: none;
+				border-top-right-radius: 8px;
+				border-bottom-right-radius: 8px;
+				font-size: 16px;
+				padding: 8px;
+			}
 
-        select {
-            width: 61%;
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-            font-size: 16px;
-            padding: 8px;
-        }
+			.currency-symbol {
+				margin-left: 5px;
+				align-self: center;
+				background-color: #01e06926;
+				padding: 8px;
+				border-radius: 8px;
+			}
 
-        .currency-symbol {
-            margin-left: 5px;
-            align-self: center;
-            background-color: #01E06926;
-            padding: 8px;
-            border-radius: 8px;
-        }
+			.btn-container {
+				display: flex;
+				justify-content: space-between;
+			}
 
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
+			#buttonCalc,
+			.btn-calculate {
+				background-color: #01e069;
+				color: white;
+				border: none;
+				border-radius: 8px;
+				padding: 10px 20px;
+				flex: 1;
+				margin-right: 5px;
+			}
 
-        #buttonCalc,
-        .btn-calculate {
-            background-color: #01E069;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            flex: 1;
-            margin-right: 5px;
-        }
+			#buttonClear,
+			.btn-clear {
+				background-color: transparent;
+				border: none;
+				color: black;
+				cursor: pointer;
+				flex: 1;
+				margin-left: 5px;
+			}
 
-        #buttonClear,
-        .btn-clear {
-            background-color: transparent;
-            border: none;
-            color: black;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 5px;
-        }
+			.btn-clear:focus {
+				outline: none;
+			}
 
-        .btn-clear:focus {
-            outline: none;
-        }
+			.btn-calculate:focus {
+				outline: none;
+			}
 
-        .btn-calculate:focus {
-            outline: none;
-        }
+			.divider {
+				height: 1px;
+				background-color: #ccc;
+				margin: 15px 0;
+			}
 
-        .divider {
-            height: 1px;
-            background-color: #ccc;
-            margin: 15px 0;
-        }
+			/* Styles for the results table */
+			#resultsTable {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+				display: none;
+			}
 
-        /* Styles for the results table */
-        #resultsTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            display: none;
-        }
+			#resultsTable,
+			#resultsTable th,
+			#resultsTable td {
+				border: 1px solid;
+			}
 
-        #resultsTable,
-        #resultsTable th,
-        #resultsTable td {
-            border: 1px solid;
-        }
+			#resultsTable th,
+			#resultsTable td {
+				text-align: left;
+				padding: 10px;
+				border: 1px solid #ccc;
+			}
 
-        #resultsTable th,
-        #resultsTable td {
-            text-align: left;
-            padding: 10px;
-            border: 1px solid #ccc;
+			#resultsTable th {
+				background-color: #d9fae9;
+			}
 
-        }
+			#resultsTable td {
+				background-color: #ffffff26;
+			}
+		</style>
+	</head>
 
-        #resultsTable th {
-            background-color: #D9FAE9;
-        }
+	<body>
+		<div id="compoundCalc" class="compound-interest-calculator">
+			<div class="calculator-title">CALCULADORA DE JUROS COMPOSTOS</div>
 
-        #resultsTable td {
-            background-color: #ffffff26;
-        }
+			<div class="input-group">
+				<label for="principal"
+					>Valor principal
+					<span class="info-symbol" title="Insira o valor inicial."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						id="principal"
+						placeholder="0,0"
+						class="input-value mask-value-input"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
 
-    </style>
-</head>
+			<div class="input-group">
+				<label for="monthlyValue"
+					>Valor mensal
+					<span
+						class="info-symbol"
+						title="Insira o valor que será depositado mensalmente."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						id="monthlyValue"
+						placeholder="0,00"
+						class="input-value mask-value-input"
+					/>
+					<span class="currency-symbol">R$</span>
+				</div>
+			</div>
 
-<body>
-    <div id="compoundCalc" class="compound-interest-calculator">
-        <div class="calculator-title">CALCULADORA DE JUROS COMPOSTOS</div>
+			<div class="input-group">
+				<label
+					>Taxa de juros (%)
+					<span
+						class="info-symbol"
+						title="Insira a taxa de juros, seja ela mensal ou anual."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						type="number"
+						id="rate"
+						placeholder="0"
+						min="0"
+						class="input-value-rate"
+					/>
+					<select id="ratePeriod" class="input-value-rate-select">
+						<option value="monthly">Mensal</option>
+						<option value="yearly">Anual</option>
+					</select>
+				</div>
+			</div>
 
-        <div class="input-group">
-            <label for="principal">Valor principal <span class="info-symbol"
-                    title="Insira o valor inicial.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" id="principal" placeholder="0,0" min="0" class="input-value" />
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
+			<div class="input-group">
+				<label
+					>Duração
+					<span class="info-symbol" title="Insira a duração do investimento."
+						>ℹ</span
+					></label
+				>
+				<div class="input-row">
+					<input
+						type="number"
+						id="months"
+						placeholder="0"
+						min="0"
+						class="input-value-months"
+					/>
+					<select id="monthsPeriod" class="input-value-months-select">
+						<option value="monthly">Meses</option>
+						<option value="yearly">Anos</option>
+					</select>
+				</div>
+			</div>
 
-        <div class="input-group">
-            <label for="monthlyValue">Valor mensal <span class="info-symbol"
-                    title="Insira o valor que será depositado mensalmente.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" id="monthlyValue" placeholder="0,00" min="0" class="input-value" />
-                <span class="currency-symbol">R$</span>
-            </div>
-        </div>
+			<div class="btn-container">
+				<button id="buttonClear" onclick="clearFields()" class="btn-clear">
+					Limpar
+				</button>
+				<button
+					id="buttonCalc"
+					onclick="calculateCompoundInterest()"
+					class="btn-calculate"
+				>
+					Calcular
+				</button>
+			</div>
 
-        <div class="input-group">
-            <label>Taxa de juros (%) <span class="info-symbol"
-                    title="Insira a taxa de juros, seja ela mensal ou anual.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" id="rate" placeholder="0" min="0" class="input-value-rate" />
-                <select id="ratePeriod" class="input-value-rate-select">
-                    <option value="monthly">Mensal</option>
-                    <option value="yearly">Anual</option>
-                </select>
-            </div>
-        </div>
+			<div class="divider"></div>
 
-        <div class="input-group">
-            <label>Duração <span class="info-symbol" title="Insira a duração do investimento.">ℹ</span></label>
-            <div class="input-row">
-                <input type="number" id="months" placeholder="0" min="0" class="input-value-months" />
-                <select id="monthsPeriod" class="input-value-months-select">
-                    <option value="monthly">Meses</option>
-                    <option value="yearly">Anos</option>
-                </select>
-            </div>
-        </div>
+			<!-- Results Table -->
+			<table id="resultsTable">
+				<thead>
+					<tr>
+						<th>Descrição</th>
+						<th>Valor (R$)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Valor total investido</td>
+						<td id="totalInvested"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #f2f2f2fd">Rendimento total</td>
+						<td style="background-color: #f2f2f2fd" id="totalInterest"></td>
+					</tr>
+					<tr>
+						<td>Valor total ao final</td>
+						<td id="totalValue"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-        <div class="btn-container">
-            <button id="buttonClear" onclick="clearFields()" class="btn-clear">Limpar</button>
-            <button id="buttonCalc" onclick="calculateCompoundInterest()" class="btn-calculate">Calcular</button>
-        </div>
+		<script>
+			const maskInput = document.querySelectorAll('.mask-value-input');
+			maskInput.forEach((input) => {
+				VMasker(input).maskMoney({
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					zeroCents: false,
+				});
+			});
+		</script>
+		<script>
+			function clearFields() {
+				document.getElementById('principal').value = '';
+				document.getElementById('monthlyValue').value = '';
+				document.getElementById('rate').value = '';
+				document.getElementById('months').value = '';
+				document.getElementById('resultsTable').style.display = 'none';
+			}
 
-        <div class="divider"></div>
+			function calculateCompoundInterest() {
+				const principal = parseFloat(
+					parseVMMaskerValue(document.getElementById('principal').value) || 0
+				);
+				const monthlyValue = parseFloat(
+					parseVMMaskerValue(document.getElementById('monthlyValue').value) || 0
+				);
+				let rate = parseFloat(document.getElementById('rate').value || 0);
+				let months = parseFloat(document.getElementById('months').value || 0);
 
-        <!-- Results Table -->
-        <table id="resultsTable">
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Valor total investido</td>
-                    <td id="totalInvested"></td>
-                </tr>
-                <tr>
-                    <td style="background-color: #F2F2F2FD;">Rendimento total</td>
-                    <td style="background-color: #F2F2F2FD;" id="totalInterest"></td>
-                </tr>
-                <tr>
-                    <td>Valor total ao final</td>
-                    <td id="totalValue"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+				// Convert yearly rate to monthly
+				if (document.getElementById('ratePeriod').value === 'yearly') {
+					rate /= 12;
+				}
 
-    <script>
-        function clearFields() {
-            document.getElementById('principal').value = '';
-            document.getElementById('monthlyValue').value = '';
-            document.getElementById('rate').value = '';
-            document.getElementById('months').value = '';
-            document.getElementById('resultsTable').style.display = 'none';
-        }
+				// Convert years to months
+				if (document.getElementById('monthsPeriod').value === 'yearly') {
+					months *= 12;
+				}
 
-        function calculateCompoundInterest() {
-            const principal = parseFloat(document.getElementById('principal').value || 0);
-            const monthlyValue = parseFloat(document.getElementById('monthlyValue').value || 0);
-            let rate = parseFloat(document.getElementById('rate').value || 0);
-            let months = parseFloat(document.getElementById('months').value || 0);
+				let totalValue = principal;
+				let totalInvested = principal;
+				let monthlyInterest;
 
-            // Convert yearly rate to monthly
-            if (document.getElementById('ratePeriod').value === 'yearly') {
-                rate /= 12;
-            }
+				for (let i = 0; i < months; i++) {
+					monthlyInterest = totalValue * (rate / 100);
+					totalValue += monthlyInterest + monthlyValue;
+					totalInvested += monthlyValue;
+				}
 
-            // Convert years to months
-            if (document.getElementById('monthsPeriod').value === 'yearly') {
-                months *= 12;
-            }
+				const totalInterestValue = totalValue - totalInvested;
 
-            let totalValue = principal;
-            let totalInvested = principal;
-            let monthlyInterest;
+				// Display the results
 
-            for (let i = 0; i < months; i++) {
-                monthlyInterest = totalValue * (rate / 100);
-                totalValue += monthlyInterest + monthlyValue;
-                totalInvested += monthlyValue;
-            }
+				document.getElementById('totalInvested').textContent =
+					'R$ ' + VMasker.toMoney(totalInvested.toFixed(2));
+				document.getElementById('totalInterest').textContent =
+					'R$ ' + VMasker.toMoney(totalInterestValue.toFixed(2));
+				document.getElementById('totalValue').textContent =
+					'R$ ' + VMasker.toMoney(totalValue.toFixed(2));
 
-            const totalInterestValue = totalValue - totalInvested;
+				document.getElementById('resultsTable').style.display = 'table';
+			}
 
-            // Display the results
-            document.getElementById('totalInvested').textContent = 'R$ ' + totalInvested.toFixed(2);
-            document.getElementById('totalInterest').textContent = 'R$ ' + totalInterestValue.toFixed(2);
-            document.getElementById('totalValue').textContent = 'R$ ' + totalValue.toFixed(2);
-
-            document.getElementById('resultsTable').style.display = 'table';
-        }
-    </script>
-</body>
-
+			function parseVMMaskerValue(value) {
+				return value.replace('R$ ', '').replace('.', '').replace(',', '.');
+			}
+		</script>
+	</body>
 </html>
