@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+
+			.tl-calcs .c-inputs-grid {
+				display: grid; /* Isso é necessário para definir o contêiner como um grid */
+				grid-template-areas:
+					'benefit'
+					'benefitEmp';
+
+				grid-template-columns: repeat(1, 1fr);
+			}
+
+			@media (min-width: 600px) {
+				.tl-calcs .c-inputs-grid {
+					grid-template-columns: repeat(2, 1fr);
+					grid-template-areas: 'benefit benefitEmp';
+				}
+			}
+		</style>
+
+		<section id="margem-consignavel" class="tl-calcs">
+			<h2>Margem Consignável</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group benefit">
+						<div class="c-label-input-content">
+							<label for="value">Valor do benefício / salário</label>
+							<input
+								type="text"
+								name="benefit"
+								id="benefit"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group benefitEmp">
+						<div class="c-label-input-content">
+							<label for="value">Parcela de emprestimo do beneficio</label>
+							<input
+								type="text"
+								id="benefitEmp"
+								name="benefitEmp"
+								oninput="checkPortion()"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Margem Total</td>
+							<td id="totalMargin">R$ 0,00</td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">
+								Margem disponivel para Empréstimos
+							</td>
+							<td style="background-color: #f2f2f2fd" id="loanMargin">
+								R$ 0,00
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+
+				calculateMargin();
+			}
+			// Calc
+
+			function calculateMargin() {
+				const benefitValue = parseFloat(
+					parseVMMaskerValue(document.getElementById('benefit').value)
+				);
+				const benefitEmp = parseFloat(
+					parseVMMaskerValue(document.getElementById('benefitEmp').value)
+				);
+
+				if (isNaN(benefitValue)) {
+					alert('Por favor, insira um valor válido para continuar!');
+					return;
+				}
+
+				const totalMargin = benefitValue * 0.35;
+				const loanMargin = benefitValue * 0.35 - (benefitEmp ? benefitEmp : 0);
+				const loan = Math.max(loanMargin, 0.0);
+
+				document.getElementById('totalMargin').innerText =
+					'R$ ' + totalMargin.toFixed(2);
+				document.getElementById('loanMargin').innerText =
+					'R$ ' + loan.toFixed(2);
+
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+
+			function checkPortion() {
+				setTimeout(() => {
+					const benefitEmp = parseFloat(
+						parseVMMaskerValue(document.getElementById('benefitEmp').value) || 0
+					);
+					const benefitValue = parseFloat(
+						parseVMMaskerValue(document.getElementById('benefit').value) || 0
+					);
+					const totalMargin = benefitValue * 0.35;
+
+					console.log('beneficio', benefitValue);
+					console.log('margem', totalMargin);
+
+					console.log('parcela', benefitEmp);
+
+					if (benefitEmp > totalMargin) {
+						document.getElementById('benefitEmp').value = VMasker.toMoney(
+							totalMargin.toFixed(2)
+						);
+					} else {
+					}
+				}, 300);
+			}
+		</script>
+	</body>
+</html>

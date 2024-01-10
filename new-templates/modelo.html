@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+		</style>
+
+		<section id="{titulo}" class="tl-calcs">
+			<h2>{Titulo}</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="value">{Input}</label>
+							<input
+								type="text"
+								name="value"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Desconto INSS</td>
+							<td id="inssDiscount">R$ 0,00</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const value = form.elements['value'].value;
+			}
+			// Calc
+		</script>
+	</body>
+</html>

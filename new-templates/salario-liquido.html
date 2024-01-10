@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+		</style>
+
+		<section id="salario-liquido" class="tl-calcs">
+			<h2>Salario Liquido</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="grossSalary">Salário Bruto</label>
+							<input
+								type="text"
+								id="grossSalary"
+								name="grossSalary"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="discounts">Descontos</label>
+							<input
+								type="text"
+								id="discounts"
+								name="discounts"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="dependents">Número de Dependentes</label>
+							<input
+								id="dependents"
+								name="dependents"
+								type="number"
+								class="input-data"
+							/>
+						</div>
+					</div>
+					<div class="c-input-group"></div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="background-color: #fffffffd">Salário Bruto</td>
+							<td id="displayGrossSalary" style="background-color: #fffffffd">
+								R$ 0,00
+							</td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Descontos</td>
+							<td style="background-color: #f2f2f2fd" id="displayDiscounts">
+								R$ 0,00
+							</td>
+						</tr>
+						<tr>
+							<td style="background-color: #fffffffd">Desconto INSS</td>
+							<td id="inssDiscount" style="background-color: #fffffffd">
+								R$ 0,00
+							</td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Desconto IRRF</td>
+							<td style="background-color: #f2f2f2fd" id="irrfDiscount">
+								R$ 0,00
+							</td>
+						</tr>
+						<tr>
+							<td style="background-color: #fffffffd">Salário Líquido</td>
+							<td id="netSalary" style="background-color: #fffffffd">
+								R$ 0,00
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const grossSalary = form.elements['grossSalary'].value;
+				const discounts = form.elements['discounts'].value;
+				const dependents = form.elements['dependents'].value;
+
+				calculateGrossSalary(
+					parseVMMaskerValue(grossSalary),
+					parseVMMaskerValue(discounts),
+					dependents
+				);
+			}
+			// Calc
+
+			function calculateNetSalary(grossSalary, discounts, dependents) {
+				const inssValue = calculateINSS(grossSalary);
+				const irrfValue = calculateIRRF(grossSalary, dependents);
+
+				const netValue = grossSalary - discounts - inssValue - irrfValue;
+
+				document.getElementById(
+					'displayGrossSalary'
+				).textContent = `R$ ${VMasker.toMoney(grossSalary.toFixed(2))}`;
+				document.getElementById(
+					'displayDiscounts'
+				).textContent = `R$ ${VMasker.toMoney(discounts.toFixed(2))}`;
+				document.getElementById(
+					'inssDiscount'
+				).textContent = `R$ ${VMasker.toMoney(inssValue.toFixed(2))}`;
+				document.getElementById(
+					'irrfDiscount'
+				).textContent = `R$ ${VMasker.toMoney(irrfValue.toFixed(2))}`;
+				document.getElementById(
+					'netSalary'
+				).textContent = `R$ ${VMasker.toMoney(netValue.toFixed(2))}`;
+
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+
+			function calculateINSS(base) {
+				if (base <= 1320) {
+					return base * 0.075;
+				} else if (base <= 2571.29) {
+					return 1320 * 0.075 + (base - 1320) * 0.09;
+				} else if (base <= 3856.94) {
+					return 1320 * 0.075 + 1251.29 * 0.09 + (base - 2571.3) * 0.12;
+				} else if (base <= 7507.49) {
+					return (
+						1320 * 0.075 +
+						1251.29 * 0.09 +
+						1285.64 * 0.12 +
+						(base - 3856.95) * 0.14
+					);
+				} else {
+					return (
+						1320 * 0.075 + 1251.29 * 0.09 + 1285.64 * 0.12 + 3650.54 * 0.14
+					);
+				}
+			}
+
+			function calculateIRRF(base, dependents) {
+				base -= calculateINSS(base);
+				base -= dependents * 189.59;
+				console.log('base', base);
+				if (base <= 2112) {
+					return 0;
+				} else if (base <= 2826.65) {
+					return base * 0.075 - 158.4;
+				} else if (base <= 3751.05) {
+					return base * 0.15 - 370.4;
+				} else if (base <= 4664.68) {
+					return base * 0.225 - 651.73;
+				} else {
+					return base * 0.275 - 884.96;
+				}
+			}
+		</script>
+	</body>
+</html>

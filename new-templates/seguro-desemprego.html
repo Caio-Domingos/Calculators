@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+		</style>
+
+		<section id="seguro-desemprego" class="tl-calcs">
+			<h2>Seguro Desemprego</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="lastMonthSalary">Salário último mês</label>
+							<input
+								type="text"
+								id="lastMonthSalary"
+								name="lastMonthSalary"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="secondLastMonthSalary">Salário penúltimo mês</label>
+							<input
+								type="text"
+								id="secondLastMonthSalary"
+								name="secondLastMonthSalary"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="thirdLastMonthSalary"
+								>Salário antepenúltimo mês</label
+							>
+							<input
+								type="text"
+								id="thirdLastMonthSalary"
+								name="thirdLastMonthSalary"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="monthsWorked">Quantidade de meses trabalhados</label>
+							<input
+								type="number"
+								id="monthsWorked"
+								name="monthsWorked"
+								class="input-data"
+							/>
+						</div>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="timesRequested">Quantas vezes solicitou o benefício</label>
+							<select
+								type="text"
+								id="timesRequested"
+								name="timesRequested"
+								class="input-data"
+							>
+								<option value="0">É a primeira vez</option>
+								<option value="1">É a segunda vez</option>
+								<option value="2">É a terceira vez</option>
+							</select>
+						</div>
+					</div>
+					<div class="c-input-group"></div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor / Quantidade</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Valor</td>
+							<td id="benefitValue">R$ 0,00</td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">
+								Quantidade de parcelas
+							</td>
+							<td style="background-color: #f2f2f2fd" id="parcelCount">0</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const lastMonthSalary = form.elements['lastMonthSalary'].value;
+				const secondLastMonthSalary =
+					form.elements['secondLastMonthSalary'].value;
+				const thirdLastMonthSalary =
+					form.elements['thirdLastMonthSalary'].value;
+				const monthsWorked = form.elements['monthsWorked'].value;
+				const timesRequested = form.elements['timesRequested'].value;
+
+				calculateBenefit(
+					parseVMMaskerValue(lastMonthSalary),
+					parseVMMaskerValue(secondLastMonthSalary),
+					parseVMMaskerValue(thirdLastMonthSalary),
+					monthsWorked,
+					timesRequested
+				);
+			}
+			// Calc
+
+			function calculateBenefit(
+				lastMonthSalary,
+				secondLastMonthSalary,
+				thirdLastMonthSalary,
+				monthsWorked,
+				timesRequested
+			) {
+				const times = timesRequested.value;
+
+				const averageSalary =
+					(lastMonthSalary + secondLastMonthSalary + thirdLastMonthSalary) / 3;
+
+				let benefitAmount;
+
+				if (averageSalary <= 1968.36) {
+					benefitAmount = averageSalary * 0.8;
+				} else if (averageSalary <= 3280.93) {
+					benefitAmount = (averageSalary - 1968.36) * 0.5 + 1574.69;
+				} else {
+					benefitAmount = 2230.97; // teto
+				}
+
+				let parcelCount = 0;
+
+				if (timesRequested === '0') {
+					if (monthsWorked >= 12 && monthsWorked <= 23) {
+						parcelCount = 4;
+					} else if (monthsWorked >= 24) {
+						parcelCount = 5;
+					}
+				} else if (timesRequested === '1') {
+					if (monthsWorked >= 6 && monthsWorked <= 11) {
+						parcelCount = 3;
+					} else if (monthsWorked >= 12 && monthsWorked <= 23) {
+						parcelCount = 4;
+					} else if (monthsWorked >= 24) {
+						parcelCount = 5;
+					}
+				} else if (timesRequested === '2') {
+					if (monthsWorked >= 6 && monthsWorked <= 11) {
+						parcelCount = 3;
+					} else if (monthsWorked >= 12 && monthsWorked <= 23) {
+						parcelCount = 4;
+					} else if (monthsWorked >= 24) {
+						parcelCount = 5;
+					}
+				}
+
+				document.getElementById('benefitValue').innerText =
+					'R$ ' + VMasker.toMoney(benefitAmount.toFixed(2));
+				document.getElementById('parcelCount').innerText = parcelCount;
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+
+			.tl-calcs .c-inputs-grid {
+				display: grid; /* Isso é necessário para definir o contêiner como um grid */
+				grid-template-areas:
+					'c-benefit-value'
+					'c-other-billings-context'
+					'c-wants-pay-in'
+					'c-max-tax'
+					'c-public-server';
+				grid-template-columns: repeat(1, 1fr);
+			}
+
+			@media (min-width: 600px) {
+				.tl-calcs .c-inputs-grid {
+					grid-template-columns: repeat(2, 1fr);
+					grid-template-areas:
+						'c-benefit-value c-wants-pay-in'
+						'c-other-billings-context c-max-tax'
+						'c-public-server c-public-server'; /* Ajustado para ter um número igual de áreas por linha */
+				}
+			}
+
+			.c-benefit-value {
+				grid-area: c-benefit-value;
+			}
+			.c-other-billings-context {
+				grid-area: c-other-billings-context;
+			}
+			.c-wants-pay-in {
+				grid-area: c-wants-pay-in;
+			}
+			.c-max-tax {
+				grid-area: c-max-tax;
+			}
+			.c-public-server {
+				grid-area: c-public-server;
+			}
+			.c-public-server .inner-switch-input-content {
+				margin: 0;
+			}
+			/* .c-spacer-form { grid-area: c-spacer-form; } Esta classe foi removida porque não foi definida em grid-template-areas */
+		</style>
+
+		<section id="emprestimo-consignado" class="tl-calcs">
+			<h2>Empréstimo Consignado</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group c-benefit-value">
+						<div class="c-inner-input-content">
+							<div class="c-label-input-content">
+								<label for="value">Qual o valor do seu beneficio?</label>
+								<input
+									type="text"
+									name="principal"
+									class="c-mask-input input-data suffix-input"
+								/>
+							</div>
+							<span class="c-suffix">R$</span>
+						</div>
+					</div>
+					<div class="c-input-group c-multi-column c-other-billings-context">
+						<div class="inner-switch-input-content">
+							<label class="c-slider-checkbox">
+								<input
+									type="checkbox"
+									name="existingLoansToggle"
+									onchange="onChangeCheckboxOtherBillings(event)"
+									class="c-checkbox"
+								/>
+								<span class="c-slider-switch"></span>
+							</label>
+
+							<label for="otherBillings">Possui outros emprestimos?</label>
+						</div>
+						<div id="plusValuesContent" class="c-inner-input-content hide">
+							<div class="c-label-input-content">
+								<label for="value">Qual o valor da parcela?</label>
+								<input
+									type="text"
+									name="existingLoanAmount"
+									class="c-mask-input input-data suffix-input"
+								/>
+							</div>
+							<span class="c-suffix">R$</span>
+						</div>
+					</div>
+
+					<div class="c-input-group c-wants-pay-in">
+						<div class="c-label-input-content">
+							<label for="value">Deseja pagar o crédito em:</label>
+							<div class="number-input-ext-change-content">
+								<button
+									class="c-change-number-input change-number-input-min"
+									onclick="decrementValue('months')"
+								>
+									&minus;
+								</button>
+								<input
+									id="months"
+									type="number"
+									name="months"
+									class="input-data number-input-ext-change"
+									value="12"
+								/>
+								<button
+									class="c-change-number-input change-number-input-plu"
+									onclick="incrementValue('months')"
+								>
+									&plus;
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="c-input-group c-max-tax">
+						<div class="c-inner-input-content">
+							<div class="c-label-input-content">
+								<label for="value">Use a taxa máxima ou digite?</label>
+								<input
+									id="rate"
+									type="text"
+									name="rate"
+									class="c-mask-input input-data suffix-input"
+								/>
+							</div>
+							<div class="c-slc-aux-input-wrapper">
+								<select
+									class="c-slc-aux-input"
+									name="rateType"
+									id="month-year-tax"
+								>
+									<option value="monthly">% Mensal</option>
+									<option value="yearly">% Anual</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="c-input-group c-public-server">
+						<div class="inner-switch-input-content">
+							<label class="c-slider-checkbox">
+								<input type="checkbox" name="publicServer" class="c-checkbox" />
+								<span class="c-slider-switch"></span>
+							</label>
+
+							<label for="otherBillings">Sou servidor público</label>
+						</div>
+					</div>
+
+					<div class="c-input-group c-spacer-form"></div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Enviar</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Resultado</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Parcela mensal estimada</td>
+							<td id="mensal">R$ 0,00</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const existingLoanAmount = form.elements['existingLoanAmount'].value;
+				const principal = form.elements['principal'].value;
+				const rate = form.elements['rate'].value;
+				const months = form.elements['months'].value;
+				const rateType = form.elements['rateType'].value;
+
+				calculateConsignado(
+					existingLoanAmount,
+					principal,
+					rate,
+					months,
+					rateType
+				);
+			}
+
+			function onChangeCheckboxOtherBillings(event) {
+				const otherBillings = document.querySelector('#plusValuesContent');
+				const isChecked = event.target.checked;
+
+				if (isChecked) {
+					otherBillings.classList.remove('hide');
+				} else {
+					otherBillings.classList.add('hide');
+				}
+			}
+
+			document.addEventListener('DOMContentLoaded', function () {
+				const rateInput = document.getElementById('rate');
+
+				if (rateInput.value === '') {
+					rateInput.value = 2.5;
+				}
+			});
+			// Calc
+
+			function calculateConsignado(
+				existingLoanAmount,
+				principalValue,
+				rate,
+				months,
+				rateType
+			) {
+				const existingLoans = parseVMMaskerValue(existingLoanAmount);
+				const principal = parseVMMaskerValue(principalValue);
+				console.log(principal);
+
+				// Verificar se os campos estão vazios
+				if (isNaN(principal) || isNaN(rate) || isNaN(months)) {
+					alert('Por favor, preencha todos os campos.');
+					return;
+				}
+
+				// Verificar se os valores são negativos
+				if (principal < 0 || rate < 0 || months < 0) {
+					alert('Valores negativos não são aceitos.');
+					return;
+				}
+
+				if (rateType === 'annual') {
+					rate /= 12;
+				}
+
+				let newValue;
+				if (!isNaN(existingLoans) && existingLoans !== null) {
+					newValue = principal + existingLoans;
+				} else {
+					newValue = principal;
+				}
+				const monthlyInterest = rate / 100;
+				const x = Math.pow(1 + monthlyInterest, months);
+				const monthlyPayment = (newValue * x * monthlyInterest) / (x - 1);
+				let final;
+				final = monthlyPayment;
+
+				document.getElementById('mensal').textContent = `R$${final.toFixed(2)}`;
+
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+		</script>
+	</body>
+</html>

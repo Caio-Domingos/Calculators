@@ -527,6 +527,8 @@
 						monthsInput.value === '' ? 12 : parseInt(monthsInput.value) - 1;
 				}
 			}
+
+
 			const public = document.getElementById('publicServer');
 			const existingLoansToggle = document.getElementById(
 				'existingLoansToggle'
@@ -546,6 +548,8 @@
 					document.getElementById('existingLoanAmount').value = '';
 				}
 			});
+
+			
 			function calculateConsignado() {
 				const existingLoans = parseFloat(
 					parseVMMaskerValue(

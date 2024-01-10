@@ -25,3 +25,17 @@ function parseVMMaskerValue(value) {
 		? parseFloat(value.replace('R$ ', '').replace('.', '').replace(',', '.'))
 		: 0;
 }
+
+function decrementValue(input) {
+	var input = document.getElementById(input);
+	input.value = parseInt(input.value) - 1;
+}
+
+function incrementValue(input) {
+	var input = document.getElementById(input);
+	input.value = parseInt(input.value) + 1;
+}
+
+function getMoneyFormat(value) {
+	return 'R$ ' + VMasker.toMoney(value.toFixed(2));
+}

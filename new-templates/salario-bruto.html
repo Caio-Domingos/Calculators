@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+		</style>
+
+		<section id="salario-bruto" class="tl-calcs">
+			<h2>Salario Bruto</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="netSalary">Salário Líquido</label>
+							<input
+								type="text"
+								id="netSalary"
+								name="netSalary"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="discounts">Descontos</label>
+							<input
+								type="text"
+								id="discounts"
+								name="discounts"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="numDependents">Número de Dependentes</label>
+							<input
+								id="numDependents"
+								name="numDependents"
+								type="number"
+								class="input-data"
+							/>
+						</div>
+					</div>
+					<div class="c-input-group"></div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th style="background-color: #d9fae9">Descrição</th>
+							<th style="background-color: #d9fae9">Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Salário Bruto</td>
+							<td id="grossSalaryResult"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Descontos</td>
+							<td style="background-color: #f2f2f2fd" id="discountResult"></td>
+						</tr>
+						<tr>
+							<td>INSS</td>
+							<td id="inssResult"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">IRRF</td>
+							<td style="background-color: #f2f2f2fd" id="irrfResult"></td>
+						</tr>
+						<tr>
+							<td>Total de Descontos</td>
+							<td id="totalDiscountResult"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">
+								Total de Salário Líquido
+							</td>
+							<td
+								style="background-color: #f2f2f2fd"
+								id="totalSalaryResult"
+							></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const netSalary = form.elements['netSalary'].value;
+				const discounts = form.elements['discounts'].value;
+				const numDependents = form.elements['numDependents'].value;
+
+				calculateGrossSalary(
+					parseVMMaskerValue(netSalary),
+					parseVMMaskerValue(discounts),
+					numDependents
+				);
+			}
+			// Calc
+
+			function calculateGrossSalary(netSalary, discounts, numDependents) {
+				let teste = netSalary + discounts;
+				let INSS = 0;
+
+				// Cálculo do INSS
+
+				if (netSalary <= 1320) {
+					INSS = netSalary * 0.075;
+				} else if (netSalary <= 2571.29) {
+					INSS = 1320 * 0.075 + (netSalary - 1320) * 0.09;
+				} else if (netSalary <= 3856.94) {
+					INSS = 1320 * 0.075 + 1251.29 * 0.09 + (netSalary - 2571.3) * 0.12;
+				} else if (netSalary <= 7507.49) {
+					INSS =
+						1320 * 0.075 +
+						1251.29 * 0.09 +
+						1285.64 * 0.12 +
+						(teste - 3856.95) * 0.14;
+				} else {
+					INSS =
+						1320 * 0.075 + 1251.29 * 0.09 + 1285.64 * 0.12 + 3650.54 * 0.14;
+				}
+
+				// Cálculo do IRRF
+				const baseIRRF = teste - INSS - numDependents * 189.59;
+				let IRRF = 0;
+
+				if (baseIRRF <= 2112) {
+					IRRF = 0;
+				} else if (baseIRRF <= 2826.65) {
+					IRRF = baseIRRF * 0.075 - 158.4;
+				} else if (baseIRRF <= 3751.05) {
+					IRRF = baseIRRF * 0.15 - 370.4;
+				} else if (baseIRRF <= 4664.68) {
+					IRRF = baseIRRF * 0.225 - 651.73;
+				} else {
+					IRRF = baseIRRF * 0.275 - 884.96;
+				}
+
+				const totalDiscounts = INSS + IRRF + discounts;
+				const grossSalary = netSalary + totalDiscounts;
+
+				document.getElementById('grossSalaryResult').innerText =
+					'R$ ' + VMasker.toMoney(grossSalary.toFixed(2));
+				document.getElementById('discountResult').innerText =
+					'R$ ' + VMasker.toMoney(discounts.toFixed(2));
+				document.getElementById('inssResult').innerText =
+					'R$ ' + VMasker.toMoney(INSS.toFixed(2));
+				document.getElementById('irrfResult').innerText =
+					'R$ ' + VMasker.toMoney(IRRF.toFixed(2));
+				document.getElementById('totalDiscountResult').innerText =
+					'R$ ' + VMasker.toMoney(totalDiscounts.toFixed(2));
+				document.getElementById('totalSalaryResult').innerText =
+					'R$ ' + VMasker.toMoney(netSalary.toFixed(2));
+
+				// Exibir a tabela
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+		</script>
+	</body>
+</html>

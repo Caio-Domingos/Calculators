@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+			.table-title {
+				font-weight: 600;
+				font-size: 1rem;
+				margin: 1rem 0;
+				text-align: center;
+			}
+		</style>
+
+		<section id="salario-anual" class="tl-calcs">
+			<h2>Salário Anual</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="value">Salário Mensal</label>
+							<input
+								type="text"
+								name="monthlySalary"
+								id="monthlySalary"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="value">Plano de Saúde (Valor mensal)</label>
+							<input
+								type="text"
+								name="healthPlan"
+								id="healthPlan"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="value">Vale Transporte (Valor diário)</label>
+							<input
+								type="text"
+								id="dailyTransport"
+								name="dailyTransport"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="c-label-input-content">
+							<label for="value">Vale Refeição (Valor diário)</label>
+							<input
+								type="text"
+								id="dailyMeal"
+								name="dailyMeal"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group">
+						<div class="inner-switch-input-content">
+							<label class="c-slider-checkbox">
+								<input
+									type="checkbox"
+									id="workOnSaturdays"
+									name="workOnSaturdays"
+									class="c-checkbox"
+								/>
+								<span class="c-slider-switch"></span>
+							</label>
+
+							<label for="otherBillings">Trabalha aos sabados?</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div id="c-result-table" class="c-result-table hide">
+				<div class="table-title">Total Bruto</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Salário Anual</td>
+							<td id="annualSalary"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Décimo Terceiro</td>
+							<td
+								style="background-color: #f2f2f2fd"
+								id="thirteenthSalary"
+							></td>
+						</tr>
+						<tr>
+							<td>Adicional de Férias</td>
+							<td id="vacationBonus"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Total Anual Bruto</td>
+							<td
+								style="background-color: #f2f2f2fd"
+								id="totalGrossAnnual"
+							></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- Tabela: Total de Benefícios -->
+				<div class="table-title">Total de Benefícios</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Plano de Saúde</td>
+							<td id="annualHealthPlan"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Vale Transporte</td>
+							<td style="background-color: #f2f2f2fd" id="annualTransport"></td>
+						</tr>
+						<tr>
+							<td>Vale Refeição</td>
+							<td id="annualMeal"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Total de Benefícios</td>
+							<td style="background-color: #f2f2f2fd" id="totalBenefits"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="table-title">Total de Descontos</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>INSS</td>
+							<td id="inssResult"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">IRPF</td>
+							<td style="background-color: #f2f2f2fd" id="irpfResult"></td>
+						</tr>
+						<tr>
+							<td>Total Anual Bruto</td>
+							<td id="totalDiscountsResult"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="table-title">Total Líquido</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>FGTS</td>
+							<td id="t4-fgts"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Total</td>
+							<td style="background-color: #f2f2f2fd" id="t4-total"></td>
+						</tr>
+						<tr>
+							<td>Total + Benefícios</td>
+							<td id="t4-tot-ben"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">
+								Total + Benefícios + FGTS
+							</td>
+							<td style="background-color: #f2f2f2fd" id="t4-tot-ben-fgts"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const monthlySalary = form.elements['monthlySalary'].value;
+				const healthPlan = form.elements['healthPlan'].value;
+				const dailyTransport = form.elements['dailyTransport'].value;
+				const dailyMeal = form.elements['dailyMeal'].value;
+				const workOnSaturdays = form.elements['workOnSaturdays'].checked;
+
+				calculateAnnualSalary(
+					parseVMMaskerValue(monthlySalary),
+					parseVMMaskerValue(healthPlan),
+					parseVMMaskerValue(dailyTransport),
+					parseVMMaskerValue(dailyMeal),
+					workOnSaturdays
+				);
+			}
+			// Calc
+			function calculateAnnualSalary(
+				monthlySalary,
+				healthPlan,
+				dailyTransport,
+				dailyMeal,
+				workOnSaturdays
+			) {
+				const inss = calculateINSS(monthlySalary);
+				const irpf = calculateIRRF(monthlySalary, 0);
+				const totalDiscounts = inss + irpf;
+
+				console.log('monthlySalary => ', monthlySalary);
+				console.log('healthPlan => ', healthPlan);
+				console.log('dailyTransport => ', dailyTransport);
+				console.log('dailyMeal => ', dailyMeal);
+
+				let annualSalary = monthlySalary * 12;
+				let thirteenthSalary = monthlySalary;
+				let vacationBonus = monthlySalary / 3;
+				let totalGrossAnnual = annualSalary + thirteenthSalary + vacationBonus;
+
+				let workingDaysPerMonth = workOnSaturdays ? 26 : 22;
+
+				let annualHealthPlan = healthPlan * 12;
+				let annualTransport = dailyTransport * workingDaysPerMonth * 12;
+				let annualMeal = dailyMeal * workingDaysPerMonth * 12;
+				let totalBenefits = annualHealthPlan + annualTransport + annualMeal;
+
+				let netTotal = totalGrossAnnual + totalBenefits;
+
+				// Display in tables
+
+				// Table 1
+				displayTableData('annualSalary', getMoneyFormat(annualSalary));
+				displayTableData('thirteenthSalary', getMoneyFormat(thirteenthSalary));
+				displayTableData('vacationBonus', getMoneyFormat(vacationBonus));
+				displayTableData('totalGrossAnnual', getMoneyFormat(totalGrossAnnual));
+
+				// Table 2
+				displayTableData('annualHealthPlan', getMoneyFormat(annualHealthPlan));
+				displayTableData('annualTransport', getMoneyFormat(annualTransport));
+				displayTableData('annualMeal', getMoneyFormat(annualMeal));
+				displayTableData('totalBenefits', getMoneyFormat(totalBenefits));
+
+				// Table 3
+				document.getElementById('inssResult').innerText = getMoneyFormat(
+					inss * 12
+				);
+				document.getElementById('irpfResult').innerText = getMoneyFormat(
+					irpf * 12
+				);
+				document.getElementById('totalDiscountsResult').innerText =
+					getMoneyFormat(totalDiscounts * 12);
+
+				// Table 4
+
+				const liquidTotal = totalGrossAnnual - totalDiscounts * 12;
+
+				displayTableData('t4-fgts', getMoneyFormat(monthlySalary * 0.08 * 12));
+				displayTableData('t4-total', getMoneyFormat(liquidTotal));
+				displayTableData(
+					't4-tot-ben',
+					getMoneyFormat(liquidTotal + totalBenefits)
+				);
+				displayTableData(
+					't4-tot-ben-fgts',
+					getMoneyFormat(
+						liquidTotal + totalBenefits + monthlySalary * 0.08 * 12
+					)
+				);
+
+				document.getElementById('c-result-table').classList.remove('hide');
+			}
+
+			function displayTableData(id, value) {
+				document.getElementById(id).innerText = value;
+			}
+
+			function calculateINSS(base) {
+				if (base <= 1320) {
+					return base * 0.075;
+				} else if (base <= 2571.29) {
+					return 1320 * 0.075 + (base - 1320) * 0.09;
+				} else if (base <= 3856.94) {
+					return 1320 * 0.075 + 1251.29 * 0.09 + (base - 2571.3) * 0.12;
+				} else if (base <= 7507.49) {
+					return (
+						1320 * 0.075 +
+						1251.29 * 0.09 +
+						1285.64 * 0.12 +
+						(base - 3856.95) * 0.14
+					);
+				} else {
+					return (
+						1320 * 0.075 + 1251.29 * 0.09 + 1285.64 * 0.12 + 3650.54 * 0.14
+					);
+				}
+			}
+
+			function calculateIRRF(base, dependents) {
+				base -= calculateINSS(base);
+				base -= dependents * 189.59;
+				if (base <= 2112) {
+					return 0;
+				} else if (base <= 2826.65) {
+					return base * 0.075 - 158.4;
+				} else if (base <= 3751.05) {
+					return base * 0.15 - 370.4;
+				} else if (base <= 4664.68) {
+					return base * 0.225 - 651.73;
+				} else {
+					return base * 0.275 - 884.96;
+				}
+			}
+		</script>
+	</body>
+</html>

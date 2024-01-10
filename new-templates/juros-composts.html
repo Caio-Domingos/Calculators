@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+			.tl-calcs .c-inputs-grid {
+				display: grid; /* Isso é necessário para definir o contêiner como um grid */
+				grid-template-areas: 'principal', 'monthlyValue', 'rate', 'months';
+
+				grid-template-columns: repeat(1, 1fr);
+			}
+
+			@media (min-width: 600px) {
+				.tl-calcs .c-inputs-grid {
+					grid-template-columns: repeat(2, 1fr);
+					grid-template-areas:
+						'principal monthlyValue'
+						'rate months';
+				}
+			}
+
+			.principal {
+				grid-area: principal;
+			}
+			.monthlyValue {
+				grid-area: monthlyValue;
+			}
+			.rate {
+				grid-area: rate;
+			}
+			.months {
+				grid-area: months;
+			}
+		</style>
+
+		<section id="juros-composts" class="tl-calcs">
+			<h2>Juros Compostos</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group principal">
+						<div class="c-label-input-content">
+							<label for="principal">Valor Inicial</label>
+							<input
+								type="text"
+								name="principal"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group monthlyValue">
+						<div class="c-label-input-content">
+							<label for="monthlyValue">Valor mensal</label>
+							<input
+								type="text"
+								name="monthlyValue"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+					<div class="c-input-group rate">
+						<div class="c-inner-input-content">
+							<div class="c-label-input-content">
+								<label for="rate">Taxa de Juros</label>
+								<input
+									id="rate"
+									type="text"
+									name="rate"
+									class="input-data suffix-input"
+								/>
+							</div>
+							<div class="c-slc-aux-input-wrapper">
+								<select
+									class="c-slc-aux-input"
+									name="ratePeriod"
+									id="ratePeriod"
+								>
+									<option value="monthly">% Mensal</option>
+									<option value="yearly">% Anual</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="c-input-group months">
+						<div class="c-inner-input-content">
+							<div class="c-label-input-content">
+								<label for="months">Período</label>
+								<input
+									id="months"
+									type="text"
+									name="months"
+									class="input-data suffix-input"
+								/>
+							</div>
+							<div class="c-slc-aux-input-wrapper">
+								<select
+									class="c-slc-aux-input"
+									name="monthsPeriod"
+									id="monthsPeriod"
+								>
+									<option value="monthly">% Mensal</option>
+									<option value="yearly">% Anual</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Valor total investido</td>
+							<td id="totalInvested"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Rendimento total</td>
+							<td style="background-color: #f2f2f2fd" id="totalInterest"></td>
+						</tr>
+						<tr>
+							<td>Valor total ao final</td>
+							<td id="totalValue"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const principal = form.elements['principal'].value;
+				const monthlyValue = form.elements['monthlyValue'].value;
+				const rate = form.elements['rate'].value;
+				const months = form.elements['months'].value;
+
+				calculateCompoundInterest(
+					parseVMMaskerValue(principal),
+					parseVMMaskerValue(monthlyValue),
+					parseVMMaskerValue(rate),
+					parseVMMaskerValue(months)
+				);
+			}
+			// Calc
+
+			function calculateCompoundInterest(
+				principal,
+				monthlyValue,
+				rate,
+				months
+			) {
+				// Convert yearly rate to monthly
+				if (document.getElementById('ratePeriod').value === 'yearly') {
+					rate /= 12;
+				}
+
+				// Convert years to months
+				if (document.getElementById('monthsPeriod').value === 'yearly') {
+					months *= 12;
+				}
+
+				let totalValue = principal;
+				let totalInvested = principal;
+				let monthlyInterest;
+
+				for (let i = 0; i < months; i++) {
+					monthlyInterest = totalValue * (rate / 100);
+					totalValue += monthlyInterest + monthlyValue;
+					totalInvested += monthlyValue;
+				}
+
+				const totalInterestValue = totalValue - totalInvested;
+
+				// Display the results
+
+				document.getElementById('totalInvested').textContent =
+					'R$ ' + VMasker.toMoney(totalInvested.toFixed(2));
+				document.getElementById('totalInterest').textContent =
+					'R$ ' + VMasker.toMoney(totalInterestValue.toFixed(2));
+				document.getElementById('totalValue').textContent =
+					'R$ ' + VMasker.toMoney(totalValue.toFixed(2));
+
+				document.getElementById('resultTable').classList.remove('hide');
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="public/site.css" />
+		<script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+	</head>
+	<body>
+		<style>
+			/* Styles */
+			.tl-calcs .c-inputs-grid {
+				display: grid; /* Isso é necessário para definir o contêiner como um grid */
+				grid-template-areas: 'principal', 'rate', 'months';
+
+				grid-template-columns: repeat(1, 1fr);
+			}
+
+			@media (min-width: 600px) {
+				.tl-calcs .c-inputs-grid {
+					grid-template-columns: repeat(2, 1fr);
+					grid-template-areas:
+						'principal principal'
+						'rate months';
+				}
+			}
+
+			.principal {
+				grid-area: principal;
+			}
+			.rate {
+				grid-area: rate;
+			}
+			.months {
+				grid-area: months;
+			}
+		</style>
+
+		<section id="juros-simples" class="tl-calcs">
+			<h2>Juros Simples</h2>
+			<form action="#" class="c-form" onsubmit="handleSubmit(event)">
+				<div class="c-inputs-grid">
+					<div class="c-input-group principal">
+						<div class="c-label-input-content">
+							<label for="principal">Valor Inicial</label>
+							<input
+								type="text"
+								name="principal"
+								class="c-mask-input input-data suffix-input"
+							/>
+						</div>
+						<span class="c-suffix">R$</span>
+					</div>
+
+					<div class="c-input-group rate">
+						<div class="c-inner-input-content">
+							<div class="c-label-input-content">
+								<label for="rate">Taxa de Juros</label>
+								<input
+									id="rate"
+									type="text"
+									name="rate"
+									class="input-data suffix-input"
+								/>
+							</div>
+							<div class="c-slc-aux-input-wrapper">
+								<select
+									class="c-slc-aux-input"
+									name="ratePeriod"
+									id="ratePeriod"
+								>
+									<option value="monthly">% Mensal</option>
+									<option value="yearly">% Anual</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="c-input-group months">
+						<div class="c-inner-input-content">
+							<div class="c-label-input-content">
+								<label for="months">Período</label>
+								<input
+									id="months"
+									type="text"
+									name="months"
+									class="input-data suffix-input"
+								/>
+							</div>
+							<div class="c-slc-aux-input-wrapper">
+								<select
+									class="c-slc-aux-input"
+									name="monthsPeriod"
+									id="monthsPeriod"
+								>
+									<option value="monthly">% Mensal</option>
+									<option value="yearly">% Anual</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="c-input-group"></div>
+				</div>
+
+				<div class="c-action-buttons">
+					<button type="button" onclick="handleClear('resultTable')">
+						Limpar
+					</button>
+					<button type="submit">Calcular</button>
+				</div>
+			</form>
+			<div class="c-result-table">
+				<table id="resultTable" class="hide">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor (R$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Valor total final</td>
+							<td id="totalValue"></td>
+						</tr>
+						<tr>
+							<td style="background-color: #f2f2f2fd">Valor investido</td>
+							<td style="background-color: #f2f2f2fd" id="investedValue"></td>
+						</tr>
+						<tr>
+							<td>Total em juros</td>
+							<td id="totalInterest"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<script src="public/site.js"></script>
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const principal = form.elements['principal'].value;
+				const rate = form.elements['rate'].value;
+				const months = form.elements['months'].value;
+
+				calculateCompoundInterest(
+					parseVMMaskerValue(principal),
+					parseVMMaskerValue(rate),
+					parseVMMaskerValue(months)
+				);
+			}
+			// Calc
+
+			function calculateSimpleInterest(principal, rate, months) {
+				// Convert yearly rate to monthly
+				if (document.getElementById('ratePeriod').value === 'yearly') {
+					rate /= 12;
+				}
+
+				// Convert years to months
+				if (document.getElementById('monthsPeriod').value === 'yearly') {
+					months *= 12;
+				}
+
+				const interest = (principal * rate * months) / 100;
+				const totalValue = principal + interest;
+
+				// Populate results table
+				document.getElementById('investedValue').textContent =
+					principal.toFixed(2);
+				document.getElementById('totalInterest').textContent =
+					interest.toFixed(2);
+				document.getElementById('totalValue').textContent =
+					totalValue.toFixed(2);
+
+				// Show results table
+				document.getElementById('resultsTable').style.display = 'table';
+			}
+		</script>
+	</body>
+</html>
